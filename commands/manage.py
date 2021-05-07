@@ -16,6 +16,8 @@ try:
 except:
         os.system("pip install pynacl")
 
+bot = commands.Bot(command_prefix='/', help_command=None)
+
 @bot.command()
 async def 핑(ctx):
     embed = discord.Embed(title=':ping_pong: 퐁!', color=0xFEFEFE)

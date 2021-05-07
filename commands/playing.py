@@ -16,6 +16,8 @@ try:
 except:
         os.system("pip install pynacl")
 
+bot = commands.Bot(command_prefix='/', help_command=None)
+
 @bot.command()
 async def 가위바위보(ctx, user: str):
     rps_table = ['가위', '바위', '보']

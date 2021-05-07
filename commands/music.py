@@ -16,6 +16,8 @@ try:
 except:
         os.system("pip install pynacl")
 
+bot = commands.Bot(command_prefix='/', help_command=None)
+
 youtube_dl.utils.bug_reports_message = lambda: ''
 
 

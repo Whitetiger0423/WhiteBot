@@ -16,6 +16,8 @@ try:
 except:
         os.system("pip install pynacl")
 
+bot = commands.Bot(command_prefix='/', help_command=None)
+
 @bot.command(aliases=['뽑', 'ㅃ'])
 async def 뽑기(ctx):
     random_coin = random.randint(1000, 5000)

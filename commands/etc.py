@@ -15,6 +15,8 @@ try:
         import pynacl
 except:
         os.system("pip install pynacl")
+        
+bot = commands.Bot(command_prefix='/', help_command=None)
 
 @bot.command()
 async def 검색(ctx, *, 검색어):
