@@ -20,6 +20,7 @@ try:
 except ImportError:
     os.system("pip install dbkrpy")
     import dbkrpy
+from commands import *
 
 
 bot = commands.Bot(command_prefix='/', help_command=None)
