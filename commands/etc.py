@@ -5,7 +5,6 @@ import re
 import os, json
 import datetime
 from discord.ext import commands
-from replit import db
 import functools
 import itertools
 import math

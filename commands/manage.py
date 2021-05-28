@@ -5,7 +5,6 @@ import re
 import os, json
 import datetime
 from discord.ext import commands
-from replit import db
 import functools
 import itertools
 import math
@@ -106,4 +105,18 @@ async def 서버(ctx):
                     value=f'{ctx.guild.premium_tier}레벨', inline = False)
     embed.add_field(name='멤버 수: ',
                     value=f'{ctx.guild.member_count}', inline = False)
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def 내정보(ctx):
+    embed = discord.Embed(title='유저 정보', color=0xFEFEFE)
+    embed.set_thumbnail(url=ctx.author.avatar_url)
+    embed.add_field(name='계정명: ',
+                    value=f'{ctx.author.name}', inline = False)
+    embed.add_field(name='ID: ',
+                    value=f'{ctx.author.id}', inline = False)
+    embed.add_field(name='이 서버에서의 별명: ',
+                    value=f'{ctx.author.display_name}', inline = False)
+    embed.add_field(name='멘션: ',
+                    value=f'{ctx.author.mention}', inline = False)
     await ctx.send(embed=embed)

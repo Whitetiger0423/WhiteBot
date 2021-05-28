@@ -8,3 +8,6 @@ WhiteBot은 디스코드 챗봇입니다.
 2. ~~버튼 기능을 이용한 명령어 구현~~ 현재 discord_buttons 기능이 잠시 무력화됨에 따라 보류합니다.
 3. ~~`/정보` 명렁어 오류 해결~~ 해결 완료
 4. 추가 아이디어 확보하기
+
+### 현재 서버수
+![image](https://user-images.githubusercontent.com/72282371/118786278-9bb37280-b8cc-11eb-98a8-9bba1b9d8bbd.png)
