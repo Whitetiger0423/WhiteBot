@@ -10,10 +10,7 @@ import itertools
 import math
 import youtube_dl
 from async_timeout import timeout
-try:
-        import pynacl
-except:
-        os.system("pip install pynacl")
+os.system("pip install pynacl")
         
 bot = commands.Bot(command_prefix='/', help_command=None)
 
