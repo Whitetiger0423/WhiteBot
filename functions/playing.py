@@ -19,7 +19,7 @@ class playing(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def 가위바위보(ctx, user: str):
+    async def 가위바위보(self, ctx, user: str):
         rps_table = ['가위', '바위', '보']
         bot = random.choice(rps_table)
         result = rps_table.index(user) - rps_table.index(bot)
@@ -35,7 +35,7 @@ class playing(commands.Cog):
                 f'{user} vs {bot}\n{ctx.author.mention} 제가 이겼습니다! 한판 더 하실래요?')
 
     @commands.command()
-    async def 주사위(ctx, 첫번째숫자: int, 두번째숫자: int = None):
+    async def 주사위(self, ctx, 첫번째숫자: int, 두번째숫자: int = None):
         if (두번째숫자):
             await ctx.send(
                 f"{ctx.author.mention} 주사위를 굴렸더니 {random.randint(첫번째숫자, 두번째숫자)}(이)가 나왔어요!"

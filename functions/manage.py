@@ -19,7 +19,7 @@ class manage(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def 핑(ctx):
+    async def 핑(self, ctx):
         embed = discord.Embed(title=':ping_pong: 퐁!', color=0xFEFEFE)
         embed.set_thumbnail(url=bot.user.avatar_url)
         embed.add_field(name='Discord API Ping: ',
@@ -28,7 +28,7 @@ class manage(commands.Cog):
 
 
     @commands.command()
-    async def 청소(ctx, count: int):
+    async def 청소(self, ctx, count: int):
         if ctx.author.guild_permissions.administrator:
             await asyncio.sleep(2)
             await ctx.channel.purge(limit=count + 1)
@@ -41,7 +41,7 @@ class manage(commands.Cog):
 
 
     @commands.command()
-    async def 킥(ctx, member: discord.Member, *, reason):
+    async def 킥(self, ctx, member: discord.Member, *, reason):
         if ctx.author.guild_permissions.administrator:
             if not member.guild_permissions.administrator:
                 await ctx.send(
@@ -60,7 +60,7 @@ class manage(commands.Cog):
 
 
     @commands.command()
-    async def 밴(ctx, member: discord.Member, *, reason):
+    async def 밴(self, ctx, member: discord.Member, *, reason):
         if ctx.author.guild_permissions.administrator:
             if not member.guild_permissions.administrator:
                 await ctx.send(f'{member.name}#{member.discriminator} 서버원을 밴했습니다.')
@@ -78,7 +78,7 @@ class manage(commands.Cog):
 
 
     @commands.command()
-    async def 언밴(ctx, *, member):
+    async def 언밴(self, ctx, *, member):
         if ctx.author.guild_permissions.administrator:
             banned_users = await ctx.guild.bans()
             member_name, member_discriminator = member.split('#')
@@ -93,7 +93,7 @@ class manage(commands.Cog):
                 f'{ctx.author.mention} 관리자 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
 
     @commands.command()
-    async def 서버(ctx):
+    async def 서버(self, ctx):
         embed = discord.Embed(title='서버 정보', color=0xFEFEFE)
         embed.set_thumbnail(url=ctx.guild.icon_url)
         embed.add_field(name='서버 이름: ',
@@ -109,7 +109,7 @@ class manage(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def 내정보(ctx):
+    async def 내정보(self, ctx):
         embed = discord.Embed(title='유저 정보', color=0xFEFEFE)
         embed.set_thumbnail(url=ctx.author.avatar_url)
         embed.add_field(name='계정명: ',
@@ -120,6 +120,56 @@ class manage(commands.Cog):
                     value=f'{ctx.author.display_name}', inline = False)
         embed.add_field(name='멘션: ',
                     value=f'{ctx.author.mention}', inline = False)
+        await ctx.send(embed=embed)
+
+    @commands.command(name="announce")
+    async def announce(self, ctx, *, 내용):
+        adminid = [763422064794796042]
+        if ctx.author.id in adminid:
+            now = datetime.datetime.now()
+            time = f"{str(now.year)}년 {str(now.month)}월 {str(now.day)}일 {str(now.hour)}시 {str(now.minute)}분 {str(now.second)}초"
+            embed = discord.Embed(color=0x00FFFF)
+            embed = discord.Embed(title=":loudspeaker: WhiteBot 공지",
+                              description=" ",
+                              colour=0x00ff00,
+                              inline=False)
+            embed.add_field(name='공지 내용', value=f'{내용}')
+            embed.set_footer(text=f"{str(ctx.author)} - 인증됨\n발송 시간 : {time}",
+                         icon_url=ctx.author.avatar_url)
+            for guild in bot.guilds:
+                senddone = False
+                for channel in guild.text_channels:
+                    try:
+                        await channel.send(embed=embed)
+                        print(f'공지 전송 완료')
+                        senddone = True
+                        break
+                    except:
+                        print(f'공지 발송 실패')
+                        pass
+                    if not senddone:
+                        print(f'공지 발송 실패')
+        else:
+            await ctx.send('권한이 부족합니다.')
+
+    @commands.command(name="정보")
+    async def 정보(self, ctx):
+        ch = bot.guilds
+        g = len(ch)
+        embed = discord.Embed(title='봇 정보', color=0xFEFEFE)
+        embed.set_thumbnail(url=bot.user.avatar_url)
+        embed.add_field(name='봇 이름: ',
+                    value=f'{bot.user.name}', inline = False)
+        embed.add_field(name='봇 ID: ',
+                    value=f'{bot.user.id}', inline = False)
+        embed.add_field(name='봇 버전: ',
+                    value='1.3.3', inline = False)
+        embed.add_field(name='봇 참가 서버 수: ',
+                    value=f'{g}개의 서버', inline = False)
+        embed.add_field(name='봇 개발진: ',
+                    value='[White_team](<http://whiteteam.kro.kr/>)', inline = False)
+        embed.add_field(name='서포팅 서버: ',
+                    value='[초대 링크](<http://server.whitebot.kro.kr/>)', inline = False)
         await ctx.send(embed=embed)
 
 def setup(bot):

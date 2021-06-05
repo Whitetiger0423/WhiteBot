@@ -19,7 +19,7 @@ class etc(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def 검색(ctx, *, 검색어):
+    async def 검색(self, ctx, *, 검색어):
         embed = discord.Embed(title="<a:check:824251178493411368> 검색결과",
                           description="여러 사이트에서 검색한 결과입니다.",
                           color=0xfefefe)
@@ -50,11 +50,11 @@ class etc(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def 전송(ctx, *, 내용):
+    async def 전송(self, ctx, *, 내용):
         await ctx.send(내용)
 
     @commands.command()
-    async def 암호(ctx, *수신문):
+    async def 암호(self, ctx, *수신문):
         원문 = ' '.join(수신문)
         암호문 = []
         띄쓰방지 = 원문.replace(" ", "")
@@ -74,7 +74,7 @@ class etc(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def 해독(ctx, *수신문):
+    async def 해독(self, ctx, *수신문):
         try:
             원문 = ','.join(수신문)
             원문결과용 = ' '.join(수신문)
