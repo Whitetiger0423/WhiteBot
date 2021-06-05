@@ -21,9 +21,9 @@ class manage(commands.Cog):
     @commands.command()
     async def 핑(self, ctx):
         embed = discord.Embed(title=':ping_pong: 퐁!', color=0xFEFEFE)
-        embed.set_thumbnail(url=bot.user.avatar_url)
+        embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d16ab665b8db020f4b62313cb260b2f1.webp?size=1024')
         embed.add_field(name='Discord API Ping: ',
-                    value=f'{round(bot.latency * 1000)} ms')
+                    value=f'{round(self.bot.latency * 1000)} ms')
         await ctx.send(embed=embed)
 
 
@@ -154,14 +154,14 @@ class manage(commands.Cog):
 
     @commands.command(name="정보")
     async def 정보(self, ctx):
-        ch = bot.guilds
+        ch = self.bot.guilds
         g = len(ch)
         embed = discord.Embed(title='봇 정보', color=0xFEFEFE)
-        embed.set_thumbnail(url=bot.user.avatar_url)
+        embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d16ab665b8db020f4b62313cb260b2f1.webp?size=1024')
         embed.add_field(name='봇 이름: ',
-                    value=f'{bot.user.name}', inline = False)
+                    value=f'{self.bot.user.name}', inline = False)
         embed.add_field(name='봇 ID: ',
-                    value=f'{bot.user.id}', inline = False)
+                    value=f'{self.bot.user.id}', inline = False)
         embed.add_field(name='봇 버전: ',
                     value='1.3.3', inline = False)
         embed.add_field(name='봇 참가 서버 수: ',
