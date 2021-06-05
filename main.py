@@ -33,7 +33,7 @@ async def on_ready():
     print("다음으로 로그인합니다 : ")
     print(bot.user.name)
 
-@commands.command(name=정보)
+@commands.command(name="정보")
 async def 정보(ctx):
     ch = bot.guilds
     g = len(ch)
