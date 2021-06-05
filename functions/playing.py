@@ -14,6 +14,10 @@ os.system("pip install pynacl")
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 
+class playing(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
 @bot.command()
 async def 가위바위보(ctx, user: str):
     rps_table = ['가위', '바위', '보']
@@ -40,3 +44,6 @@ async def 주사위(ctx, 첫번째숫자: int, 두번째숫자: int = None):
         await ctx.send(
             f"{ctx.author.mention} 주사위를 굴렸더니 {random.randint(1, 첫번째숫자)}(이)가 나왔어요!"
         )
+
+def setup(bot):
+    bot.add_cog(playing(bot))

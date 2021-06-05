@@ -14,6 +14,10 @@ os.system("pip install pynacl")
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 
+class music(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
 youtube_dl.utils.bug_reports_message = lambda: ''
 
 
@@ -435,3 +439,6 @@ class Music(commands.Cog):
 
 
 bot.add_cog(Music(bot))
+
+def setup(bot):
+    bot.add_cog(music(bot))

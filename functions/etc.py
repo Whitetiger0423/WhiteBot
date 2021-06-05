@@ -14,6 +14,10 @@ os.system("pip install pynacl")
         
 bot = commands.Bot(command_prefix='/', help_command=None)
 
+class etc(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
 @bot.command()
 async def 검색(ctx, *, 검색어):
     embed = discord.Embed(title="<a:check:824251178493411368> 검색결과",
@@ -89,3 +93,6 @@ async def 해독(ctx, *수신문):
         await ctx.send(embed=embed)
     except:
         await ctx.send('올바른 암호문을 입력해주세요.')
+
+def setup(bot):
+    bot.add_cog(etc(bot))

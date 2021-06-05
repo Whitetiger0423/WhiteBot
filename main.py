@@ -16,7 +16,7 @@ try:
 except ImportError:
     os.system("pip install dbkrpy")
     import dbkrpy
-from commands import *
+from functions import *
 
 
 bot = commands.Bot(command_prefix='/', help_command=None)
@@ -83,4 +83,9 @@ async def announce(ctx, *, 내용):
     else:
         await ctx.send('권한이 부족합니다.')
 
-bot.run("NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.IggBBwjsTf17zD3amlo5GhMopmg")
+for filename in os.listdir("functions"):
+    if filename.endswith(".py"):
+        bot.load_extension(f"functions.{filename[:-3]}")
+
+
+bot.run("NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.FDYS2PwpH-7SNUPaDezszyBiN3U")

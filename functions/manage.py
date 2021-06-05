@@ -14,6 +14,10 @@ os.system("pip install pynacl")
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 
+class manage(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
 @bot.command()
 async def 핑(ctx):
     embed = discord.Embed(title=':ping_pong: 퐁!', color=0xFEFEFE)
@@ -117,3 +121,6 @@ async def 내정보(ctx):
     embed.add_field(name='멘션: ',
                     value=f'{ctx.author.mention}', inline = False)
     await ctx.send(embed=embed)
+
+def setup(bot):
+    bot.add_cog(manage(bot))
