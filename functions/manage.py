@@ -18,7 +18,7 @@ class manage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-@bot.command()
+@commands.command()
 async def 핑(ctx):
     embed = discord.Embed(title=':ping_pong: 퐁!', color=0xFEFEFE)
     embed.set_thumbnail(url=bot.user.avatar_url)
@@ -27,7 +27,7 @@ async def 핑(ctx):
     await ctx.send(embed=embed)
 
 
-@bot.command()
+@commands.command()
 async def 청소(ctx, count: int):
     if ctx.author.guild_permissions.administrator:
         await asyncio.sleep(2)
@@ -40,7 +40,7 @@ async def 청소(ctx, count: int):
             f'{ctx.author.mention} 메시지 관리 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
 
 
-@bot.command()
+@commands.command()
 async def 킥(ctx, member: discord.Member, *, reason):
     if ctx.author.guild_permissions.administrator:
         if not member.guild_permissions.administrator:
@@ -59,7 +59,7 @@ async def 킥(ctx, member: discord.Member, *, reason):
             f'{ctx.author.mention} 관리자 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
 
 
-@bot.command()
+@commands.command()
 async def 밴(ctx, member: discord.Member, *, reason):
     if ctx.author.guild_permissions.administrator:
         if not member.guild_permissions.administrator:
@@ -77,7 +77,7 @@ async def 밴(ctx, member: discord.Member, *, reason):
             f'{ctx.author.mention} 관리자 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
 
 
-@bot.command()
+@commands.command()
 async def 언밴(ctx, *, member):
     if ctx.author.guild_permissions.administrator:
         banned_users = await ctx.guild.bans()
@@ -92,7 +92,7 @@ async def 언밴(ctx, *, member):
         await ctx.send(
             f'{ctx.author.mention} 관리자 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
 
-@bot.command()
+@commands.command()
 async def 서버(ctx):
     embed = discord.Embed(title='서버 정보', color=0xFEFEFE)
     embed.set_thumbnail(url=ctx.guild.icon_url)
@@ -108,7 +108,7 @@ async def 서버(ctx):
                     value=f'{ctx.guild.member_count}', inline = False)
     await ctx.send(embed=embed)
 
-@bot.command()
+@commands.command()
 async def 내정보(ctx):
     embed = discord.Embed(title='유저 정보', color=0xFEFEFE)
     embed.set_thumbnail(url=ctx.author.avatar_url)

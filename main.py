@@ -33,7 +33,7 @@ async def on_ready():
     print("다음으로 로그인합니다 : ")
     print(bot.user.name)
 
-@bot.command()
+@commands.command()
 async def 정보(ctx):
     ch = bot.guilds
     g = len(ch)
@@ -53,7 +53,7 @@ async def 정보(ctx):
                     value='[초대 링크](<http://server.whitebot.kro.kr/>)', inline = False)
     await ctx.send(embed=embed)
 
-@bot.command(name="announce")
+@commands.command(name="announce")
 async def announce(ctx, *, 내용):
     adminid = [763422064794796042]
     if ctx.author.id in adminid:

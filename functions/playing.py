@@ -18,7 +18,7 @@ class playing(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-@bot.command()
+@commands.command()
 async def 가위바위보(ctx, user: str):
     rps_table = ['가위', '바위', '보']
     bot = random.choice(rps_table)
@@ -34,7 +34,7 @@ async def 가위바위보(ctx, user: str):
         await ctx.send(
             f'{user} vs {bot}\n{ctx.author.mention} 제가 이겼습니다! 한판 더 하실래요?')
 
-@bot.command()
+@commands.command()
 async def 주사위(ctx, 첫번째숫자: int, 두번째숫자: int = None):
     if (두번째숫자):
         await ctx.send(

@@ -18,7 +18,7 @@ class etc(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-@bot.command()
+@commands.command()
 async def 검색(ctx, *, 검색어):
     embed = discord.Embed(title="<a:check:824251178493411368> 검색결과",
                           description="여러 사이트에서 검색한 결과입니다.",
@@ -49,11 +49,11 @@ async def 검색(ctx, *, 검색어):
                     inline=False)
     await ctx.send(embed=embed)
 
-@bot.command()
+@commands.command()
 async def 전송(ctx, *, 내용):
         await ctx.send(내용)
 
-@bot.command()
+@commands.command()
 async def 암호(ctx, *수신문):
     원문 = ' '.join(수신문)
     암호문 = []
@@ -73,7 +73,7 @@ async def 암호(ctx, *수신문):
     embed.add_field(name="**암호문:**", value=f"```{대괄호생략[1:-1]}```", inline=False)
     await ctx.send(embed=embed)
 
-@bot.command()
+@commands.command()
 async def 해독(ctx, *수신문):
     try:
         원문 = ','.join(수신문)
