@@ -172,5 +172,143 @@ class manage(commands.Cog):
                     value='[초대 링크](<http://server.whitebot.kro.kr/>)', inline = False)
         await ctx.send(embed=embed)
 
+    @commands.command(aliases=['help', '도움말'])
+    async def 도움(self, ctx, 종류 = None):
+        if (종류 == None):
+            embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말",
+                          description="WhiteBot의 명령어에 대해서 소개합니다.",
+                          color=0xFEFEFE)
+            embed.add_field(name="/도움", value="이 메시지를 표출합니다.", inline=False)
+            embed.add_field(name="/도움 관리", value="서버 관리와 관련된 명령어를 표출합니다.", inline=False)
+            embed.add_field(name="/도움 놀이",
+                    value="WhiteBot으로 할 수 있는 놀이 기능과 관련된 명령어를 표출합니다.",
+                    inline=False)
+            embed.add_field(name="/도움 음악",
+                    value="음악 기능과 관련된 명령어를 표출합니다.",
+                    inline=False)
+        embed.add_field(name="/도움 기타",
+                    value="기타 다른 명령어를 표출합니다.",
+                    inline=False)
+            embed.add_field(name="공식 홈페이지",
+                    value=":link: [공식 홈페이지](<http://whiteteam.kro.kr/>)",
+                    inline=False)
+            embed.add_field(
+            name="공식 서포팅 서버",
+            value=":link: [White_team 공식 서버](<https://discord.gg/aebSVBgzuG>)",
+            inline=False)
+            embed.add_field(
+            name="봇 초대 링크",
+            value=
+            ":link: [봇 초대하기](<https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot>)",
+            inline=False)
+            await ctx.send(embed=embed)
+        elif 종류 == '관리':
+            embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 관리 명령어 도움말",
+                          description="WhiteBot의 명령어에 대해서 소개합니다.",
+                          color=0xFEFEFE)
+            embed.add_field(name="/핑", value="핑을 알려줍니다.", inline=False)
+            embed.add_field(name="/청소 `n`",
+                    value="메시지를 `n`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.",
+                    inline=False)
+            embed.add_field(
+            name="/킥 `@서버원` `이유`",
+            value="`@서버원`을 추방합니다. `이유`는 추방된 유저의 DM으로 발송됩니다. 관리자 권한이 필요합니다.",
+            inline=False)
+            embed.add_field(
+            name="/밴",
+            value="`@서버원`을 추방 및 차단합니다. `이유`는 차단된 유저의 DM으로 발송됩니다. 관리자 권한이 필요합니다.",
+            inline=False)
+            embed.add_field(name="/언밴",
+                    value="`@서버원`의 추방을 해제합니다. 관리자 권한이 필요합니다.",
+                    inline=False)
+            await ctx.send(embed=embed)
+        elif 종류 == '놀이':
+            embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 놀이 명령어 도움말",
+                          description="WhiteBot의 명령어에 대해서 소개합니다.",
+                          color=0xFEFEFE)
+            embed.add_field(name="/가위바위보 `(가위, 바위, 보)`",
+                    value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.\n가위바위보에서 이기면 WhiteBot의 경제 시스템에서 쓸 수 있는 7500원을 얻어요!",
+                    inline=False)
+            embed.add_field(
+            name="/주사위 `N` `n`",
+            value=
+            "주사위를 굴립니다. `N`만 쓰면 1부터 `N`까지의 숫자를, `n`까지 모두 쓰면 `N`부터 `n`까지의 숫자를 랜덤으로 표출합니다.",
+            inline=False)
+            await ctx.send(embed=embed)
+            '''
+        elif 종류 == '경제':
+            embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 경제 명령어 도움말",
+                          description="WhiteBot의 명령어에 대해서 소개합니다.",
+                          color=0xFEFEFE)
+            embed.add_field(name="/뽑기 (/뽑, /ㅃ)",
+                    value="1000원에서 5000원 사이의 돈을 무작위로 얻습니다.",
+                    inline=False)
+            embed.add_field(name="/돈확인 [멤버] (/ㄷㅎㅇ [멤버])",
+                    value="자신의 돈이나 [멤버]의 돈을 확인합니다.",
+                    inline=False)
+            embed.add_field(name="/돈비교 (멤버1) [멤버2] (/ㄷㅂㄱ (멤버1) [멤버2])",
+                    value="자신의 돈과 (멤버1)의 돈을 비교하거나, (멤버1)과 [멤버2]의 돈을 비교합니다.",
+                    inline=False)
+            embed.add_field(name="/도박 (걸돈) (늘릴 배수) (/ㄷㅂ (걸돈) (늘릴 배수)",
+                    value="(걸돈)만큼을 도박에 겁니다. 만약 성공한다면 (늘릴 배수)만큼 돈이 늡니다! 하지만 실패할 경우엔 건 돈이 모두 없어집니다. 1000원 이상만 걸 수 있습니다.",
+                    inline=False)
+            await ctx.send(embed=embed)
+            '''
+        elif 종류 == '음악':
+            embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 음악 명령어 도움말",
+                          description="WhiteBot의 명령어에 대해서 소개합니다.",
+                          color=0xFEFEFE)
+            embed.add_field(name="/참가",
+                    value="봇을 음성채널에 참가시킵니다.",
+                    inline=False)
+            embed.add_field(name="/재생 (제목)",
+                    value="노래를 재생합니다.",
+                    inline=False)
+            embed.add_field(name="/진행",
+                    value="재생중인 곡을 표시합니다.",
+                    inline=False)
+            embed.add_field(name="/재생목록",
+                    value="대기열을 표시합니다.",
+                    inline=False)
+            embed.add_field(name="/셔플",
+                    value="대기열의 순서와 상관 없이 랜덤으로 음악을 플레이 합니다.",
+                    inline=False)
+            embed.add_field(name="/삭제 (N)",
+                    value="대기열의 N번 곡을 대기열에서 지웁니다.",
+                    inline=False)
+            embed.add_field(name="/반복",
+                    value="나오고 있는 곡을 반복해서 재생합니다.",
+                    inline=False)
+            embed.add_field(name="/스킵",
+                    value="노래를 건너뜁니다. 만약 나오고 있는 노래가 스킵 명령어를 쓴 사람이 재생한 노래가 아니라면 투표를 통해 건너뛰어집니다.",
+                    inline=False)
+            embed.add_field(name="/방출",
+                    value="음성채널에서 봇을 방출시킵니다.",
+                    inline=False)
+            await ctx.send(embed=embed)
+        elif 종류 == '기타':
+            embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 기타 명령어 도움말",
+                          description="WhiteBot의 명령어에 대해서 소개합니다.",
+                          color=0xFEFEFE)
+            embed.add_field(name="/검색 (항목)",
+                    value="여러 사이트에서 (항목)을 검색합니다.",
+                    inline=False)
+            embed.add_field(name="/전송 (항목)", value="(항목)을 전송해요!", inline=False)
+            embed.add_field(name="/암호 (수신문)", value="(수신문)을 암호화합니다.", inline=False)
+            embed.add_field(name="/해독 (암호문)", value="(암호문)을 해독합니다.", inline=False)
+            embed.add_field(name="/서버", value="서버 정보를 전송합니다.", inline=False)
+            embed.add_field(name="/내정보", value="유저 정보를 전송합니다.", inline=False)
+            embed.add_field(name="/정보", value="봇의 정보를 전송합니다.", inline=False)
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말 오류",
+                          description="무슨 명령어가 궁금하신가요?",
+                          color=0xFEFEFE)
+            embed.add_field(name="새로운 명령어를 원하시나요?",
+                    value="[White_team 공식 서버](<https://discord.gg/aebSVBgzuG>)에서 의견을 내주세요!",
+                    inline=False)
+            embed.add_field(name="잘못 들어오셨다고요?", value="`/도움` 으로 다른 명령어들을 알아보세요!", inline=False)
+            await ctx.send(embed=embed)
+
 def setup(bot):
     bot.add_cog(manage(bot))
