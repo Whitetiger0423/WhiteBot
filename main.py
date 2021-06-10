@@ -1,16 +1,6 @@
-import asyncio
 import discord
-import random
-import re
-import os, json
-import datetime
+import os
 from discord.ext import commands
-import functools
-import itertools
-import math
-import youtube_dl
-from async_timeout import timeout
-os.system("pip install pynacl")
 try:
     import dbkrpy
 except ImportError:
@@ -39,4 +29,4 @@ for filename in os.listdir("functions"):
         bot.load_extension(f"functions.{filename[:-3]}")
 
 
-bot.run("NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.FDYS2PwpH-7SNUPaDezszyBiN3U")
+bot.run("NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.7D3lcBRv5WiabGpzqruzYaGsv6Y")

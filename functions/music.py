@@ -437,8 +437,5 @@ class Music(commands.Cog):
             if ctx.voice_client.channel != ctx.author.voice.channel:
                 raise commands.CommandError('봇이 이미 음성 채널에 연결되어있어요.')
 
-
-bot.add_cog(Music(bot))
-
 def setup(bot):
-    bot.add_cog(music(bot))
+    bot.add_cog(Music(bot))

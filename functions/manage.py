@@ -10,7 +10,6 @@ import itertools
 import math
 import youtube_dl
 from async_timeout import timeout
-os.system("pip install pynacl")
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 
@@ -186,7 +185,7 @@ class manage(commands.Cog):
             embed.add_field(name="/도움 음악",
                     value="음악 기능과 관련된 명령어를 표출합니다.",
                     inline=False)
-        embed.add_field(name="/도움 기타",
+            embed.add_field(name="/도움 기타",
                     value="기타 다른 명령어를 표출합니다.",
                     inline=False)
             embed.add_field(name="공식 홈페이지",
