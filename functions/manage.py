@@ -31,16 +31,19 @@ class manage(commands.Cog):
         if ctx.author.guild_permissions.administrator:
             await asyncio.sleep(2)
             await ctx.channel.purge(limit=count + 1)
-            erasemsg = await ctx.send(f'`{count}`건의 메시지를 청소했습니다.')
+            embed=discord.Embed(title="청소 완료!", color=0xffffff)
+            embed.add_field(name="삭제한 메시지의 수:", value="{count}", inline=False)
+            erasemsg = await ctx.send(embed=embed)
             await asyncio.sleep(3)
             await erasemsg.delete()
         else:
-            await ctx.send(
-                f'{ctx.author.mention} 메시지 관리 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
+            embed=discord.Embed(title="오류 발생!", color=0xffffff)
+            embed.add_field(name="메시지 관리 권한이 필요합니다.", value="권한 확인 후 다시 시도해주세요.", inline=False)
+            await ctx.send(embed=embed)
 
 
     @commands.command()
-    async def 킥(self, ctx, member: discord.Member, *, reason):
+    async def 킥(self, ctx, member: discord.Member, *, reason = None):
         if ctx.author.guild_permissions.administrator:
             if not member.guild_permissions.administrator:
                 await ctx.send(
@@ -59,8 +62,10 @@ class manage(commands.Cog):
 
 
     @commands.command()
-    async def 밴(self, ctx, member: discord.Member, *, reason):
+    async def 밴(self, ctx, member: discord.Member, *, reason = None):
         if ctx.author.guild_permissions.administrator:
+            if reason == None:
+                reason = 'None'
             if not member.guild_permissions.administrator:
                 await ctx.send(f'{member.name}#{member.discriminator} 서버원을 밴했습니다.')
                 await member.send(
