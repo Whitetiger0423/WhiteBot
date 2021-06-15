@@ -14,10 +14,6 @@ os.system("pip install pynacl")
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 
-class music(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
 youtube_dl.utils.bug_reports_message = lambda: ''
 
 
@@ -230,7 +226,7 @@ class VoiceState:
                 # the player will disconnect due to performance
                 # reasons.
                 try:
-                    async with timeout(5):  # 5 seconds
+                    async with timeout(120):  # 2 minutes
                         self.current = await self.songs.get()
                 except asyncio.TimeoutError:
                     self.bot.loop.create_task(self.stop())
