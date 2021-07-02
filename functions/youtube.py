@@ -37,7 +37,7 @@ class youtube(commands.Cog):
         }
 
         try:
-            code = (await client.http.request(r, json=payload))["code"]
+            code = (await bot.http.request(r, json=payload))["code"]
         except discord.Forbidden:
              embed = discord.Embed(description="봇이 초대할 수 있는 권한이 없습니다...")
              return await ctx.channel.send(embed=embed)
