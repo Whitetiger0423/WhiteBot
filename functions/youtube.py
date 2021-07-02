@@ -19,7 +19,7 @@ class youtube(commands.Cog):
         self.bot = bot
 
     @commands.command(name="유튜브")
-    async def youtube(ctx): 
+    async def youtube(self, ctx): 
         red = 0xFF0000
         blue = 0x00FFFF
         voice = ctx.author.voice
