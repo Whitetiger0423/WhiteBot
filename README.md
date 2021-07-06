@@ -7,4 +7,4 @@ WhiteBot은 디스코드 챗봇입니다.
 1. 추가 아이디어 확보하기
 
 ### 현재 서버수
-![image](https://cdn.discordapp.com/attachments/853980062960189483/857996052001980436/unknown.png)
+![image](https://user-images.githubusercontent.com/72282371/124560941-4fba8e00-de78-11eb-9a05-e0ded9153164.png)
