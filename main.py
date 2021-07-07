@@ -1,5 +1,9 @@
 import discord
 import os
+import aiohttp
+import aiofiles
+import aiosqlite
+import pickle
 from discord.ext import commands
 try:
     import dbkrpy
