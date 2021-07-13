@@ -45,6 +45,8 @@ class manage(commands.Cog):
     @commands.command()
     async def 킥(self, ctx, member: discord.Member, *, reason = None):
         if ctx.author.guild_permissions.administrator:
+            if reason == None:
+                reason = 'None'
             if not member.guild_permissions.administrator:
                 await ctx.send(
                     f'{member.name}#{member.discriminator} 서버원을 추방하였습니다.')
@@ -215,14 +217,14 @@ class manage(commands.Cog):
                     value="메시지를 `n`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.",
                     inline=False)
             embed.add_field(
-            name="/킥 `@서버원` `이유`",
+            name="/킥 (@서버원) [이유]",
             value="`@서버원`을 추방합니다. `이유`는 추방된 유저의 DM으로 발송됩니다. 관리자 권한이 필요합니다.",
             inline=False)
             embed.add_field(
-            name="/밴",
+            name="/밴 (@서버원) [이유]",
             value="`@서버원`을 추방 및 차단합니다. `이유`는 차단된 유저의 DM으로 발송됩니다. 관리자 권한이 필요합니다.",
             inline=False)
-            embed.add_field(name="/언밴",
+            embed.add_field(name="/언밴 (@서버원)",
                     value="`@서버원`의 추방을 해제합니다. 관리자 권한이 필요합니다.",
                     inline=False)
             await ctx.send(embed=embed)
@@ -231,10 +233,10 @@ class manage(commands.Cog):
                           description="WhiteBot의 명령어에 대해서 소개합니다.",
                           color=0xFEFEFE)
             embed.add_field(name="/가위바위보 `(가위, 바위, 보)`",
-                    value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.\n가위바위보에서 이기면 WhiteBot의 경제 시스템에서 쓸 수 있는 7500원을 얻어요!",
+                    value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.",
                     inline=False)
             embed.add_field(
-            name="/주사위 `N` `n`",
+            name="/주사위 (N) [n]",
             value=
             "주사위를 굴립니다. `N`만 쓰면 1부터 `N`까지의 숫자를, `n`까지 모두 쓰면 `N`부터 `n`까지의 숫자를 랜덤으로 표출합니다.",
             inline=False)
