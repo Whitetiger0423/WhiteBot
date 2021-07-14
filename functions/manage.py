@@ -22,7 +22,8 @@ class manage(commands.Cog):
         embed = discord.Embed(title=':ping_pong: 퐁!', color=0xFEFEFE)
         embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d16ab665b8db020f4b62313cb260b2f1.webp?size=1024')
         embed.add_field(name='Discord API Ping: ',
-                    value=f'{round(self.bot.latency * 1000)} ms')
+                    value=f'{round(self.bot.latency * 1000)} ms',
+                    color=white)
         await ctx.send(embed=embed)
 
 
@@ -31,13 +32,13 @@ class manage(commands.Cog):
         if ctx.author.guild_permissions.administrator:
             await asyncio.sleep(2)
             await ctx.channel.purge(limit=count + 1)
-            embed=discord.Embed(title="청소 완료!", color=0xffffff)
+            embed=discord.Embed(title="청소 완료!", color=white)
             embed.add_field(name="삭제한 메시지의 수:", value="{count}", inline=False)
             erasemsg = await ctx.send(embed=embed)
             await asyncio.sleep(3)
             await erasemsg.delete()
         else:
-            embed=discord.Embed(title="오류 발생!", color=0xffffff)
+            embed=discord.Embed(title="오류 발생!", color=red)
             embed.add_field(name="메시지 관리 권한이 필요합니다.", value="권한 확인 후 다시 시도해주세요.", inline=False)
             await ctx.send(embed=embed)
 
@@ -100,7 +101,7 @@ class manage(commands.Cog):
 
     @commands.command()
     async def 서버(self, ctx):
-        embed = discord.Embed(title='서버 정보', color=0xFEFEFE)
+        embed = discord.Embed(title='서버 정보', color=white)
         embed.set_thumbnail(url=ctx.guild.icon_url)
         embed.add_field(name='서버 이름: ',
                     value=f'{ctx.guild.name}', inline = False)
@@ -116,7 +117,7 @@ class manage(commands.Cog):
 
     @commands.command()
     async def 내정보(self, ctx):
-        embed = discord.Embed(title='유저 정보', color=0xFEFEFE)
+        embed = discord.Embed(title='유저 정보', color=white)
         embed.set_thumbnail(url=ctx.author.avatar_url)
         embed.add_field(name='계정명: ',
                     value=f'{ctx.author.name}', inline = False)
@@ -137,7 +138,7 @@ class manage(commands.Cog):
             embed = discord.Embed(color=0x00FFFF)
             embed = discord.Embed(title=":loudspeaker: WhiteBot 공지",
                               description=" ",
-                              colour=0x00ff00,
+                              color=white,
                               inline=False)
             embed.add_field(name='공지 내용', value=f'{내용}')
             embed.set_footer(text=f"{str(ctx.author)} - 인증됨\n발송 시간 : {time}",
@@ -162,7 +163,7 @@ class manage(commands.Cog):
     async def 정보(self, ctx):
         ch = self.bot.guilds
         g = len(ch)
-        embed = discord.Embed(title='봇 정보', color=0xFEFEFE)
+        embed = discord.Embed(title='봇 정보', color=white)
         embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d16ab665b8db020f4b62313cb260b2f1.webp?size=1024')
         embed.add_field(name='봇 이름: ',
                     value=f'{self.bot.user.name}', inline = False)
@@ -183,7 +184,7 @@ class manage(commands.Cog):
         if (종류 == None):
             embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말",
                           description="WhiteBot의 명령어에 대해서 소개합니다.",
-                          color=0xFEFEFE)
+                          color=white)
             embed.add_field(name="/도움", value="이 메시지를 표출합니다.", inline=False)
             embed.add_field(name="/도움 관리", value="서버 관리와 관련된 명령어를 표출합니다.", inline=False)
             embed.add_field(name="/도움 놀이",
@@ -211,7 +212,7 @@ class manage(commands.Cog):
         elif 종류 == '관리':
             embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 관리 명령어 도움말",
                           description="WhiteBot의 명령어에 대해서 소개합니다.",
-                          color=0xFEFEFE)
+                          color=white)
             embed.add_field(name="/핑", value="핑을 알려줍니다.", inline=False)
             embed.add_field(name="/청소 `n`",
                     value="메시지를 `n`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.",
@@ -231,7 +232,7 @@ class manage(commands.Cog):
         elif 종류 == '놀이':
             embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 놀이 명령어 도움말",
                           description="WhiteBot의 명령어에 대해서 소개합니다.",
-                          color=0xFEFEFE)
+                          color=white)
             embed.add_field(name="/가위바위보 `(가위, 바위, 보)`",
                     value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.",
                     inline=False)
@@ -263,7 +264,7 @@ class manage(commands.Cog):
         elif 종류 == '음악':
             embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 음악 명령어 도움말",
                           description="WhiteBot의 명령어에 대해서 소개합니다.",
-                          color=0xFEFEFE)
+                          color=white)
             embed.add_field(name="/참가",
                     value="봇을 음성채널에 참가시킵니다.",
                     inline=False)
@@ -295,7 +296,7 @@ class manage(commands.Cog):
         elif 종류 == '기타':
             embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 기타 명령어 도움말",
                           description="WhiteBot의 명령어에 대해서 소개합니다.",
-                          color=0xFEFEFE)
+                          color=white)
             embed.add_field(name="/검색 (항목)",
                     value="여러 사이트에서 (항목)을 검색합니다.",
                     inline=False)
@@ -309,7 +310,7 @@ class manage(commands.Cog):
         else:
             embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말 오류",
                           description="무슨 명령어가 궁금하신가요?",
-                          color=0xFEFEFE)
+                          color=red)
             embed.add_field(name="새로운 명령어를 원하시나요?",
                     value="[White_team 공식 서버](<https://discord.gg/aebSVBgzuG>)에서 의견을 내주세요!",
                     inline=False)

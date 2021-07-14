@@ -144,7 +144,7 @@ class Song:
     def create_embed(self):
         embed = (discord.Embed(title='재생 중...',
                                description='```css\n{0.source.title}\n```'.format(self),
-                               color=discord.Color.blurple())
+                               color=white)
                  .add_field(name='재생 시간', value=self.source.duration)
                  .add_field(name='요청자', value=self.requester.mention)
                  .add_field(name='영상 업로더', value='[{0.source.uploader}]({0.source.uploader_url})'.format(self))
@@ -221,12 +221,12 @@ class VoiceState:
             self.next.clear()
 
             if not self.loop:
-                # Try to get the next song within 5 seconds.
+                # Try to get the next song within 90 seconds.
                 # If no song will be added to the queue in time,
                 # the player will disconnect due to performance
                 # reasons.
                 try:
-                    async with timeout(120):  # 2 minutes
+                    async with timeout(90):  # 1 minutes, 30 seconds
                         self.current = await self.songs.get()
                 except asyncio.TimeoutError:
                     self.bot.loop.create_task(self.stop())
