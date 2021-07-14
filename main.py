@@ -31,7 +31,6 @@ async def on_ready():
     print(bot.user.name)
 
 
-    
 for filename in os.listdir("functions"):
     if filename.endswith(".py"):
         bot.load_extension(f"functions.{filename[:-3]}")
