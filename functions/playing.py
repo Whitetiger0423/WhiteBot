@@ -38,7 +38,7 @@ class playing(commands.Cog):
 
     @commands.command()
     async def 주사위(self, ctx, 첫번째숫자: int, 두번째숫자: int = None):
-        if 첫번째숫자 < 0:
+        if 첫번째숫자 < 1:
             await ctx.send('자연수 값만 허용됩니다.')
         else:
             if (두번째숫자):
