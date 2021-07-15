@@ -33,7 +33,7 @@ class manage(commands.Cog):
             await asyncio.sleep(2)
             await ctx.channel.purge(limit=count + 1)
             embed=discord.Embed(title="청소 완료!", color=0xffffff)
-            embed.add_field(name="삭제한 메시지의 수:", value="{count}", inline=False)
+            embed.add_field(name="삭제한 메시지의 수:", value=f"{count}", inline=False)
             erasemsg = await ctx.send(embed=embed)
             await asyncio.sleep(3)
             await erasemsg.delete()
