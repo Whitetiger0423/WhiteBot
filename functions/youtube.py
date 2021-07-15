@@ -44,7 +44,7 @@ class youtube(commands.Cog):
 
         embed = discord.Embed(title="유튜브 투게더",
                 description=f"[여기를 클릭해주세요](https://discord.gg/{code})",
-                color=white,
+                color=0xffffff,
             )
         await ctx.send(embed=embed)
 

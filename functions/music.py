@@ -144,7 +144,7 @@ class Song:
     def create_embed(self):
         embed = (discord.Embed(title='재생 중...',
                                description='```css\n{0.source.title}\n```'.format(self),
-                               color=white)
+                               color=0xffffff)
                  .add_field(name='재생 시간', value=self.source.duration)
                  .add_field(name='요청자', value=self.requester.mention)
                  .add_field(name='영상 업로더', value='[{0.source.uploader}]({0.source.uploader_url})'.format(self))
