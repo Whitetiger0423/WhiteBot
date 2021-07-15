@@ -38,7 +38,7 @@ class manage(commands.Cog):
             await asyncio.sleep(3)
             await erasemsg.delete()
         else:
-            embed=discord.Embed(title="오류 발생!", color=red)
+            embed=discord.Embed(title="오류 발생!", color=0xff0000)
             embed.add_field(name="메시지 관리 권한이 필요합니다.", value="권한 확인 후 다시 시도해주세요.", inline=False)
             await ctx.send(embed=embed)
 
@@ -310,7 +310,7 @@ class manage(commands.Cog):
         else:
             embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말 오류",
                           description="무슨 명령어가 궁금하신가요?",
-                          color=red)
+                          color=0xff0000)
             embed.add_field(name="새로운 명령어를 원하시나요?",
                     value="[White_team 공식 서버](<https://discord.gg/aebSVBgzuG>)에서 의견을 내주세요!",
                     inline=False)
