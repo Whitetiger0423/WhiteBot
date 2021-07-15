@@ -22,8 +22,7 @@ class manage(commands.Cog):
         embed = discord.Embed(title=':ping_pong: 퐁!', color=0xffffff)
         embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d16ab665b8db020f4b62313cb260b2f1.webp?size=1024')
         embed.add_field(name='Discord API Ping: ',
-                    value=f'{round(self.bot.latency * 1000)} ms',
-                    color=0xffffff)
+                    value=f'{round(self.bot.latency * 1000)} ms')
         await ctx.send(embed=embed)
 
 
