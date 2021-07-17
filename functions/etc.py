@@ -116,7 +116,7 @@ class etc(commands.Cog):
             await main.aiodb.commit()
             await aiocursor.close()
             await ctx.send(embed=discord.Embed(title="가입 완료",
-                                            description=f"{ctx.author.mention}\n가입이 완료됐습니다. 이제 봇을 사용하실 수 있습니다."))
+                                            description=f"{ctx.author.mention}\n가입이 완료됐습니다. 이제 봇의 모든 명령어를 사용하실 수 있습니다."))
             return
         else:
             aiocursor = await main.aiodb.execute("UPDATE user SET tos = ? WHERE id=?",
@@ -124,7 +124,7 @@ class etc(commands.Cog):
             await main.aiodb.commit()
             await aiocursor.close()
             await ctx.send(embed=discord.Embed(title="가입 완료",
-                                            description=f"{ctx.author.mention}\n가입이 완료됐습니다. 이제 봇을 사용하실 수 있습니다."))
+                                            description=f"{ctx.author.mention}\n가입이 완료됐습니다. 이제 봇의 모든 명령어를 사용하실 수 있습니다."))
             return
 def setup(bot):
     bot.add_cog(etc(bot))
