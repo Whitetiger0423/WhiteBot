@@ -26,11 +26,14 @@ Bot = koreanbots.Client(bot, DBKR_token)
 
 @bot.event
 async def on_ready():
+    ch = bot.guilds
+    e = len(ch)
     await bot.change_presence(
         status=discord.Status.online,
         activity=discord.Game("버전 1.3.3! 새로운 명령어가 추가되었어요 - 자세한건 /도움"))
     print("다음으로 로그인합니다 : ")
     print(bot.user.name)
+    print(f'Used in {e} guilds.')
 
 async def startup():
     global aiodb
