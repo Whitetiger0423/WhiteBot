@@ -47,7 +47,7 @@ class etc(commands.Cog):
                     inline=False)
         embed.add_field(name="지식백과 검색결과",
                     value=('https://terms.naver.com/search.naver?query=' +
-                           검색어.replace(" ", "_")),
+                           검색어.replace(" ", "%20")),
                     inline=False)
         embed.add_field(name="나무위키 검색결과",
                     value=('https://namu.wiki/Search?q=' +
