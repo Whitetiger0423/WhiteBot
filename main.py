@@ -6,6 +6,8 @@ import aiosqlite
 import pickle
 import asyncio
 from discord.ext import commands
+import koreanbots
+from koreanbots.client import Koreanbots
 #try:
 #    import koreanbots
 #except ImportError:
@@ -15,9 +17,10 @@ from functions import *
 
 
 bot = commands.Bot(command_prefix='/', help_command=None)
-#DBKR_token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc4Mjc3NzAzNTg5ODYxNzg4NiIsImlhdCI6MTYxNjU5ODI3NSwiZXhwIjoxNjQ4MTU1ODc1fQ.d5e3kEoj3NtTjM56awSfTQHmcFdtwf9fj4NdAPUF2YAqjlJQPsDTqOzkbX0_HMI9OcOQOvPQNm3JOP18IMth9qQmy0Pzhx__JwFoGd5oQEUnqJe54y0utr7vRqstRJ0zlaUHbfkb8IR6CD5T-zieLvq_Cv4q_XmCxaHCn4GiScg'
+DBKR_token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc4Mjc3NzAzNTg5ODYxNzg4NiIsImlhdCI6MTYyNTUzMzI3NH0.LLSRZLZPArXmrWfMMeHsCEbu_DgBTua2_obuJje9KuX_AbfUt56tJW0OVw7TdhCL2Fba_hVGIhPU3poyNqnfFAzRrH-YePR0frSMf6_boErW7w9Pr46SVFupyqT9NlTS0_07DqHVMqusijYRgCbRgJudxTQDEdsCQgTCmJKa0KM'
 aiodb = None
-#Bot = koreanbots.Client(bot, DBKR_token)
+
+
 
 @bot.event
 async def on_ready():
@@ -29,6 +32,11 @@ async def on_ready():
     print("다음으로 로그인합니다 : ")
     print(bot.user.name)
     print(f'Be used in {e} guilds.')
+    try:
+        k = Koreanbots(api_key=DBKR_token)
+        await k.guildcount(782777035898617886, servers=len(bot.guilds))
+    except:
+        print("Error while updating Koreanbots server count")
 
 async def startup():
     global aiodb
