@@ -8,11 +8,11 @@ import asyncio
 from discord.ext import commands
 import koreanbots
 from koreanbots.client import Koreanbots
-#try:
-#    import koreanbots
-#except ImportError:
-#    os.system("pip install koreanbots")
-#    import koreanbots
+try:
+    import koreanbots
+except ImportError:
+    os.system("pip install koreanbots")
+    import koreanbots
 from functions import *
 
 
