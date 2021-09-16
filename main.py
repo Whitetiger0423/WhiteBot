@@ -28,7 +28,7 @@ async def on_ready():
     e = len(ch)
     await bot.change_presence(
         status=discord.Status.online,
-    activity=discord.Game("버전 1.3.4 - /도움"))
+    activity=discord.Game("버전 1.3.5 - 음악기능이 삭제되었습니다(/도움)."))
     print("다음으로 로그인합니다 : ")
     print(bot.user.name)
     print(f'Be used in {e} guilds.')

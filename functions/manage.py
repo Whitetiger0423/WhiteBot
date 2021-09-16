@@ -189,9 +189,6 @@ class manage(commands.Cog):
             embed.add_field(name="/도움 놀이",
                     value="WhiteBot으로 할 수 있는 놀이 기능과 관련된 명령어를 표출합니다.",
                     inline=False)
-            embed.add_field(name="/도움 음악",
-                    value="음악 기능과 관련된 명령어를 표출합니다.",
-                    inline=False)
             embed.add_field(name="/도움 기타",
                     value="기타 다른 명령어를 표출합니다.",
                     inline=False)
@@ -260,38 +257,6 @@ class manage(commands.Cog):
                     inline=False)
             await ctx.send(embed=embed)
             '''
-        elif 종류 == '음악':
-            embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 음악 명령어 도움말",
-                          description="WhiteBot의 명령어에 대해서 소개합니다.",
-                          color=0xffffff)
-            embed.add_field(name="/참가",
-                    value="봇을 음성채널에 참가시킵니다.",
-                    inline=False)
-            embed.add_field(name="/재생 (제목)",
-                    value="노래를 재생합니다.",
-                    inline=False)
-            embed.add_field(name="/진행",
-                    value="재생중인 곡을 표시합니다.",
-                    inline=False)
-            embed.add_field(name="/재생목록",
-                    value="대기열을 표시합니다.",
-                    inline=False)
-            embed.add_field(name="/셔플",
-                    value="대기열의 순서와 상관 없이 랜덤으로 음악을 플레이 합니다.",
-                    inline=False)
-            embed.add_field(name="/삭제 (N)",
-                    value="대기열의 N번 곡을 대기열에서 지웁니다.",
-                    inline=False)
-            embed.add_field(name="/반복",
-                    value="나오고 있는 곡을 반복해서 재생합니다.",
-                    inline=False)
-            embed.add_field(name="/스킵",
-                    value="노래를 건너뜁니다. 만약 나오고 있는 노래가 스킵 명령어를 쓴 사람이 재생한 노래가 아니라면 투표를 통해 건너뛰어집니다.",
-                    inline=False)
-            embed.add_field(name="/방출",
-                    value="음성채널에서 봇을 방출시킵니다.",
-                    inline=False)
-            await ctx.send(embed=embed)
         elif 종류 == '기타':
             embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 기타 명령어 도움말",
                           description="WhiteBot의 명령어에 대해서 소개합니다.",
