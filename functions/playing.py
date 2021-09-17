@@ -8,10 +8,11 @@ from discord.ext import commands
 import functools
 import itertools
 import math
-import youtube_dl
 from async_timeout import timeout
+from discord_slash import SlashCommand, cog_ext
 
 bot = commands.Bot(command_prefix='/', help_command=None)
+slash = SlashCommand(bot)
 
 class playing(commands.Cog):
     def __init__(self, bot):

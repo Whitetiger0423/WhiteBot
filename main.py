@@ -14,12 +14,13 @@ except ImportError:
     os.system("pip install koreanbots")
     import koreanbots
 from functions import *
+from discord_slash import SlashCommand
 
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 DBKR_token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc4Mjc3NzAzNTg5ODYxNzg4NiIsImlhdCI6MTYyNTUzMzI3NH0.LLSRZLZPArXmrWfMMeHsCEbu_DgBTua2_obuJje9KuX_AbfUt56tJW0OVw7TdhCL2Fba_hVGIhPU3poyNqnfFAzRrH-YePR0frSMf6_boErW7w9Pr46SVFupyqT9NlTS0_07DqHVMqusijYRgCbRgJudxTQDEdsCQgTCmJKa0KM'
 aiodb = None
-
+slash = SlashCommand(bot)
 
 
 @bot.event
