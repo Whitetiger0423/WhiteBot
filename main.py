@@ -85,4 +85,4 @@ try:
 except KeyboardInterrupt:
     (asyncio.get_event_loop()).run_until_complete(shutdown())
 
-bot.run("NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.7D3lcBRv5WiabGpzqruzYaGsv6Y")
+bot.run("NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.FvGXCHmj2KArMTLXmOpCz0VSxVI")
