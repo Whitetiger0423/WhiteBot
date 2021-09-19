@@ -19,7 +19,7 @@ class youtube(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="유튜브")
+    @cog_ext.cog_slash(name="유튜브")
     async def youtube(self, ctx): 
         red = 0xFF0000
         blue = 0x00FFFF
