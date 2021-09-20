@@ -15,11 +15,9 @@ import aiofiles
 import aiosqlite
 import pickle
 import main
-from discord_slash import SlashCommand, cog_ext
 
 
 bot = commands.Bot(command_prefix='/', help_command=None)
-slash = SlashCommand(bot)
 
 class etc(commands.Cog):
     def __init__(self, bot):

@@ -9,10 +9,8 @@ import functools
 import itertools
 import math
 from async_timeout import timeout
-from discord_slash import SlashCommand, cog_ext
 
 bot = commands.Bot(command_prefix='/', help_command=None)
-slash = SlashCommand(bot)
 
 class manage(commands.Cog):
     def __init__(self, bot):
