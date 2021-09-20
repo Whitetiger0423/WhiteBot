@@ -42,7 +42,7 @@ class youtube(commands.Cog):
              return await ctx.channel.send(embed=embed)
 
         embed = nextcord.Embed(title="유튜브 투게더",
-                description=f"[여기를 클릭해주세요](https://nextcord.gg/{code})",
+                description=f"[여기를 클릭해주세요](https://discord.gg/{code})",
                 color=0xffffff,
             )
         await ctx.send(embed=embed)
