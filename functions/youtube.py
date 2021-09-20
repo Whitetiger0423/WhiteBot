@@ -10,17 +10,16 @@ import itertools
 import math
 from async_timeout import timeout
 from nextcord.http import Route
-from discord_slash import SlashCommand, cog_ext
+from discord_slash import SlashContext, cog_ext
 
 bot = commands.Bot(command_prefix='/', help_command=None)
-slash = SlashCommand(bot)
 
 class youtube(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @cog_ext.cog_slash(name="유튜브")
-    async def youtube(self, ctx): 
+    async def youtube(self, ctx: SlashContext): 
         red = 0xFF0000
         blue = 0x00FFFF
         voice = ctx.author.voice
