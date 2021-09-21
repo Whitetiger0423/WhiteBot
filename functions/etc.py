@@ -23,7 +23,7 @@ class etc(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(aliases=['search'])
     async def 검색(self, ctx, *, 검색어):
         embed = nextcord.Embed(title="<a:check:824251178493411368> 검색결과",
                           description="여러 사이트에서 검색한 결과입니다.",
@@ -54,11 +54,11 @@ class etc(commands.Cog):
                     inline=False)
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(aliases=['send'])
     async def 전송(self, ctx, *, 내용):
         await ctx.send(내용)
 
-    @commands.command()
+    @commands.command(aliases=['암호화', 'code'])
     async def 암호(self, ctx, *수신문):
         원문 = ' '.join(수신문)
         암호문 = []
@@ -78,7 +78,7 @@ class etc(commands.Cog):
         embed.add_field(name="**암호문:**", value=f"```{대괄호생략[1:-1]}```", inline=False)
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(aliases=['복호화', 'decode'])
     async def 해독(self, ctx, *수신문):
         try:
             원문 = ','.join(수신문)
@@ -100,8 +100,8 @@ class etc(commands.Cog):
             await ctx.send('올바른 암호문을 입력해주세요.')
 
 
-    @commands.command(name="가입")
-    async def cmd_register(self, ctx):
+    @commands.command(aliases=['register', '등록'])
+    async def 가입(self, ctx):
         aiocursor = await main.aiodb.execute("select * from user where id=?", (ctx.author.id,))
         dbdata = await aiocursor.fetchall()
         await aiocursor.close()

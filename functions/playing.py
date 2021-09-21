@@ -35,7 +35,7 @@ class playing(commands.Cog):
                 await ctx.send(
                     f'{user} vs {bot}\n{ctx.author.mention} 제가 이겼습니다! 한판 더 하실래요?')
 
-    @commands.command()
+    @commands.command(aliases=['roll', 'dice'])
     async def 주사위(self, ctx, 첫번째숫자: int, 두번째숫자: int = None):
         try:
             if 첫번째숫자 < 1:

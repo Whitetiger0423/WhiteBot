@@ -16,7 +16,7 @@ class manage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(aliases=['ping'])
     async def 핑(self, ctx):
         embed = nextcord.Embed(title=':ping_pong: 퐁!', color=0xffffff)
         embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d16ab665b8db020f4b62313cb260b2f1.webp?size=1024')
@@ -25,7 +25,7 @@ class manage(commands.Cog):
         await ctx.send(embed=embed)
 
 
-    @commands.command()
+    @commands.command(aliases=['삭제', 'erase', 'delete'])
     async def 청소(self, ctx, count: int):
         try:
             if ctx.author.guild_permissions.administrator:
@@ -51,7 +51,7 @@ class manage(commands.Cog):
 
 
 
-    @commands.command()
+    @commands.command(aliases=['추방', 'kick'])
     async def 킥(self, ctx, member: nextcord.Member, *, reason = None):
         if ctx.author.guild_permissions.administrator:
             if reason == None:
@@ -72,7 +72,7 @@ class manage(commands.Cog):
                 f'{ctx.author.mention} 멤버 추방하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
 
 
-    @commands.command()
+    @commands.command(aliases=['차단', 'ban'])
     async def 밴(self, ctx, member: nextcord.Member, *, reason = None):
         if ctx.author.guild_permissions.administrator:
             if reason == None:
@@ -92,7 +92,7 @@ class manage(commands.Cog):
                 f'{ctx.author.mention} 멤버 차단하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
 
 
-    @commands.command()
+    @commands.command(aliases=['unban'])
     async def 언밴(self, ctx, *, member):
         if ctx.author.guild_permissions.administrator:
             banned_users = await ctx.guild.bans()
@@ -107,7 +107,7 @@ class manage(commands.Cog):
             await ctx.send(
                 f'{ctx.author.mention} 멤버 차단하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
 
-    @commands.command()
+    @commands.command(aliases=['server'])
     async def 서버(self, ctx):
         embed = nextcord.Embed(title='서버 정보', color=0xffffff)
         embed.set_thumbnail(url=ctx.guild.icon_url)
@@ -123,7 +123,7 @@ class manage(commands.Cog):
                     value=f'{ctx.guild.member_count}', inline = False)
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(aliases=['user', '유저'])
     async def 내정보(self, ctx):
         embed = nextcord.Embed(title='유저 정보', color=0xffffff)
         embed.set_thumbnail(url=ctx.author.avatar_url)
@@ -167,7 +167,7 @@ class manage(commands.Cog):
         else:
             await ctx.send('권한이 부족합니다.')
 
-    @commands.command(name="정보")
+    @commands.command(aliases=['봇정보', 'botinfo', 'bot'])
     async def 정보(self, ctx):
         ch = self.bot.guilds
         g = len(ch)
@@ -187,7 +187,7 @@ class manage(commands.Cog):
                     value='[초대 링크](<http://server.whitebot.kro.kr/>)', inline = False)
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['help', '도움말'])
+    @commands.command(aliases=['help', '도움말', 'command', '명령어'])
     async def 도움(self, ctx, 종류 = None):
         if (종류 == None):
             embed = nextcord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말",

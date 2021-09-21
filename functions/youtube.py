@@ -17,7 +17,7 @@ class youtube(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(aliases=['유튜브투게더', 'youtube'])
     async def 유튜브(self, ctx): 
         red = 0xFF0000
         blue = 0x00FFFF
