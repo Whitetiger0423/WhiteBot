@@ -89,7 +89,7 @@ class manage(commands.Cog):
             )
         else:
             await ctx.send(
-                f'{ctx.author.mention} 관리자 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
+                f'{ctx.author.mention} 멤버 차단하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
 
 
     @commands.command()
@@ -101,11 +101,11 @@ class manage(commands.Cog):
                 user = ban_entry.user
                 if (user.name, user.discriminator) == (member_name,
                                                    member_discriminator):
-                    await ctx.send('서버원을 언밴했습니다. 이 서버에 다시 들어올 수 있습니다.')
+                    await ctx.send('유저의 밴을 해제했습니다. 이 서버에 다시 들어올 수 있습니다.')
                     await ctx.guild.unban(user)
         else:
             await ctx.send(
-                f'{ctx.author.mention} 관리자 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
+                f'{ctx.author.mention} 멤버 차단하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
 
     @commands.command()
     async def 서버(self, ctx):
@@ -114,7 +114,7 @@ class manage(commands.Cog):
         embed.add_field(name='서버 이름: ',
                     value=f'{ctx.guild.name}', inline = False)
         embed.add_field(name='서버 ID: ',
-                    value=f'{ctx.guild.id}', inline = False)
+                    value=f'`{ctx.guild.id}`', inline = False)
         embed.add_field(name='서버 지역: ',
                     value=f'{ctx.guild.region}', inline = False)
         embed.add_field(name='서버 부스트 레벨: ',
@@ -130,7 +130,7 @@ class manage(commands.Cog):
         embed.add_field(name='계정명: ',
                     value=f'{ctx.author.name}', inline = False)
         embed.add_field(name='ID: ',
-                    value=f'{ctx.author.id}', inline = False)
+                    value=f'`{ctx.author.id}`', inline = False)
         embed.add_field(name='이 서버에서의 별명: ',
                     value=f'{ctx.author.display_name}', inline = False)
         embed.add_field(name='멘션: ',
@@ -176,11 +176,11 @@ class manage(commands.Cog):
         embed.add_field(name='봇 이름: ',
                     value=f'{self.bot.user.name}', inline = False)
         embed.add_field(name='봇 ID: ',
-                    value=f'{self.bot.user.id}', inline = False)
+                    value=f'`{self.bot.user.id}`', inline = False)
         embed.add_field(name='봇 버전: ',
-                    value='1.3.3', inline = False)
+                    value='1.3.5 beta', inline = False)
         embed.add_field(name='봇 참가 서버 수: ',
-                    value=f'{g}개의 서버', inline = False)
+                    value=f'`{g}`개의 서버', inline = False)
         embed.add_field(name='봇 개발진: ',
                     value='[White_team](<http://whiteteam.kro.kr/>)', inline = False)
         embed.add_field(name='서포팅 서버: ',
