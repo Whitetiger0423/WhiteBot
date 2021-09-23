@@ -18,9 +18,7 @@ class youtube(commands.Cog):
         self.bot = bot
 
     @commands.command(aliases=['유튜브투게더', 'youtube'])
-    async def 유튜브(self, ctx): 
-        red = 0xFF0000
-        blue = 0x00FFFF
+    async def 유튜브(self, ctx):
         voice = ctx.author.voice
 
         if not voice:
