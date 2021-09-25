@@ -52,46 +52,54 @@ class manage(commands.Cog):
 
     @commands.command(aliases=['추방', 'kick'])
     async def 킥(self, ctx, member: nextcord.Member, *, reason = None):
-        if ctx.author.guild_permissions.administrator:
-            if reason == None:
-                reason = 'None'
-            if not member.guild_permissions.administrator:
-                await ctx.send(f'{member.name}#{member.discriminator} 서버원을 추방하였습니다.')
-                await member.send(f"{ctx.message.guild.name} 서버에서 추방당했습니다! 이유는 다음과 같습니다: ```{reason}``` 서버에 다시 참가할 수 있습니다! \n {await ctx.message.guild.invites()[0]}")
-                await member.kick(reason=reason)
+        if commands.has_guild_permissions(kick_members):
+            if ctx.author.guild_permissions.administrator:
+                if reason == None:
+                    reason = 'None'
+                if not member.guild_permissions.administrator:
+                    await ctx.send(f'{member.name}#{member.discriminator} 서버원을 추방하였습니다.')
+                    await member.send(f"{ctx.message.guild.name} 서버에서 추방당했습니다! 이유는 다음과 같습니다: ```{reason}``` 서버에 다시 참가할 수 있습니다! \n {await ctx.message.guild.invites()[0]}")
+                    await member.kick(reason=reason)
+                else:
+                    await ctx.send(f'{ctx.author.mention} 관리자는 추방할 수 없습니다. 관리자 권한을 해제하고 다시 시도해주세요.')
             else:
-                await ctx.send(f'{ctx.author.mention} 관리자는 추방할 수 없습니다. 관리자 권한을 해제하고 다시 시도해주세요.')
+                await ctx.send(f'{ctx.author.mention}님에게 멤버 추방하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
         else:
-            await ctx.send(f'{ctx.author.mention} 멤버 추방하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
+            await ctx.send(f'{ctx.author.mention} 봇에게 멤버 추방하기 권한이 필요합니다. 봇의 권한 확인 후 다시 실행해주세요.')
 
 
     @commands.command(aliases=['차단', 'ban'])
     async def 밴(self, ctx, member: nextcord.Member, *, reason = None):
-        if ctx.author.guild_permissions.administrator:
-            if reason == None:
-                reason = 'None'
-            if not member.guild_permissions.administrator:
-                await ctx.send(f'{member.name}#{member.discriminator} 서버원을 밴했습니다.')
-                await member.send(f"{ctx.message.guild.name} 서버에서 차단당했습니다! 이유는 다음과 같습니다: ```{reason}``` 차단이 풀리기 전까지 서버에 다시 참가할 수 없습니다!")
-                await member.ban(reason=reason)
+        if commands.has_guild_permissions(ban_members):
+            if ctx.author.guild_permissions.administrator:
+                if reason == None:
+                    reason = 'None'
+                if not member.guild_permissions.administrator:
+                    await ctx.send(f'{member.name}#{member.discriminator} 서버원을 밴했습니다.')
+                    await member.send(f"{ctx.message.guild.name} 서버에서 차단당했습니다! 이유는 다음과 같습니다: ```{reason}``` 차단이 풀리기 전까지 서버에 다시 참가할 수 없습니다!")
+                    await member.ban(reason=reason)
+                else:
+                    await ctx.send(f'{ctx.author.mention} 관리자는 밴할 수 없습니다. 관리자 권한을 해제하고 다시 시도해주세요.')
             else:
-                await ctx.send(f'{ctx.author.mention} 관리자는 밴할 수 없습니다. 관리자 권한을 해제하고 다시 시도해주세요.')
+                await ctx.send(f'{ctx.author.mention}님에게 멤버 차단하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
         else:
-            await ctx.send(f'{ctx.author.mention} 멤버 차단하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
-
+            await ctx.send(f'{ctx.author.mention} 봇에게 멤버 차단하기 권한이 필요합니다. 봇의 권한 확인 후 다시 실행해주세요.')
 
     @commands.command(aliases=['unban'])
     async def 언밴(self, ctx, *, member):
-        if ctx.author.guild_permissions.administrator:
-            banned_users = await ctx.guild.bans()
-            member_name, member_discriminator = member.split('#')
-            for ban_entry in banned_users:
-                user = ban_entry.user
-                if (user.name, user.discriminator) == (member_name, member_discriminator):
-                    await ctx.send('유저의 밴을 해제했습니다. 이 서버에 다시 들어올 수 있습니다.')
-                    await ctx.guild.unban(user)
+        if commands.has_guild_permissions(ban_members):
+            if ctx.author.guild_permissions.administrator:
+                banned_users = await ctx.guild.bans()
+                member_name, member_discriminator = member.split('#')
+                for ban_entry in banned_users:
+                    user = ban_entry.user
+                    if (user.name, user.discriminator) == (member_name, member_discriminator):
+                        await ctx.send('유저의 밴을 해제했습니다. 이 서버에 다시 들어올 수 있습니다.')
+                        await ctx.guild.unban(user)
+            else:
+                await ctx.send(f'{ctx.author.mention}님에게 멤버 차단하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
         else:
-            await ctx.send(f'{ctx.author.mention} 멤버 차단하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
+            await ctx.send(f'{ctx.author.mention} 봇에게 멤버 차단하기 권한이 필요합니다. 봇의 권한 확인 후 다시 실행해주세요.')
 
     @commands.command(aliases=['server'])
     async def 서버(self, ctx):
@@ -181,18 +189,10 @@ class manage(commands.Cog):
             '''
         elif 종류 == '경제':
             embed = nextcord.Embed(title="<a:check:824251178493411368> WhiteBot 경제 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xFEFEFE)
-            embed.add_field(name="/뽑기 (/뽑, /ㅃ)",
-                    value="1000원에서 5000원 사이의 돈을 무작위로 얻습니다.",
-                    inline=False)
-            embed.add_field(name="/돈확인 [멤버] (/ㄷㅎㅇ [멤버])",
-                    value="자신의 돈이나 [멤버]의 돈을 확인합니다.",
-                    inline=False)
-            embed.add_field(name="/돈비교 (멤버1) [멤버2] (/ㄷㅂㄱ (멤버1) [멤버2])",
-                    value="자신의 돈과 (멤버1)의 돈을 비교하거나, (멤버1)과 [멤버2]의 돈을 비교합니다.",
-                    inline=False)
-            embed.add_field(name="/도박 (걸돈) (늘릴 배수) (/ㄷㅂ (걸돈) (늘릴 배수)",
-                    value="(걸돈)만큼을 도박에 겁니다. 만약 성공한다면 (늘릴 배수)만큼 돈이 늡니다! 하지만 실패할 경우엔 건 돈이 모두 없어집니다. 1000원 이상만 걸 수 있습니다.",
-                    inline=False)
+            embed.add_field(name="/뽑기 (/뽑, /ㅃ)", value="1000원에서 5000원 사이의 돈을 무작위로 얻습니다.", inline=False)
+            embed.add_field(name="/돈확인 [멤버] (/ㄷㅎㅇ [멤버])", value="자신의 돈이나 [멤버]의 돈을 확인합니다.", inline=False)
+            embed.add_field(name="/돈비교 (멤버1) [멤버2] (/ㄷㅂㄱ (멤버1) [멤버2])", value="자신의 돈과 (멤버1)의 돈을 비교하거나, (멤버1)과 [멤버2]의 돈을 비교합니다.", inline=False)
+            embed.add_field(name="/도박 (걸돈) (늘릴 배수) (/ㄷㅂ (걸돈) (늘릴 배수)", value="(걸돈)만큼을 도박에 겁니다. 만약 성공한다면 (늘릴 배수)만큼 돈이 늡니다! 하지만 실패할 경우엔 건 돈이 모두 없어집니다. 1000원 이상만 걸 수 있습니다.", inline=False)
             await ctx.send(embed=embed)
             '''
         elif 종류 == '기타':
