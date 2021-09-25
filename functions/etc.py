@@ -36,7 +36,8 @@ class etc(commands.Cog):
 
     @commands.command(aliases=['send'])
     async def 전송(self, ctx, *, 내용):
-        await ctx.send(내용)
+        embed = nextcord.Embed(title=f"Sent by {ctx.author.display_name}", description=f"{내용}", color=0xffffff)
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=['암호화', 'code'])
     async def 암호(self, ctx, *수신문):

@@ -25,11 +25,14 @@ class playing(commands.Cog):
             bot = random.choice(rps_table)
             result = rps_table.index(user) - rps_table.index(bot)
             if result == 0:
-                await ctx.send(f'{user} vs {bot}\n{ctx.author.mention} 비겼네요! 다시 한판 하는건 어때요?')
+                forsend = (f'{user} vs {bot}\n비겼네요!')
             elif result == 1 or result == -2:
-                await ctx.send(f'{user} vs {bot}\n{ctx.author.mention}님이 이겼어요!')
+                forsend = (f'{user} vs {bot}\n{ctx.author.display_name}님이 이겼어요!')
             else:
-                await ctx.send(f'{user} vs {bot}\n{ctx.author.mention} 제가 이겼습니다! 한판 더 하실래요?')
+                forsend = (f'{user} vs {bot}\n봇이 이겼습니다!')
+            embed = nextcord.Embed(title="가위바위보", description=f"봇 vs {ctx.author.display_name}", color=0xffffff)
+            embed.add_field(name="**결과:**", value=f"{forsend}", inline=False)
+            await ctx.send(embed=embed)
 
     @commands.command(aliases=['roll', 'dice'])
     async def 주사위(self, ctx, 첫번째숫자: int, 두번째숫자: int = None):
