@@ -53,7 +53,7 @@ class playing(commands.Cog):
                         embed = nextcord.Embed(title="주사위", description=f"1 ~ {첫번째숫자}", color=0xffffff)
                         embed.add_field(name="**결과:**", value=f"주사위를 굴렸더니 {random.randint(1, 첫번째숫자)}(이)가 나왔어요!", inline=False)
                         await ctx.send(embed=embed)
-            except nextcord.ext.commands.errors.BadArgument:
+            except:
                 embed = nextcord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)
                 embed.add_field(name="오류 내용:", value="자연수 값만 허용됩니다.", inline=False)
                 await ctx.send(embed=embed)
