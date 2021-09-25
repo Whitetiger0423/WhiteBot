@@ -59,8 +59,8 @@ class playing(commands.Cog):
                 await ctx.send(embed=embed)
         else:
             embed = nextcord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)
-                embed.add_field(name="오류 내용:", value="자연수 값만 허용됩니다.", inline=False)
-                await ctx.send(embed=embed)
+            embed.add_field(name="오류 내용:", value="자연수 값만 허용됩니다.", inline=False)
+            await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(playing(bot))
