@@ -27,7 +27,7 @@ async def on_ready():
     e = len(ch)
     await bot.change_presence(
         status=nextcord.Status.online,
-    activity=nextcord.Game("버전 1.3.5 Beta - 슬래시커맨드 테스트"))
+    activity=nextcord.Game("버전 1.3.5 Beta - Embed Testing"))
     print("다음으로 로그인합니다 : ")
     print(bot.user.name)
     print(f'Be used in {e} guilds.')
@@ -70,9 +70,7 @@ async def on_message(message):
         else:
             nosign = True
     if nosign and message.content.startswith("/") and bot.get_command(message.content.replace("/", "", 1)) is not None and message.content.replace("/", "", 1) != "가입":
-        embed = nextcord.Embed(title="가입 필요",
-                              description=f"`/가입` 명령어를 사용하여 WhiteBot의 모든 명령어를 사용해보세요!",
-                              color=0xff0000)
+        embed = nextcord.Embed(title="가입 필요", description=f"`/가입` 명령어를 사용하여 WhiteBot의 모든 명령어를 사용해보세요!", color=0xff0000)
         embed.add_field(name='내용:', value='가입을 하신다면 [개인정보 처리방침](http://whiteteam.kro.kr/privacy)에 동의하는 것으로 간주됩니다.')
         return await message.channel.send(embed=embed, delete_after=120)
 

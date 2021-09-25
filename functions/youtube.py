@@ -36,13 +36,10 @@ class youtube(commands.Cog):
         try:
             code = (await self.bot.http.request(r, json=payload))["code"]
         except nextcord.Forbidden:
-             embed = nextcord.Embed(description="봇이 초대할 수 있는 권한이 없습니다.", color=0xff0000)
-             return await ctx.channel.send(embed=embed)
+            embed = nextcord.Embed(description="봇이 초대할 수 있는 권한이 없습니다.", color=0xff0000)
+            return await ctx.channel.send(embed=embed)
 
-        embed = nextcord.Embed(title="유튜브 투게더",
-                description=f"[여기를 클릭해주세요](https://discord.gg/{code})",
-                color=0xffffff,
-            )
+        embed = nextcord.Embed(title="유튜브 투게더", description=f"[여기를 클릭해주세요](https://discord.gg/{code})", color=0xffffff)
         await ctx.send(embed=embed)
 
 def setup(bot):
