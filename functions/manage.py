@@ -206,8 +206,9 @@ class manage(commands.Cog):
             embed.add_field(name="/정보", value="봇의 정보를 전송합니다.", inline=False)
             await ctx.send(embed=embed)
         else:
-            embed = nextcord.Embed(title="WhiteBot 도움말 오류", description="무슨 명령어가 궁금하신가요?", color=0xff0000)
-            embed.add_field(name="새로운 명령어를 원하시나요?", value="[White_team 공식 서버](<https://nextcord.gg/aebSVBgzuG>)에서 의견을 내주세요!", inline=False)
+            embed = nextcord.Embed(title="WhiteBot 오류", description="도움말 기능", color=0xff0000)
+            embed.add_field(name="오류 내용:", value="`관리, 놀이, 기타, (공백)` 중 하나를 입력해주세요.", inline=False)
+            embed.add_field(name="새로운 명령어를 원하시나요?", value="[White_team 공식 서버](<https://discord.gg/aebSVBgzuG>)에서 의견을 내주세요!", inline=False)
             embed.add_field(name="잘못 들어오셨다고요?", value="`/도움` 으로 다른 명령어들을 알아보세요!", inline=False)
             await ctx.send(embed=embed)
 
