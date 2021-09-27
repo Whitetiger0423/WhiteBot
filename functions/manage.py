@@ -52,54 +52,45 @@ class manage(commands.Cog):
 
     @commands.command(aliases=['추방', 'kick'])
     async def 킥(self, ctx, member: nextcord.Member, *, reason = None):
-        if commands.has_guild_permissions(kick_members):
-            if ctx.author.guild_permissions.administrator:
-                if reason == None:
-                    reason = 'None'
-                if not member.guild_permissions.administrator:
-                    await ctx.send(f'{member.name}#{member.discriminator} 서버원을 추방하였습니다.')
-                    await member.send(f"{ctx.message.guild.name} 서버에서 추방당했습니다! 이유는 다음과 같습니다: ```{reason}``` 서버에 다시 참가할 수 있습니다! \n {await ctx.message.guild.invites()[0]}")
-                    await member.kick(reason=reason)
-                else:
-                    await ctx.send(f'{ctx.author.mention} 관리자는 추방할 수 없습니다. 관리자 권한을 해제하고 다시 시도해주세요.')
+        if ctx.author.guild_permissions.administrator:
+            if reason == None:
+                reason = 'None'
+            if not member.guild_permissions.administrator:
+                await ctx.send(f'{member.name}#{member.discriminator} 서버원을 추방하였습니다.')
+                await member.send(f"{ctx.message.guild.name} 서버에서 추방당했습니다! 이유는 다음과 같습니다: ```{reason}``` 서버에 다시 참가할 수 있습니다! \n {await ctx.message.guild.invites()[0]}")
+                await member.kick(reason=reason)
             else:
-                await ctx.send(f'{ctx.author.mention}님에게 멤버 추방하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
+                await ctx.send(f'{ctx.author.mention} 관리자는 추방할 수 없습니다. 관리자 권한을 해제하고 다시 시도해주세요.')
         else:
-            await ctx.send(f'{ctx.author.mention} 봇에게 멤버 추방하기 권한이 필요합니다. 봇의 권한 확인 후 다시 실행해주세요.')
+            await ctx.send(f'{ctx.author.mention}님에게 멤버 추방하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
 
 
     @commands.command(aliases=['차단', 'ban'])
     async def 밴(self, ctx, member: nextcord.Member, *, reason = None):
-        if commands.has_guild_permissions(ban_members):
-            if ctx.author.guild_permissions.administrator:
-                if reason == None:
-                    reason = 'None'
-                if not member.guild_permissions.administrator:
-                    await ctx.send(f'{member.name}#{member.discriminator} 서버원을 밴했습니다.')
-                    await member.send(f"{ctx.message.guild.name} 서버에서 차단당했습니다! 이유는 다음과 같습니다: ```{reason}``` 차단이 풀리기 전까지 서버에 다시 참가할 수 없습니다!")
-                    await member.ban(reason=reason)
-                else:
-                    await ctx.send(f'{ctx.author.mention} 관리자는 밴할 수 없습니다. 관리자 권한을 해제하고 다시 시도해주세요.')
+        if ctx.author.guild_permissions.administrator:
+            if reason == None:
+                reason = 'None'
+            if not member.guild_permissions.administrator:
+                await ctx.send(f'{member.name}#{member.discriminator} 서버원을 밴했습니다.')
+                await member.send(f"{ctx.message.guild.name} 서버에서 차단당했습니다! 이유는 다음과 같습니다: ```{reason}``` 차단이 풀리기 전까지 서버에 다시 참가할 수 없습니다!")
+                await member.ban(reason=reason)
             else:
-                await ctx.send(f'{ctx.author.mention}님에게 멤버 차단하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
+                await ctx.send(f'{ctx.author.mention} 관리자는 밴할 수 없습니다. 관리자 권한을 해제하고 다시 시도해주세요.')
         else:
-            await ctx.send(f'{ctx.author.mention} 봇에게 멤버 차단하기 권한이 필요합니다. 봇의 권한 확인 후 다시 실행해주세요.')
+            await ctx.send(f'{ctx.author.mention}님에게 멤버 차단하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
 
     @commands.command(aliases=['unban'])
     async def 언밴(self, ctx, *, member):
-        if commands.has_guild_permissions(ban_members):
-            if ctx.author.guild_permissions.administrator:
-                banned_users = await ctx.guild.bans()
-                member_name, member_discriminator = member.split('#')
-                for ban_entry in banned_users:
-                    user = ban_entry.user
-                    if (user.name, user.discriminator) == (member_name, member_discriminator):
-                        await ctx.send('유저의 밴을 해제했습니다. 이 서버에 다시 들어올 수 있습니다.')
-                        await ctx.guild.unban(user)
-            else:
-                await ctx.send(f'{ctx.author.mention}님에게 멤버 차단하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
+        if ctx.author.guild_permissions.administrator:
+            banned_users = await ctx.guild.bans()
+            member_name, member_discriminator = member.split('#')
+            for ban_entry in banned_users:
+                user = ban_entry.user
+                if (user.name, user.discriminator) == (member_name, member_discriminator):
+                    await ctx.send('유저의 밴을 해제했습니다. 이 서버에 다시 들어올 수 있습니다.')
+                    await ctx.guild.unban(user)
         else:
-            await ctx.send(f'{ctx.author.mention} 봇에게 멤버 차단하기 권한이 필요합니다. 봇의 권한 확인 후 다시 실행해주세요.')
+            await ctx.send(f'{ctx.author.mention}님에게 멤버 차단하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
 
     @commands.command(aliases=['server'])
     async def 서버(self, ctx):
