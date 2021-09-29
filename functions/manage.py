@@ -23,7 +23,6 @@ class manage(commands.Cog):
         embed.add_field(name='discord API Ping: ', value=f'{round(self.bot.latency * 1000)} ms')
         await ctx.send(embed=embed)
 
-
     @commands.command(aliases=['삭제', 'erase', 'delete'])
     async def 청소(self, ctx, count: int):
         try:
@@ -48,8 +47,6 @@ class manage(commands.Cog):
             embed.add_field(name="권한 오류", value="권한 확인 후 다시 시도해주세요.", inline=False)
             await ctx.send(embed=embed)
 
-
-
     @commands.command(aliases=['추방', 'kick'])
     async def 킥(self, ctx, member: nextcord.Member, *, reason = None):
         if ctx.author.guild_permissions.administrator:
@@ -63,7 +60,6 @@ class manage(commands.Cog):
                 await ctx.send(f'{ctx.author.mention} 관리자는 추방할 수 없습니다. 관리자 권한을 해제하고 다시 시도해주세요.')
         else:
             await ctx.send(f'{ctx.author.mention}님에게 멤버 추방하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
-
 
     @commands.command(aliases=['차단', 'ban'])
     async def 밴(self, ctx, member: nextcord.Member, *, reason = None):

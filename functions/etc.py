@@ -72,7 +72,6 @@ class etc(commands.Cog):
         except:
             await ctx.send('올바른 암호문을 입력해주세요.')
 
-
     @commands.command(aliases=['register', '등록'])
     async def 가입(self, ctx):
         aiocursor = await main.aiodb.execute("select * from user where id=?", (ctx.author.id,))
