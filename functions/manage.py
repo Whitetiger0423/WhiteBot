@@ -19,7 +19,7 @@ class manage(commands.Cog):
     @commands.command(aliases=['ping'])
     async def 핑(self, ctx):
         embed = nextcord.Embed(title=':ping_pong: 퐁!', color=0xffffff)
-        embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d16ab665b8db020f4b62313cb260b2f1.webp?size=1024')
+        embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/daa32b8898455757214c9e52bacc1612.webp?size=1024')
         embed.add_field(name='discord API Ping: ', value=f'{round(self.bot.latency * 1000)} ms')
         await ctx.send(embed=embed)
 
