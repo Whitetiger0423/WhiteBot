@@ -31,7 +31,7 @@ class playing(commands.Cog):
     @commands.command(aliases=['roll', 'dice'])
     async def 주사위(self, ctx, 첫번째숫자, 두번째숫자: int = None):
         try:
-            if 첫번째숫자 is int:
+            if 첫번째숫자.isdigit():
                 if 첫번째숫자 < 1:
                     embed = nextcord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)
                     embed.add_field(name="오류 내용:", value="자연수 값만 허용됩니다.", inline=False)
@@ -51,6 +51,18 @@ class playing(commands.Cog):
         except:
             embed = nextcord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)
             embed.add_field(name="오류 내용:", value="1. 자연수가 아닌 수를 쓰셨는지 확인해주세요.\n2. 첫번째 숫자가 두번째 숫자보다 더 큰지 확인해주세요.\n3. 너무 긴 숫자가 아닌지 확인해주세요.", inline=False)
+            await ctx.send(embed=embed)
+
+    @commands.command(aliases=['룰렛', 'random', '뭐먹지'])
+    async def 랜덤(self, ctx, *args):
+        if args:
+            randomlists = list(args)
+            random.choice(randomlists)
+            embed = nextcord.Embed(title="랜덤 뽑기", description=f'{args}', color=0xffffff)
+            embed.add_field(name="**결과:**", value=f'`{randomlists}`가 나왔습니다!')
+        else:
+            embed = nextcord.Embed(title="WhiteBot 오류", description="랜덤 기능", color=0xff0000)
+            embed.add_field(name="오류 내용:", value="올바른 값을 입력해주세요.", inline=False)
             await ctx.send(embed=embed)
 
 def setup(bot):
