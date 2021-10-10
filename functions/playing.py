@@ -29,8 +29,8 @@ class playing(commands.Cog):
             await ctx.send(embed=embed)
 
     @commands.command(aliases=['roll', 'dice'])
-    async def 주사위(self, ctx, 첫번째숫자: int, 두번째숫자: int = None):
-        try:
+    async def 주사위(self, ctx, 첫번째숫자, 두번째숫자: int = None):
+        if 첫번째숫자 is int:
             if 첫번째숫자 < 1:
                 embed = nextcord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)
                 embed.add_field(name="오류 내용:", value="자연수 값만 허용됩니다.", inline=False)
@@ -43,11 +43,7 @@ class playing(commands.Cog):
                 embed = nextcord.Embed(title="주사위", description=f"1 ~ {첫번째숫자}", color=0xffffff)
                 embed.add_field(name="**결과:**", value=f"주사위를 굴렸더니 {random.randint(1, 첫번째숫자)}(이)가 나왔어요!", inline=False)
                 await ctx.send(embed=embed)
-        except ValueError:
-            embed = nextcord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)
-            embed.add_field(name="오류 내용:", value="1. 자연수가 아닌 수를 쓰셨는지 확인해주세요.\n2. 첫번째 숫자가 두번째 숫자보다 더 큰지 확인해주세요.\n3. 너무 긴 숫자가 아닌지 확인해주세요.", inline=False)
-            await ctx.send(embed=embed)
-        except:
+        else:
             embed = nextcord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)
             embed.add_field(name="오류 내용:", value="1. 자연수가 아닌 수를 쓰셨는지 확인해주세요.\n2. 첫번째 숫자가 두번째 숫자보다 더 큰지 확인해주세요.\n3. 너무 긴 숫자가 아닌지 확인해주세요.", inline=False)
             await ctx.send(embed=embed)
