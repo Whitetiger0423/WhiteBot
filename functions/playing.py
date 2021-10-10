@@ -1,14 +1,6 @@
-import asyncio
 import nextcord
 import random
-import re
-import os, json
-import datetime
 from nextcord.ext import commands
-import functools
-import itertools
-import math
-from async_timeout import timeout
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 
@@ -51,6 +43,10 @@ class playing(commands.Cog):
                 embed = nextcord.Embed(title="주사위", description=f"1 ~ {첫번째숫자}", color=0xffffff)
                 embed.add_field(name="**결과:**", value=f"주사위를 굴렸더니 {random.randint(1, 첫번째숫자)}(이)가 나왔어요!", inline=False)
                 await ctx.send(embed=embed)
+        except ValueError:
+            embed = nextcord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)
+            embed.add_field(name="오류 내용:", value="1. 자연수가 아닌 수를 쓰셨는지 확인해주세요.\n2. 첫번째 숫자가 두번째 숫자보다 더 큰지 확인해주세요.\n3. 너무 긴 숫자가 아닌지 확인해주세요.", inline=False)
+            await ctx.send(embed=embed)
         except:
             embed = nextcord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)
             embed.add_field(name="오류 내용:", value="1. 자연수가 아닌 수를 쓰셨는지 확인해주세요.\n2. 첫번째 숫자가 두번째 숫자보다 더 큰지 확인해주세요.\n3. 너무 긴 숫자가 아닌지 확인해주세요.", inline=False)
