@@ -55,7 +55,7 @@ class playing(commands.Cog):
             randomlists = list(args)
             choiced = random.choice(randomlists)
             embed = nextcord.Embed(title="랜덤 뽑기", description=f'{randomlists}', color=0xffffff)
-            embed.add_field(name="**결과:**", value=f'`{choiced}`가 나왔습니다!')
+            embed.add_field(name="**결과:**", value=f'`{choiced}`(이)가 나왔습니다!')
             await ctx.send(embed=embed)
         else:
             embed = nextcord.Embed(title="WhiteBot 오류", description="랜덤 기능", color=0xff0000)
