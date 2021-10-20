@@ -19,7 +19,7 @@ class manage(commands.Cog):
     @commands.command(aliases=['ping'])
     async def 핑(self, ctx):
         embed = nextcord.Embed(title=':ping_pong: 퐁!', color=0xffffff)
-        embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/daa32b8898455757214c9e52bacc1612.webp?size=1024')
+        embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d0ffaea389fce208e560cea5cf082d46.webp?size=1024')
         embed.add_field(name='discord API Ping: ', value=f'{round(self.bot.latency * 1000)} ms')
         await ctx.send(embed=embed)
 
@@ -153,25 +153,26 @@ class manage(commands.Cog):
         if (종류 == None):
             embed = nextcord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
             embed.add_field(name="/도움", value="이 메시지를 표출합니다.", inline=False)
-            embed.add_field(name="/도움 관리", value="서버 관리와 관련된 명령어를 표출합니다.", inline=False)
-            embed.add_field(name="/도움 놀이", value="WhiteBot으로 할 수 있는 놀이 기능과 관련된 명령어를 표출합니다.", inline=False)
-            embed.add_field(name="/도움 기타", value="기타 다른 명령어를 표출합니다.", inline=False)
+            embed.add_field(name="/도움 `관리`", value="서버 관리와 관련된 명령어를 표출합니다.", inline=False)
+            embed.add_field(name="/도움 `놀이`", value="WhiteBot으로 할 수 있는 놀이 기능과 관련된 명령어를 표출합니다.", inline=False)
+            embed.add_field(name="/도움 `기타`", value="기타 다른 명령어를 표출합니다.", inline=False)
             embed.add_field(name="공식 홈페이지", value=":link: [공식 홈페이지](<http://whiteteam.kro.kr/>)", inline=False)
             embed.add_field(name="공식 서포팅 서버", value=":link: [White_team 공식 서버](<https://discord.gg/aebSVBgzuG>)", inline=False)
             embed.add_field(name="봇 초대 링크", value=":link: [봇 초대하기](<https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot>)", inline=False)
             await ctx.send(embed=embed)
         elif 종류 == '관리':
             embed = nextcord.Embed(title="<a:check:824251178493411368> WhiteBot 관리 명령어 도움말",  description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
-            embed.add_field(name="/핑", value="핑을 알려줍니다.", inline=False)
-            embed.add_field(name="/청소 `n`", value="메시지를 `n`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.", inline=False)
-            embed.add_field( name="/킥 (@서버원) [이유]", value="`@서버원`을 추방합니다. `이유`는 추방된 유저의 DM으로 발송됩니다. 관리자 권한이 필요합니다.", inline=False)
-            embed.add_field( name="/밴 (@서버원) [이유]", value="`@서버원`을 추방 및 차단합니다. `이유`는 차단된 유저의 DM으로 발송됩니다. 관리자 권한이 필요합니다.", inline=False)
-            embed.add_field(name="/언밴 (@서버원)", value="`@서버원`의 추방을 해제합니다. 관리자 권한이 필요합니다.", inline=False)
+            embed.add_field(name="/핑", value="봇의 핑을 알려줍니다.", inline=False)
+            embed.add_field(name="/청소 `[n]`", value="메시지를 `[n]`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.", inline=False)
+            embed.add_field( name="/킥 `[@서버원]` `[이유]`", value="`[@서버원]`을 추방합니다. `[이유]`는 추방된 유저의 DM으로 발송됩니다. 관리자 권한이 필요합니다.", inline=False)
+            embed.add_field( name="/밴 `[@서버원]` `[이유]`", value="`[@서버원]`을 추방 및 차단합니다. `[이유]`는 차단된 유저의 DM으로 발송됩니다. 관리자 권한이 필요합니다.", inline=False)
+            embed.add_field(name="/언밴 `[@서버원]`", value="`[@서버원]`의 추방을 해제합니다. 관리자 권한이 필요합니다.", inline=False)
             await ctx.send(embed=embed)
         elif 종류 == '놀이':
             embed = nextcord.Embed(title="<a:check:824251178493411368> WhiteBot 놀이 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
-            embed.add_field(name="/가위바위보 `(가위, 바위, 보)`", value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.", inline=False)
-            embed.add_field( name="/주사위 (N) [n]", value="주사위를 굴립니다. `N`만 쓰면 1부터 `N`까지의 숫자를, `n`까지 모두 쓰면 `N`부터 `n`까지의 숫자를 랜덤으로 표출합니다.", inline=False)
+            embed.add_field(name="/가위바위보 `[가위, 바위, 보]`", value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.", inline=False)
+            embed.add_field(name="/주사위 `[N]` `(n)`", value="주사위를 굴립니다. `[N]`만 쓰면 1부터 `[N]`까지의 숫자를, `(n)`까지 모두 쓰면 `[N]`부터 `(n)`까지의 숫자를 랜덤으로 표출합니다.", inline=False)
+            embed.add_field(name="/룰렛 `[항목들]`", value="`[항목들]` 중에서 하나를 봇이 골라줍니다.", inline=False)
             await ctx.send(embed=embed)
             '''
         elif 종류 == '경제':
@@ -184,13 +185,14 @@ class manage(commands.Cog):
             '''
         elif 종류 == '기타':
             embed = nextcord.Embed(title="<a:check:824251178493411368> WhiteBot 기타 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
-            embed.add_field(name="/검색 (항목)", value="여러 사이트에서 (항목)을 검색합니다.", inline=False)
-            embed.add_field(name="/전송 (항목)", value="(항목)을 전송해요!", inline=False)
-            embed.add_field(name="/암호 (수신문)", value="(수신문)을 암호화합니다.", inline=False)
-            embed.add_field(name="/해독 (암호문)", value="(암호문)을 해독합니다.", inline=False)
+            embed.add_field(name="/검색 `[항목]`", value="여러 사이트에서 `[항목]`을 검색합니다.", inline=False)
+            embed.add_field(name="/전송 `[항목]`", value="`[항목]`을 전송해요!", inline=False)
+            embed.add_field(name="/암호 `[수신문]`", value="`[수신문]`을 암호화합니다.", inline=False)
+            embed.add_field(name="/해독 `[암호문]`", value="`[암호문]`을 해독합니다.", inline=False)
             embed.add_field(name="/서버", value="서버 정보를 전송합니다.", inline=False)
             embed.add_field(name="/내정보", value="유저 정보를 전송합니다.", inline=False)
             embed.add_field(name="/정보", value="봇의 정보를 전송합니다.", inline=False)
+            embed.add_field(name="/유튜브", value="들어가 있는 음성 채널에 유튜브 투게더를 활성화 시키는 링크를 보냅니다. 음성 채널에 연결되어 있어야 사용 가능한 명령어입니다.", inline=False)
             await ctx.send(embed=embed)
         else:
             embed = nextcord.Embed(title="WhiteBot 오류", description="도움말 기능", color=0xff0000)
