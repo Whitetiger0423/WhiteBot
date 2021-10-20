@@ -141,9 +141,9 @@ class manage(commands.Cog):
         embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d0ffaea389fce208e560cea5cf082d46.webp?size=1024')
         embed.add_field(name='봇 이름: ', value=f'{self.bot.user.name}', inline = False)
         embed.add_field(name='봇 ID: ', value=f'`{self.bot.user.id}`', inline = False)
-        embed.add_field(name='봇 버전: ', value='1.3.5 beta', inline = False)
+        embed.add_field(name='봇 버전: ', value='1.3.6', inline = False)
         embed.add_field(name='봇 참가 서버 수: ', value=f'`{g}`개의 서버', inline = False)
-        embed.add_field(name='봇 개발진: ', value='[White_team](<http://whiteteam.kro.kr/>)', inline = False)
+        embed.add_field(name='봇 개발진: ', value='[Team White](<http://team-white.kro.kr/>)', inline = False)
         embed.add_field(name='서포팅 서버: ', value='[초대 링크](<http://server.whitebot.kro.kr/>)', inline = False)
         await ctx.send(embed=embed)
 
@@ -155,8 +155,8 @@ class manage(commands.Cog):
             embed.add_field(name="/도움 `관리`", value="서버 관리와 관련된 명령어를 표출합니다.", inline=False)
             embed.add_field(name="/도움 `놀이`", value="WhiteBot으로 할 수 있는 놀이 기능과 관련된 명령어를 표출합니다.", inline=False)
             embed.add_field(name="/도움 `기타`", value="기타 다른 명령어를 표출합니다.", inline=False)
-            embed.add_field(name="공식 홈페이지", value=":link: [공식 홈페이지](<http://whiteteam.kro.kr/>)", inline=False)
-            embed.add_field(name="공식 서포팅 서버", value=":link: [White_team 공식 서버](<https://discord.gg/aebSVBgzuG>)", inline=False)
+            embed.add_field(name="공식 홈페이지", value=":link: [공식 홈페이지](<http://team-white.kro.kr/>)", inline=False)
+            embed.add_field(name="공식 서포팅 서버", value=":link: [Team White 공식 서버](<https://discord.gg/aebSVBgzuG>)", inline=False)
             embed.add_field(name="봇 초대 링크", value=":link: [봇 초대하기](<https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot>)", inline=False)
             await ctx.send(embed=embed)
         elif 종류 == '관리':
@@ -196,7 +196,7 @@ class manage(commands.Cog):
         else:
             embed = nextcord.Embed(title="WhiteBot 오류", description="도움말 기능", color=0xff0000)
             embed.add_field(name="오류 내용:", value="`관리, 놀이, 기타, (공백)` 중 하나를 입력해주세요.", inline=False)
-            embed.add_field(name="새로운 명령어를 원하시나요?", value="[White_team 공식 서버](<https://discord.gg/aebSVBgzuG>)에서 의견을 내주세요!", inline=False)
+            embed.add_field(name="새로운 명령어를 원하시나요?", value="[Team White 공식 서버](<https://discord.gg/aebSVBgzuG>)에서 의견을 내주세요!", inline=False)
             embed.add_field(name="잘못 들어오셨다고요?", value="`/도움` 으로 다른 명령어들을 알아보세요!", inline=False)
             await ctx.send(embed=embed)
 
