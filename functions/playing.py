@@ -49,12 +49,12 @@ class playing(commands.Cog):
             await ctx.send(embed=embed)
 
 
-    @commands.command(aliases=['룰렛', 'random', '뭐먹지'])
-    async def 랜덤(self, ctx, *args):
+    @commands.command(aliases=['랜덤', 'random', '뭐먹지'])
+    async def 룰렛(self, ctx, *args):
         if args:
             randomlists = list(args)
             choiced = random.choice(randomlists)
-            embed = nextcord.Embed(title="랜덤 뽑기", description=f'{randomlists}', color=0xffffff)
+            embed = nextcord.Embed(title="룰렛", description=f'{randomlists}', color=0xffffff)
             embed.add_field(name="**결과:**", value=f'`{choiced}`(이)가 나왔습니다!')
             await ctx.send(embed=embed)
         else:
