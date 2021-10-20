@@ -19,7 +19,6 @@ class manage(commands.Cog):
     @commands.command(aliases=['ping'])
     async def 핑(self, ctx):
         embed = nextcord.Embed(title=':ping_pong: 퐁!', color=0xffffff)
-        embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d0ffaea389fce208e560cea5cf082d46.webp?size=1024')
         embed.add_field(name='discord API Ping: ', value=f'{round(self.bot.latency * 1000)} ms')
         await ctx.send(embed=embed)
 
@@ -139,7 +138,7 @@ class manage(commands.Cog):
         ch = self.bot.guilds
         g = len(ch)
         embed = nextcord.Embed(title='봇 정보', color=0xffffff)
-        embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d16ab665b8db020f4b62313cb260b2f1.webp?size=1024')
+        embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d0ffaea389fce208e560cea5cf082d46.webp?size=1024')
         embed.add_field(name='봇 이름: ', value=f'{self.bot.user.name}', inline = False)
         embed.add_field(name='봇 ID: ', value=f'`{self.bot.user.id}`', inline = False)
         embed.add_field(name='봇 버전: ', value='1.3.5 beta', inline = False)
