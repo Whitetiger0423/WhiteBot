@@ -46,47 +46,6 @@ class manage(commands.Cog):
             embed.add_field(name="권한 오류", value="권한 확인 후 다시 시도해주세요.", inline=False)
             await ctx.send(embed=embed)
 
-    @commands.command(aliases=['추방', 'kick'])
-    async def 킥(self, ctx, member: nextcord.Member, *, reason = None):
-        if ctx.author.guild_permissions.administrator:
-            if reason == None:
-                reason = 'None'
-            if not member.guild_permissions.administrator:
-                await ctx.send(f'{member.name}#{member.discriminator} 서버원을 추방하였습니다.')
-                await member.send(f"{ctx.message.guild.name} 서버에서 추방당했습니다! 이유는 다음과 같습니다: ```{reason}``` 서버에 다시 참가할 수 있습니다! \n {await ctx.message.guild.invites()[0]}")
-                await member.kick(reason=reason)
-            else:
-                await ctx.send(f'{ctx.author.mention} 관리자는 추방할 수 없습니다. 관리자 권한을 해제하고 다시 시도해주세요.')
-        else:
-            await ctx.send(f'{ctx.author.mention}님에게 멤버 추방하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
-
-    @commands.command(aliases=['차단', 'ban'])
-    async def 밴(self, ctx, member: nextcord.Member, *, reason = None):
-        if ctx.author.guild_permissions.administrator:
-            if reason == None:
-                reason = 'None'
-            if not member.guild_permissions.administrator:
-                await ctx.send(f'{member.name}#{member.discriminator} 서버원을 밴했습니다.')
-                await member.send(f"{ctx.message.guild.name} 서버에서 차단당했습니다! 이유는 다음과 같습니다: ```{reason}``` 차단이 풀리기 전까지 서버에 다시 참가할 수 없습니다!")
-                await member.ban(reason=reason)
-            else:
-                await ctx.send(f'{ctx.author.mention} 관리자는 밴할 수 없습니다. 관리자 권한을 해제하고 다시 시도해주세요.')
-        else:
-            await ctx.send(f'{ctx.author.mention}님에게 멤버 차단하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
-
-    @commands.command(aliases=['unban'])
-    async def 언밴(self, ctx, *, member):
-        if ctx.author.guild_permissions.administrator:
-            banned_users = await ctx.guild.bans()
-            member_name, member_discriminator = member.split('#')
-            for ban_entry in banned_users:
-                user = ban_entry.user
-                if (user.name, user.discriminator) == (member_name, member_discriminator):
-                    await ctx.send('유저의 밴을 해제했습니다. 이 서버에 다시 들어올 수 있습니다.')
-                    await ctx.guild.unban(user)
-        else:
-            await ctx.send(f'{ctx.author.mention}님에게 멤버 차단하기 권한이 필요합니다. 권한 확인 후 다시 실행해주세요.')
-
     @commands.command(aliases=['server'])
     async def 서버(self, ctx):
         embed = nextcord.Embed(title='서버 정보', color=0xffffff)
@@ -141,7 +100,7 @@ class manage(commands.Cog):
         embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d0ffaea389fce208e560cea5cf082d46.webp?size=1024')
         embed.add_field(name='봇 이름: ', value=f'{self.bot.user.name}', inline = False)
         embed.add_field(name='봇 ID: ', value=f'`{self.bot.user.id}`', inline = False)
-        embed.add_field(name='봇 버전: ', value='1.3.6', inline = False)
+        embed.add_field(name='봇 버전: ', value='1.3.7', inline = False)
         embed.add_field(name='봇 참가 서버 수: ', value=f'`{g}`개의 서버', inline = False)
         embed.add_field(name='봇 개발진: ', value='[Team White](<http://team-white.kro.kr/>)', inline = False)
         embed.add_field(name='서포팅 서버: ', value='[초대 링크](<http://server.whitebot.kro.kr/>)', inline = False)
@@ -163,9 +122,6 @@ class manage(commands.Cog):
             embed = nextcord.Embed(title="<a:check:824251178493411368> WhiteBot 관리 명령어 도움말",  description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
             embed.add_field(name="/핑", value="봇의 핑을 알려줍니다.", inline=False)
             embed.add_field(name="/청소 `[n]`", value="메시지를 `[n]`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.", inline=False)
-            embed.add_field( name="/킥 `[@서버원]` `[이유]`", value="`[@서버원]`을 추방합니다. `[이유]`는 추방된 유저의 DM으로 발송됩니다. 관리자 권한이 필요합니다.", inline=False)
-            embed.add_field( name="/밴 `[@서버원]` `[이유]`", value="`[@서버원]`을 추방 및 차단합니다. `[이유]`는 차단된 유저의 DM으로 발송됩니다. 관리자 권한이 필요합니다.", inline=False)
-            embed.add_field(name="/언밴 `[@서버원]`", value="`[@서버원]`의 추방을 해제합니다. 관리자 권한이 필요합니다.", inline=False)
             await ctx.send(embed=embed)
         elif 종류 == '놀이':
             embed = nextcord.Embed(title="<a:check:824251178493411368> WhiteBot 놀이 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
