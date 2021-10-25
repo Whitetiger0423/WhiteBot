@@ -27,7 +27,7 @@ async def on_ready():
     e = len(ch)
     await bot.change_presence(
         status=nextcord.Status.online,
-    activity=nextcord.Game("버전 1.3.6"))
+    activity=nextcord.Game("버전 1.3.7"))
     print("다음으로 로그인합니다 : ")
     print(bot.user.name)
     print(f'Be used in {e} guilds.')
