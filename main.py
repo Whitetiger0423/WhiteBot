@@ -32,7 +32,7 @@ async def on_ready():
     print(bot.user.name)
     print(f'Be used in {e} guilds.')
     try:
-        k = Koreanbots(api_key=DBKR_token)
+        k = Koreanbots(api_key=os.getenv('DBKR_TOKEN'))
         await k.guildcount(782777035898617886, servers=len(bot.guilds))
     except:
         print("Error while updating Koreanbots server count")
@@ -81,4 +81,4 @@ try:
 except KeyboardInterrupt:
     (asyncio.get_event_loop()).run_until_complete(shutdown())
 
-bot.run("NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.FvGXCHmj2KArMTLXmOpCz0VSxVI")
+bot.run(os.getenv('BOT_TOKEN'))
