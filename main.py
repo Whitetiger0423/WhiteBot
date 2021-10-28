@@ -41,7 +41,7 @@ async def startup():
     if aiodb is None:
         aiodb = await aiosqlite.connect("database.db")
         # aiocursor = await aiodb.execute("create table user (id int, tos text)")
-        # await aiodb.commit() 
+        # await aiodb.commit()
         # await aiocursor.close()
 
 async def shutdown():
@@ -80,4 +80,4 @@ try:
 except KeyboardInterrupt:
     (asyncio.get_event_loop()).run_until_complete(shutdown())
 
-bot.run(os.getenv('BOT_TOKEN'))
+bot.run('NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.sgC0GSpX-k7vZginZoHyzfnCOrQ')
