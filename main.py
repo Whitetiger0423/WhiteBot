@@ -80,4 +80,8 @@ try:
 except KeyboardInterrupt:
     (asyncio.get_event_loop()).run_until_complete(shutdown())
 
+<<<<<<< HEAD
+bot.run("NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.y7qCVChTRMydbtZA1YkbLgauMQI")
+=======
 bot.run(os.getenv('BOT_TOKEN'))
+>>>>>>> 9b8349031414db932b3c25960659a55dba58a174
