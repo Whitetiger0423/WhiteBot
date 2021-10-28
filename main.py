@@ -17,7 +17,6 @@ from functions import *
 
 
 bot = commands.Bot(command_prefix='/', help_command=None)
-DBKR_token = 'DBKR_token'
 aiodb = None
 
 
