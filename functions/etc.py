@@ -1,10 +1,10 @@
 import asyncio
-import nextcord
+import discord
 import random
 import re
 import os, json
 import datetime
-from nextcord.ext import commands
+from discord.ext import commands
 import functools
 import itertools
 import math
@@ -25,7 +25,7 @@ class etc(commands.Cog):
 
     @commands.command(aliases=['search'])
     async def 검색(self, ctx, *, 검색어):
-        embed = nextcord.Embed(title="<a:check:824251178493411368> 검색결과", description="여러 사이트에서 검색한 결과입니다.", color=0xffffff)
+        embed = discord.Embed(title="<a:check:824251178493411368> 검색결과", description="여러 사이트에서 검색한 결과입니다.", color=0xffffff)
         embed.add_field(name="구글 검색결과", value=('https://www.google.com/search?q=' + 검색어.replace(" ", "%20")), inline=False)
         embed.add_field(name="네이버 검색결과", value=('https://search.naver.com/search.naver?query=' + 검색어.replace(" ", "%20")), inline=False)
         embed.add_field(name="다음 검색결과", value=('https://search.daum.net/search?w=tot&q=' + 검색어.replace(" ", "%20")), inline=False)
@@ -36,7 +36,7 @@ class etc(commands.Cog):
 
     @commands.command(aliases=['send'])
     async def 전송(self, ctx, *, 내용):
-        embed = nextcord.Embed(title=f"Sent by {ctx.author.display_name}", description=f"{내용}", color=0xffffff)
+        embed = discord.Embed(title=f"Sent by {ctx.author.display_name}", description=f"{내용}", color=0xffffff)
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['암호화', 'code'])
@@ -50,7 +50,7 @@ class etc(commands.Cog):
             암호 = ord(암호화문자)
             암호문.append(암호)
             대괄호생략 = str(암호문).replace(',', '')
-        embed = nextcord.Embed(title="<a:check:824251178493411368> 암호화 완료!", description="아스키 코드를 기반으로 한 암호문입니다.\n해독할 때 띄어쓰기는 인식되지 않으니 `_`나 `-`등의 문자를 넣는것을 추천해요!", color=0xffffff)
+        embed = discord.Embed(title="<a:check:824251178493411368> 암호화 완료!", description="아스키 코드를 기반으로 한 암호문입니다.\n해독할 때 띄어쓰기는 인식되지 않으니 `_`나 `-`등의 문자를 넣는것을 추천해요!", color=0xffffff)
         embed.add_field(name="**원문:**", value=f"```{원문}```", inline=False)
         embed.add_field(name="**암호문:**", value=f"```{대괄호생략[1:-1]}```", inline=False)
         await ctx.send(embed=embed)
@@ -65,7 +65,7 @@ class etc(commands.Cog):
                 암호 = chr(int(암호화문자))
                 암호문.append(암호)
                 대괄호생략 = str(암호문).replace(',', '').replace('\'', '')
-            embed = nextcord.Embed(title="<a:check:824251178493411368> 해독 완료!", description="아스키 코드를 기반으로 한 암호문을 해독하였습니다.\n해독이 잘못되었다면 [서포팅 서버](<https://nextcord.gg/aebSVBgzuG>)에서 제보해주세요!", color=0xffffff)
+            embed = discord.Embed(title="<a:check:824251178493411368> 해독 완료!", description="아스키 코드를 기반으로 한 암호문을 해독하였습니다.\n해독이 잘못되었다면 [서포팅 서버](<https://discord.gg/aebSVBgzuG>)에서 제보해주세요!", color=0xffffff)
             embed.add_field(name="**암호문:**", value=f"```{원문결과용}```", inline=False)
             embed.add_field(name="**해독 결과:**", value=f"```{대괄호생략[1:-1].replace(' ','')}```", inline=False)
             await ctx.send(embed=embed)
@@ -85,13 +85,14 @@ class etc(commands.Cog):
             aiocursor = await main.aiodb.execute("insert into user (id, tos) values (?, ?)", (ctx.author.id, "True"))
             await main.aiodb.commit()
             await aiocursor.close()
-            await ctx.send(embed=nextcord.Embed(title="가입 완료", description=f"{ctx.author.mention}\n가입이 완료됐습니다. 이제 봇의 모든 명령어를 사용하실 수 있습니다.", color=0xffffff))
+            await ctx.send(embed=discord.Embed(title="가입 완료", description=f"{ctx.author.mention}\n가입이 완료됐습니다. 이제 봇의 모든 명령어를 사용하실 수 있습니다.", color=0xffffff))
             return
         else:
             aiocursor = await main.aiodb.execute("UPDATE user SET tos = ? WHERE id=?", ("True", ctx.author.id))
             await main.aiodb.commit()
             await aiocursor.close()
-            await ctx.send(embed=nextcord.Embed(title="가입 완료", description=f"{ctx.author.mention}\n가입이 완료됐습니다. 이제 봇의 모든 명령어를 사용하실 수 있습니다.", color=0xffffff))
+            await ctx.send(embed=discord.Embed(title="가입 완료", description=f"{ctx.author.mention}\n가입이 완료됐습니다. 이제 봇의 모든 명령어를 사용하실 수 있습니다.", color=0xffffff))
             return
+
 def setup(bot):
     bot.add_cog(etc(bot))

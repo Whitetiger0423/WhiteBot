@@ -1,15 +1,15 @@
 import asyncio
-import nextcord
+import discord
 import random
 import re
 import os, json
 import datetime
-from nextcord.ext import commands
+from discord.ext import commands
 import functools
 import itertools
 import math
 from async_timeout import timeout
-from nextcord.http import Route
+from discord.http import Route
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 

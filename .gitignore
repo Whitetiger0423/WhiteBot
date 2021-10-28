@@ -7,4 +7,4 @@ functions/__pycache__/playing.cpython-38.pyc
 *.xml
 functions/.idea/functions.iml
 *.db
-whitebot.config.js
+main.py
