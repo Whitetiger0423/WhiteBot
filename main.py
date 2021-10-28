@@ -17,7 +17,7 @@ from functions import *
 
 
 bot = commands.Bot(command_prefix='/', help_command=None)
-DBKR_token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc4Mjc3NzAzNTg5ODYxNzg4NiIsImlhdCI6MTYyNTUzMzI3NH0.LLSRZLZPArXmrWfMMeHsCEbu_DgBTua2_obuJje9KuX_AbfUt56tJW0OVw7TdhCL2Fba_hVGIhPU3poyNqnfFAzRrH-YePR0frSMf6_boErW7w9Pr46SVFupyqT9NlTS0_07DqHVMqusijYRgCbRgJudxTQDEdsCQgTCmJKa0KM'
+DBKR_token = 'DBKR_token'
 aiodb = None
 
 
@@ -32,7 +32,7 @@ async def on_ready():
     print(bot.user.name)
     print(f'Be used in {e} guilds.')
     try:
-        k = Koreanbots(api_key=DBKR_token)
+        k = Koreanbots(api_key=os.getenv('DBKR_TOKEN'))
         await k.guildcount(782777035898617886, servers=len(bot.guilds))
     except:
         print("Error while updating Koreanbots server count")
@@ -81,4 +81,8 @@ try:
 except KeyboardInterrupt:
     (asyncio.get_event_loop()).run_until_complete(shutdown())
 
+<<<<<<< HEAD
 bot.run("NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.y7qCVChTRMydbtZA1YkbLgauMQI")
+=======
+bot.run(os.getenv('BOT_TOKEN'))
+>>>>>>> 9b8349031414db932b3c25960659a55dba58a174
