@@ -41,7 +41,7 @@ async def startup():
     if aiodb is None:
         aiodb = await aiosqlite.connect("database.db")
         # aiocursor = await aiodb.execute("create table user (id int, tos text)")
-        # await aiodb.commit()
+        # await aiodb.commit() 
         # await aiocursor.close()
 
 async def shutdown():
