@@ -17,7 +17,7 @@ from functions import *
 
 
 bot = commands.Bot(command_prefix='/', help_command=None)
-DBKR_token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc4Mjc3NzAzNTg5ODYxNzg4NiIsImlhdCI6MTYzNTM4NzQ2MX0.TRov3uSO4wO0MFQQVhppBL_wYpzjTjwC_FIzV9U7awAVWhqZu9taKTfBH64EAa0q7Tgx0vEy0bcnmex2-tyo_QldVnbzU3ZRjH6vhNoZsOvDOnGshA27iTVMNjicNXew8GeB-KnHckVgMyNcb_7otQRPRtmMkNEpWkMsGBE07NQ'
+DBKR_token = (DBKR_token)
 aiodb = None
 
 
@@ -79,4 +79,4 @@ try:
 except KeyboardInterrupt:
     (asyncio.get_event_loop()).run_until_complete(shutdown())
 
-bot.run('NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.sgC0GSpX-k7vZginZoHyzfnCOrQ')
+bot.run(BOT_token)
