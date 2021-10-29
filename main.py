@@ -25,9 +25,7 @@ aiodb = None
 async def on_ready():
     ch = bot.guilds
     e = len(ch)
-    await bot.change_presence(
-        status=discord.Status.online,
-    activity=discord.Game("버전 1.3.8"))
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game("버전 1.3.8"))
     print("다음으로 로그인합니다 : ")
     print(bot.user.name)
     print(f'Be used in {e} guilds.')
