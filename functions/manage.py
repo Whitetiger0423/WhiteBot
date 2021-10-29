@@ -100,7 +100,7 @@ class manage(commands.Cog):
         embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d0ffaea389fce208e560cea5cf082d46.webp?size=1024')
         embed.add_field(name='봇 이름: ', value=f'{self.bot.user.name}', inline = False)
         embed.add_field(name='봇 ID: ', value=f'`{self.bot.user.id}`', inline = False)
-        embed.add_field(name='봇 버전: ', value='1.3.7', inline = False)
+        embed.add_field(name='봇 버전: ', value='1.3.8', inline = False)
         embed.add_field(name='봇 참가 서버 수: ', value=f'`{g}`개의 서버', inline = False)
         embed.add_field(name='봇 개발진: ', value='[Team White](<http://team-white.kro.kr/>)', inline = False)
         embed.add_field(name='서포팅 서버: ', value='[초대 링크](<http://server.whitebot.kro.kr/>)', inline = False)
@@ -131,15 +131,6 @@ class manage(commands.Cog):
             embed.add_field(name="/주사위 `[N]` `(n)`", value="주사위를 굴립니다. `[N]`만 쓰면 1부터 `[N]`까지의 숫자를, `(n)`까지 모두 쓰면 `[N]`부터 `(n)`까지의 숫자를 랜덤으로 표출합니다.", inline=False)
             embed.add_field(name="/룰렛 `[항목들]`", value="`[항목들]` 중에서 하나를 봇이 골라줍니다.", inline=False)
             await ctx.send(embed=embed)
-            '''
-        elif 종류 == '경제':
-            embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 경제 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xFEFEFE)
-            embed.add_field(name="/뽑기 (/뽑, /ㅃ)", value="1000원에서 5000원 사이의 돈을 무작위로 얻습니다.", inline=False)
-            embed.add_field(name="/돈확인 [멤버] (/ㄷㅎㅇ [멤버])", value="자신의 돈이나 [멤버]의 돈을 확인합니다.", inline=False)
-            embed.add_field(name="/돈비교 (멤버1) [멤버2] (/ㄷㅂㄱ (멤버1) [멤버2])", value="자신의 돈과 (멤버1)의 돈을 비교하거나, (멤버1)과 [멤버2]의 돈을 비교합니다.", inline=False)
-            embed.add_field(name="/도박 (걸돈) (늘릴 배수) (/ㄷㅂ (걸돈) (늘릴 배수)", value="(걸돈)만큼을 도박에 겁니다. 만약 성공한다면 (늘릴 배수)만큼 돈이 늡니다! 하지만 실패할 경우엔 건 돈이 모두 없어집니다. 1000원 이상만 걸 수 있습니다.", inline=False)
-            await ctx.send(embed=embed)
-            '''
         elif 종류 == '기타':
             embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 기타 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
             embed.add_field(name="/검색 `[항목]`", value="여러 사이트에서 `[항목]`을 검색합니다.", inline=False)
