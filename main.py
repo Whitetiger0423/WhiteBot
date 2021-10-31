@@ -25,7 +25,7 @@ aiodb = None
 async def on_ready():
     ch = bot.guilds
     e = len(ch)
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game("버전 1.3.8"))
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game("버전 1.3.9"))
     print("다음으로 로그인합니다 : ")
     print(bot.user.name)
     print(f'Be used in {e} guilds.')
@@ -79,4 +79,4 @@ try:
 except KeyboardInterrupt:
     (asyncio.get_event_loop()).run_until_complete(shutdown())
 
-bot.run('NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.2CpMrh2ZyO_E1M6cKpshRhjpzc4')
+bot.run('NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.K1mB4kQKkLtDMf1GFzgliFBC_wg')
