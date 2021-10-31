@@ -1,6 +1,7 @@
 import discord
 import random
 from discord.ext import commands
+from discord.commands import slash_command
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 

@@ -4,7 +4,6 @@ import random
 import re
 import os, json
 import datetime
-from discord.ext import commands
 import functools
 import itertools
 import math
@@ -15,6 +14,8 @@ import aiofiles
 import aiosqlite
 import pickle
 import main
+from discord.ext import commands
+from discord.commands import slash_command
 
 
 bot = commands.Bot(command_prefix='/', help_command=None)
@@ -23,8 +24,8 @@ class etc(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=['search'])
-    async def 검색(self, ctx, *, 검색어):
+    @slash_command(description='검색어를 검색합니다.')
+    async def search(self, ctx, *, 검색어):
         embed = discord.Embed(title="<a:check:824251178493411368> 검색결과", description="여러 사이트에서 검색한 결과입니다.", color=0xffffff)
         embed.add_field(name="구글 검색결과", value=('https://www.google.com/search?q=' + 검색어.replace(" ", "%20")), inline=False)
         embed.add_field(name="네이버 검색결과", value=('https://search.naver.com/search.naver?query=' + 검색어.replace(" ", "%20")), inline=False)
@@ -32,15 +33,15 @@ class etc(commands.Cog):
         embed.add_field(name="위키백과 검색결과",  value=('https://ko.wikipedia.org/wiki/특수:검색/' + 검색어.replace(" ", "_")), inline=False)
         embed.add_field(name="지식백과 검색결과", value=('https://terms.naver.com/search.naver?query=' + 검색어.replace(" ", "%20")), inline=False)
         embed.add_field(name="나무위키 검색결과", value=('https://namu.wiki/Search?q=' + 검색어.replace(" ", "%20")), inline=False)
-        await ctx.send(embed=embed)
+        await ctx.respond(embed=embed)
 
-    @commands.command(aliases=['send'])
-    async def 전송(self, ctx, *, 내용):
+    @slash_command(description='내용을 전송합니다.')
+    async def send(self, ctx, *, 내용):
         embed = discord.Embed(title=f"Sent by {ctx.author.display_name}", description=f"{내용}", color=0xffffff)
-        await ctx.send(embed=embed)
+        await ctx.respond(embed=embed)
 
-    @commands.command(aliases=['암호화', 'code'])
-    async def 암호(self, ctx, *수신문):
+    @slash_command(description='수신문을 암호화합니다.')
+    async def code(self, ctx, *수신문):
         원문 = ' '.join(수신문)
         암호문 = []
         띄쓰방지 = 원문.replace(" ", "")
@@ -53,10 +54,10 @@ class etc(commands.Cog):
         embed = discord.Embed(title="<a:check:824251178493411368> 암호화 완료!", description="아스키 코드를 기반으로 한 암호문입니다.\n해독할 때 띄어쓰기는 인식되지 않으니 `_`나 `-`등의 문자를 넣는것을 추천해요!", color=0xffffff)
         embed.add_field(name="**원문:**", value=f"```{원문}```", inline=False)
         embed.add_field(name="**암호문:**", value=f"```{대괄호생략[1:-1]}```", inline=False)
-        await ctx.send(embed=embed)
+        await ctx.respond(embed=embed)
 
-    @commands.command(aliases=['복호화', 'decode'])
-    async def 해독(self, ctx, *수신문):
+    @slash_command(description='수신문을 복호화합니다.')
+    async def decode(self, ctx, *수신문):
         try:
             원문 = ','.join(수신문)
             원문결과용 = ' '.join(수신문)
@@ -68,12 +69,12 @@ class etc(commands.Cog):
             embed = discord.Embed(title="<a:check:824251178493411368> 해독 완료!", description="아스키 코드를 기반으로 한 암호문을 해독하였습니다.\n해독이 잘못되었다면 [서포팅 서버](<https://discord.gg/aebSVBgzuG>)에서 제보해주세요!", color=0xffffff)
             embed.add_field(name="**암호문:**", value=f"```{원문결과용}```", inline=False)
             embed.add_field(name="**해독 결과:**", value=f"```{대괄호생략[1:-1].replace(' ','')}```", inline=False)
-            await ctx.send(embed=embed)
+            await ctx.respond(embed=embed)
         except:
-            await ctx.send('올바른 암호문을 입력해주세요.')
+            await ctx.respond('올바른 암호문을 입력해주세요.')
 
-    @commands.command(aliases=['register', '등록'])
-    async def 가입(self, ctx):
+    @slash_command(description='WhiteBot 시스템에 가입합니다.')
+    async def register(self, ctx):
         aiocursor = await main.aiodb.execute("select * from user where id=?", (ctx.author.id,))
         dbdata = await aiocursor.fetchall()
         await aiocursor.close()
@@ -85,13 +86,13 @@ class etc(commands.Cog):
             aiocursor = await main.aiodb.execute("insert into user (id, tos) values (?, ?)", (ctx.author.id, "True"))
             await main.aiodb.commit()
             await aiocursor.close()
-            await ctx.send(embed=discord.Embed(title="가입 완료", description=f"{ctx.author.mention}\n가입이 완료됐습니다. 이제 봇의 모든 명령어를 사용하실 수 있습니다.", color=0xffffff))
+            await ctx.respond(embed=discord.Embed(title="가입 완료", description=f"{ctx.author.mention}\n가입이 완료됐습니다. 이제 봇의 모든 명령어를 사용하실 수 있습니다.", color=0xffffff))
             return
         else:
             aiocursor = await main.aiodb.execute("UPDATE user SET tos = ? WHERE id=?", ("True", ctx.author.id))
             await main.aiodb.commit()
             await aiocursor.close()
-            await ctx.send(embed=discord.Embed(title="가입 완료", description=f"{ctx.author.mention}\n가입이 완료됐습니다. 이제 봇의 모든 명령어를 사용하실 수 있습니다.", color=0xffffff))
+            await ctx.respond(embed=discord.Embed(title="가입 완료", description=f"{ctx.author.mention}\n가입이 완료됐습니다. 이제 봇의 모든 명령어를 사용하실 수 있습니다.", color=0xffffff))
             return
 
 def setup(bot):
