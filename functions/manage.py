@@ -23,21 +23,16 @@ class manage(commands.Cog):
         embed.add_field(name='discord API Ping: ', value=f'{round(self.bot.latency * 1000)} ms')
         await ctx.respond(embed=embed)
 
-    @slash_command(description='메시지를 일정 개수만큼 지웁니다.')
-    async def delete(self, ctx, count: int):
+    @slash_command(description='메시지를 지정된 개수만큼 지웁니다.')
+    async def delete(self, ctx, 개수: int):
         try:
             if ctx.author.guild_permissions.administrator:
-                if count:
+                if 개수:
                     await asyncio.sleep(2)
-                    await ctx.channel.purge(limit=count + 1)
+                    await ctx.channel.purge(limit=개수)
                     embed=discord.Embed(title="청소 완료!", color=0xffffff)
-                    embed.add_field(name="삭제한 메시지의 수:", value=f"{count}", inline=False)
-                    erasemsg = await ctx.respond(embed=embed)
-                    await asyncio.sleep(3)
-                    await erasemsg.delete()
-                else:
-                    embed=discord.Embed(title="오류 발생!", color=0xff0000)
-                    embed.add_field(name="값 오류", value="올바른 자연수 값을 입력해주세요.")
+                    embed.add_field(name="삭제한 메시지의 수:", value=f"{개수}", inline=False)
+                    await ctx.respond(embed=embed)
             else:
                 embed=discord.Embed(title="오류 발생!", color=0xff0000)
                 embed.add_field(name="권한 오류", value="권한 확인 후 다시 시도해주세요.", inline=False)
@@ -58,8 +53,8 @@ class manage(commands.Cog):
         embed.add_field(name='멤버 수: ', value=f'{ctx.guild.member_count}', inline = False)
         await ctx.respond(embed=embed)
 
-    @slash_command(description='유저의 정보를 전송합니다.')
-    async def user(self, ctx):
+    @slash_command(description='유저의 정보를 전송합니다. 사용자 값이 입력되지 않을 시 기본값으로 입력자의 정보가 전송됩니다.')
+    async def user(self, ctx, 사용자 = None):
         embed = discord.Embed(title='유저 정보', color=0xffffff)
         embed.set_thumbnail(url=ctx.author.avatar_url)
         embed.add_field(name='계정명: ', value=f'{ctx.author.name}', inline = False)
