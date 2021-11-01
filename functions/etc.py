@@ -41,7 +41,7 @@ class etc(commands.Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(description='수신문을 암호화합니다.')
-    async def code(self, ctx, 수신문):
+    async def code(self, ctx, *, 수신문):
         원문 = ' '.join(수신문)
         암호문 = []
         띄쓰방지 = 원문.replace(" ", "")
@@ -57,7 +57,7 @@ class etc(commands.Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(description='수신문을 복호화합니다.')
-    async def decode(self, ctx, 수신문):
+    async def decode(self, ctx, *, 수신문):
         try:
             원문 = ','.join(수신문)
             원문결과용 = ' '.join(수신문)
