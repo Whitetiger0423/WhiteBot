@@ -60,7 +60,9 @@ class etc(commands.Cog):
         try:
             원문 = ' '.join(수신문)
             암호문 = []
-            for 암호화문자 in 원문.split(' '):
+            띄어쓰기 = ' '.join(원문)
+            띄쓰리스트 = 띄어쓰기.split()
+            for 암호화문자 in 띄쓰리스트:
                 암호 = chr(int(암호화문자))
                 암호문.append(암호)
                 대괄호생략 = str(암호문).replace(',', '').replace('\'', '')
