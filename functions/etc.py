@@ -44,15 +44,14 @@ class etc(commands.Cog):
     async def code(self, ctx, 수신문):
         원문 = ' '.join(수신문)
         암호문 = []
-        띄쓰방지 = 원문.replace(" ", "")
-        띄어쓰기 = ' '.join(띄쓰방지)
+        띄어쓰기 = ' '.join(원문)
         띄쓰리스트 = 띄어쓰기.split()
         for 암호화문자 in 띄쓰리스트:
             암호 = ord(암호화문자)
             암호문.append(암호)
             대괄호생략 = str(암호문).replace(',', '')
         embed = discord.Embed(title="<a:check:824251178493411368> 암호화 완료!", description="아스키 코드를 기반으로 한 암호문입니다.\n해독할 때 띄어쓰기는 인식되지 않으니 `_`나 `-`등의 문자를 넣는것을 추천해요!", color=0xffffff)
-        embed.add_field(name="**원문:**", value=f"```{원문}```", inline=False)
+        embed.add_field(name="**원문:**", value=f"```{수신문}```", inline=False)
         embed.add_field(name="**암호문:**", value=f"```{대괄호생략[1:-1]}```", inline=False)
         await ctx.respond(embed=embed)
 
@@ -60,14 +59,13 @@ class etc(commands.Cog):
     async def decode(self, ctx, 수신문):
         try:
             원문 = ','.join(수신문)
-            원문결과용 = ' '.join(수신문)
             암호문 = []
             for 암호화문자 in 원문.split(','):
                 암호 = chr(int(암호화문자))
                 암호문.append(암호)
                 대괄호생략 = str(암호문).replace(',', '').replace('\'', '')
             embed = discord.Embed(title="<a:check:824251178493411368> 해독 완료!", description="아스키 코드를 기반으로 한 암호문을 해독하였습니다.\n해독이 잘못되었다면 [서포팅 서버](<https://discord.gg/aebSVBgzuG>)에서 제보해주세요!", color=0xffffff)
-            embed.add_field(name="**암호문:**", value=f"```{원문결과용}```", inline=False)
+            embed.add_field(name="**암호문:**", value=f"```{원문}```", inline=False)
             embed.add_field(name="**해독 결과:**", value=f"```{대괄호생략[1:-1].replace(' ','')}```", inline=False)
             await ctx.respond(embed=embed)
         except:
