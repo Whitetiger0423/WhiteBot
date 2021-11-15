@@ -30,19 +30,19 @@ class playing(commands.Cog):
             await ctx.respond(embed=embed)
 
     @slash_command(description='주사위를 굴립니다.')
-    async def dice(self, ctx, 첫번째숫자: int, 두번째숫자: int = None):
+    async def dice(self, ctx, firstN: int, secondN: int = None):
         try:
-            if 첫번째숫자 < 1:
+            if firstN < 1:
                 embed = discord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)
                 embed.add_field(name="오류 내용:", value="자연수 값만 허용됩니다.", inline=False)
                 await ctx.respond(embed=embed)
-            elif (두번째숫자):
-                embed = discord.Embed(title="주사위", description=f"{첫번째숫자} ~ {두번째숫자}", color=0xffffff)
-                embed.add_field(name="**결과:**", value=f"주사위를 굴렸더니 {random.randint(첫번째숫자, 두번째숫자)}(이)가 나왔어요!", inline=False)
+            elif (secondN):
+                embed = discord.Embed(title="주사위", description=f"{firstN} ~ {secondN}", color=0xffffff)
+                embed.add_field(name="**결과:**", value=f"주사위를 굴렸더니 {random.randint(firstN, secondN)}(이)가 나왔어요!", inline=False)
                 await ctx.respond(embed=embed)
             else:
-                embed = discord.Embed(title="주사위", description=f"1 ~ {첫번째숫자}", color=0xffffff)
-                embed.add_field(name="**결과:**", value=f"주사위를 굴렸더니 {random.randint(1, 첫번째숫자)}(이)가 나왔어요!", inline=False)
+                embed = discord.Embed(title="주사위", description=f"1 ~ {firstN}", color=0xffffff)
+                embed.add_field(name="**결과:**", value=f"주사위를 굴렸더니 {random.randint(1, firstN)}(이)가 나왔어요!", inline=False)
                 await ctx.respond(embed=embed)
         except:
             embed = discord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)
@@ -51,9 +51,9 @@ class playing(commands.Cog):
 
 
     @slash_command(description='여러개의 보기 중 하나를 고릅니다.')
-    async def random(self, ctx, *args):
-        if args:
-            randomlists = list(args)
+    async def random(self, ctx, *factor):
+        if factor:
+            randomlists = list(factor)
             choiced = random.choice(randomlists)
             embed = discord.Embed(title="룰렛", description=f'{randomlists}', color=0xffffff)
             embed.add_field(name="**결과:**", value=f'`{choiced}`(이)가 나왔습니다!')
