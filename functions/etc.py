@@ -58,9 +58,9 @@ class etc(commands.Cog):
     @slash_command(description='수신문을 복호화합니다.')
     async def decode(self, ctx, 수신문):
         try:
-            원문 = ','.join(수신문)
+            원문 = ' '.join(수신문)
             암호문 = []
-            for 암호화문자 in 원문.split(','):
+            for 암호화문자 in 원문.split(' '):
                 암호 = chr(int(암호화문자))
                 암호문.append(암호)
                 대괄호생략 = str(암호문).replace(',', '').replace('\'', '')
