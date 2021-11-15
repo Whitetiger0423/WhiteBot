@@ -24,6 +24,17 @@ class etc(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+def encrypt(plain: str):
+    parsed: list = list(plain)
+    encrypted: list = [str(ord(x)) for x in parsed]
+    return ' '.join(' '.join(encrypted)).strip()
+
+
+def decrypt(encrypted: str):
+    parsed: list = [x.replace(' ', '') for x in encrypted.split("  ")]
+    decrypted: list = [chr(int(x, 10)) for x in parsed]
+    return ''.join(decrypted)
+
     @slash_command(description='검색어를 검색합니다.')
     async def search(self, ctx, *, 검색어):
         embed = discord.Embed(title="<a:check:824251178493411368> 검색결과", description="여러 사이트에서 검색한 결과입니다.", color=0xffffff)
@@ -41,19 +52,21 @@ class etc(commands.Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(description='수신문을 암호화합니다.')
-    async def encrypt(plain: str):
-        parsed: list = list(plain)
-        encrypted: list = [str(ord(x)) for x in parsed]
-        a = ' '.join(' '.join(encrypted)).strip()
-        await ctx.respond(f'{a}')
+    async def code(self, ctx, text):
+        data = encrypt(text)
+        embed = discord.Embed(title="<a:check:824251178493411368> 암호화 완료!", description="아스키 코드를 기반으로 한 암호문입니다.\n해독할 때 띄어쓰기는 인식되지 않으니 `_`나 `-`등의 문자를 넣는것을 추천해요!", color=0xffffff)
+        embed.add_field(name="**원문:**", value=f"```{text}```", inline=False)
+        embed.add_field(name="**암호문:**", value=f"```{data}```", inline=False)
+        await ctx.respond(embed=embed)
 
-    @slash_command(description='수신문을 복호화합니다.')
-    async def decrypt(encrypted: str):
+    @slash_command(description='수신문을 암호화합니다.')
+    async def decode(self, ctx, text):
+        data = decrypt(text)
         try:
-            parsed: list = [x.replace(' ', '') for x in encrypted.split("  ")]
-            decrypted: list = [chr(int(x, 10)) for x in parsed]
-            a = ''.join(decrypted)
-            await ctx.respond(f'{a}')
+            embed = discord.Embed(title="<a:check:824251178493411368> 해독 완료!", description="아스키 코드를 기반으로 한 암호문을 해독하였습니다.\n해독이 잘못되었다면 [서포팅 서버](<https://discord.gg/aebSVBgzuG>)에서 제보해주세요!", color=0xffffff)
+            embed.add_field(name="**암호문:**", value=f"```{text}```", inline=False)
+            embed.add_field(name="**해독 결과:**", value=f"```{data}```", inline=False)
+            await ctx.respond(embed=embed)
         except:
             await ctx.respond('올바른 암호문을 입력해주세요.')
 
