@@ -30,19 +30,19 @@ class playing(commands.Cog):
             await ctx.respond(embed=embed)
 
     @slash_command(description='주사위를 굴립니다.')
-    async def dice(self, ctx, firstN: int, secondN: int = None):
+    async def dice(self, ctx, firstn: int, secondn: int = None):
         try:
-            if firstN < 1:
+            if firstn < 1:
                 embed = discord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)
                 embed.add_field(name="오류 내용:", value="자연수 값만 허용됩니다.", inline=False)
                 await ctx.respond(embed=embed)
-            elif (secondN):
-                embed = discord.Embed(title="주사위", description=f"{firstN} ~ {secondN}", color=0xffffff)
-                embed.add_field(name="**결과:**", value=f"주사위를 굴렸더니 {random.randint(firstN, secondN)}(이)가 나왔어요!", inline=False)
+            elif (secondn):
+                embed = discord.Embed(title="주사위", description=f"{firstn} ~ {secondn}", color=0xffffff)
+                embed.add_field(name="**결과:**", value=f"주사위를 굴렸더니 {random.randint(firstn, secondn)}(이)가 나왔어요!", inline=False)
                 await ctx.respond(embed=embed)
             else:
-                embed = discord.Embed(title="주사위", description=f"1 ~ {firstN}", color=0xffffff)
-                embed.add_field(name="**결과:**", value=f"주사위를 굴렸더니 {random.randint(1, firstN)}(이)가 나왔어요!", inline=False)
+                embed = discord.Embed(title="주사위", description=f"1 ~ {firstn}", color=0xffffff)
+                embed.add_field(name="**결과:**", value=f"주사위를 굴렸더니 {random.randint(1, firstn)}(이)가 나왔어요!", inline=False)
                 await ctx.respond(embed=embed)
         except:
             embed = discord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)

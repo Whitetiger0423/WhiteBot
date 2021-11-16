@@ -83,8 +83,8 @@ class manage(commands.Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(description='봇의 도움말을 전송합니다.')
-    async def help(self, ctx, 종류 = None):
-        if (종류 == None):
+    async def help(self, ctx, category = None):
+        if (category == None):
             embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
             embed.add_field(name="/help", value="이 메시지를 표출합니다.", inline=False)
             embed.add_field(name="/help `manage`", value="서버 관리와 관련된 명령어를 표출합니다.", inline=False)
@@ -94,20 +94,20 @@ class manage(commands.Cog):
             embed.add_field(name="공식 서포팅 서버", value=":link: [Team White 공식 서버](<https://discord.gg/aebSVBgzuG>)", inline=False)
             embed.add_field(name="봇 초대 링크", value=":link: [봇 초대하기](<https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot>)", inline=False)
             await ctx.respond(embed=embed)
-        elif 종류 == 'manage':
+        elif category == 'manage':
             embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 관리 명령어 도움말",  description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
             embed.add_field(name="/ping", value="봇의 핑을 알려줍니다.", inline=False)
             embed.add_field(name="/delete `[n]`", value="메시지를 `[n]`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.", inline=False)
             embed.add_field(name="/server", value="서버 정보를 전송합니다.", inline=False)
             embed.add_field(name="/user", value="유저 정보를 전송합니다.", inline=False)
             await ctx.respond(embed=embed)
-        elif 종류 == 'play':
+        elif category == 'play':
             embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 놀이 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
             embed.add_field(name="/rsp `[가위, 바위, 보]`", value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.", inline=False)
             embed.add_field(name="/dice `[N]` `(n)`", value="주사위를 굴립니다. `[N]`만 쓰면 1부터 `[N]`까지의 숫자를, `(n)`까지 모두 쓰면 `[N]`부터 `(n)`까지의 숫자를 랜덤으로 표출합니다.", inline=False)
             embed.add_field(name="/random `[항목들]`", value="`[항목들]` 중에서 하나를 봇이 골라줍니다.", inline=False)
             await ctx.respond(embed=embed)
-        elif 종류 == 'etc':
+        elif category == 'etc':
             embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 기타 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
             embed.add_field(name="/search `[항목]`", value="여러 사이트에서 `[항목]`을 검색합니다.", inline=False)
             embed.add_field(name="/send `[항목]`", value="`[항목]`을 전송해요!", inline=False)
