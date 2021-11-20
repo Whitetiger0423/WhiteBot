@@ -60,24 +60,16 @@ class HelpDropdown(discord.ui.Select):
             f'{select.values[0]}'
         )
 
-
 class DropdownView(discord.ui.View):
     def __init__(self):
         super().__init__()
-
-        # Adds the dropdown to our view object.
-        self.add_item(Dropdown())
+        self.add_item(HelpDropdown())
 
 class manage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    class DropdownView(discord.ui.View):
-        def __init__(self):
-            super().__init__()
 
-        # Adds the dropdown to our view object.
-            self.add_item(Dropdown())
 
     @slash_command(description='봇의 핑을 전송합니다.')
     async def ping(self, ctx):
