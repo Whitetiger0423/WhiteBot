@@ -13,10 +13,6 @@ from discord.commands import slash_command
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 
-class manage(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
 class HelpDropdown(discord.ui.Select):
     def __init__(self):
 
@@ -71,6 +67,10 @@ class DropdownView(discord.ui.View):
 
         # Adds the dropdown to our view object.
         self.add_item(Dropdown())
+
+class manage(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
 
 
     @slash_command(description='봇의 핑을 전송합니다.')
