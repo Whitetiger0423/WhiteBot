@@ -20,10 +20,6 @@ from discord.commands import slash_command
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 
-class etc(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
 def encrypt(plain: str):
     parsed: list = list(plain)
     encrypted: list = [str(ord(x)) for x in parsed]
@@ -33,6 +29,10 @@ def decrypt(encrypted: str):
     parsed: list = [x.replace(' ', '') for x in encrypted.split("  ")]
     decrypted: list = [chr(int(x, 10)) for x in parsed]
     return ''.join(decrypted)
+
+class etc(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
 
     @slash_command(description='수신문을 암호화합니다.')
     async def code(self, ctx, text):
