@@ -17,23 +17,23 @@ class HelpDropdown(discord.ui.Select):
     def __init__(self):
 
         manageembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 관리 명령어 도움말",  description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
-        embed.add_field(name="/ping", value="봇의 핑을 알려줍니다.", inline=False)
-        embed.add_field(name="/delete `[n]`", value="메시지를 `[n]`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.", inline=False)
-        embed.add_field(name="/server", value="서버 정보를 전송합니다.", inline=False)
-        embed.add_field(name="/user", value="유저 정보를 전송합니다.", inline=False)
+        manageembed.add_field(name="/ping", value="봇의 핑을 알려줍니다.", inline=False)
+        manageembed.add_field(name="/delete `[n]`", value="메시지를 `[n]`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.", inline=False)
+        manageembed.add_field(name="/server", value="서버 정보를 전송합니다.", inline=False)
+        manageembed.add_field(name="/user", value="유저 정보를 전송합니다.", inline=False)
 
         playembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 놀이 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
-        embed.add_field(name="/rsp `[가위, 바위, 보]`", value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.", inline=False)
-        embed.add_field(name="/dice `[N]` `(n)`", value="주사위를 굴립니다. `[N]`만 쓰면 1부터 `[N]`까지의 숫자를, `(n)`까지 모두 쓰면 `[N]`부터 `(n)`까지의 숫자를 랜덤으로 표출합니다.", inline=False)
-        embed.add_field(name="/random `[항목들]`", value="`[항목들]` 중에서 하나를 봇이 골라줍니다.", inline=False)
+        playembed.add_field(name="/rsp `[가위, 바위, 보]`", value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.", inline=False)
+        playembed.add_field(name="/dice `[N]` `(n)`", value="주사위를 굴립니다. `[N]`만 쓰면 1부터 `[N]`까지의 숫자를, `(n)`까지 모두 쓰면 `[N]`부터 `(n)`까지의 숫자를 랜덤으로 표출합니다.", inline=False)
+        playembed.add_field(name="/random `[항목들]`", value="`[항목들]` 중에서 하나를 봇이 골라줍니다.", inline=False)
 
         utilityembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 유틸리티 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
-        embed.add_field(name="/search `[항목]`", value="여러 사이트에서 `[항목]`을 검색합니다.", inline=False)
-        embed.add_field(name="/send `[항목]`", value="`[항목]`을 전송해요!", inline=False)
-        embed.add_field(name="/code `[수신문]`", value="`[수신문]`을 암호화합니다.", inline=False)
-        embed.add_field(name="/decode `[암호문]`", value="`[암호문]`을 해독합니다.", inline=False)
-        embed.add_field(name="/bot", value="봇의 정보를 전송합니다.", inline=False)
-        embed.add_field(name="/youtube", value="들어가 있는 음성 채널에 유튜브 투게더를 활성화 시키는 링크를 보냅니다. 음성 채널에 연결되어 있어야 사용 가능한 명령어입니다.", inline=False)
+        utilityembed.add_field(name="/search `[항목]`", value="여러 사이트에서 `[항목]`을 검색합니다.", inline=False)
+        utilityembed.add_field(name="/send `[항목]`", value="`[항목]`을 전송해요!", inline=False)
+        utilityembed.add_field(name="/code `[수신문]`", value="`[수신문]`을 암호화합니다.", inline=False)
+        utilityembed.add_field(name="/decode `[암호문]`", value="`[암호문]`을 해독합니다.", inline=False)
+        utilityembed.add_field(name="/bot", value="봇의 정보를 전송합니다.", inline=False)
+        utilityembed.add_field(name="/youtube", value="들어가 있는 음성 채널에 유튜브 투게더를 활성화 시키는 링크를 보냅니다. 음성 채널에 연결되어 있어야 사용 가능한 명령어입니다.", inline=False)
 
         options = [
             discord.SelectOption(
