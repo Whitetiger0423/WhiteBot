@@ -29,11 +29,29 @@ def encrypt(plain: str):
     encrypted: list = [str(ord(x)) for x in parsed]
     return ' '.join(' '.join(encrypted)).strip()
 
-
 def decrypt(encrypted: str):
     parsed: list = [x.replace(' ', '') for x in encrypted.split("  ")]
     decrypted: list = [chr(int(x, 10)) for x in parsed]
     return ''.join(decrypted)
+
+    @slash_command(description='수신문을 암호화합니다.')
+    async def code(self, ctx, text):
+        data = encrypt(text)
+        embed = discord.Embed(title="<a:check:824251178493411368> 암호화 완료!", description="아스키 코드를 기반으로 한 암호문입니다.\n해독할 때 띄어쓰기는 인식되지 않으니 `_`나 `-`등의 문자를 넣는것을 추천해요!", color=0xffffff)
+        embed.add_field(name="**원문:**", value=f"```{text}```", inline=False)
+        embed.add_field(name="**암호문:**", value=f"```{data}```", inline=False)
+        await ctx.respond(embed=embed)
+
+    @slash_command(description='수신문을 해독합니다.')
+    async def decode(self, ctx, text):
+        data = decrypt(text)
+        try:
+            embed = discord.Embed(title="<a:check:824251178493411368> 해독 완료!", description="아스키 코드를 기반으로 한 암호문을 해독하였습니다.\n해독이 잘못되었다면 [서포팅 서버](<https://discord.gg/aebSVBgzuG>)에서 제보해주세요!", color=0xffffff)
+            embed.add_field(name="**암호문:**", value=f"```{text}```", inline=False)
+            embed.add_field(name="**해독 결과:**", value=f"```{data}```", inline=False)
+            await ctx.respond(embed=embed)
+        except:
+            await ctx.respond('올바른 암호문을 입력해주세요.')
 
     @slash_command(description='검색어를 검색합니다.')
     async def search(self, ctx, *, 검색어):
@@ -50,25 +68,6 @@ def decrypt(encrypted: str):
     async def send(self, ctx, *, 내용):
         embed = discord.Embed(title=f"Sent by {ctx.author.display_name}", description=f"{내용}", color=0xffffff)
         await ctx.respond(embed=embed)
-
-    @slash_command(description='수신문을 암호화합니다.')
-    async def code(self, ctx, text):
-        data = encrypt(text)
-        embed = discord.Embed(title="<a:check:824251178493411368> 암호화 완료!", description="아스키 코드를 기반으로 한 암호문입니다.\n해독할 때 띄어쓰기는 인식되지 않으니 `_`나 `-`등의 문자를 넣는것을 추천해요!", color=0xffffff)
-        embed.add_field(name="**원문:**", value=f"```{text}```", inline=False)
-        embed.add_field(name="**암호문:**", value=f"```{data}```", inline=False)
-        await ctx.respond(embed=embed)
-
-    @slash_command(description='수신문을 암호화합니다.')
-    async def decode(self, ctx, text):
-        data = decrypt(text)
-        try:
-            embed = discord.Embed(title="<a:check:824251178493411368> 해독 완료!", description="아스키 코드를 기반으로 한 암호문을 해독하였습니다.\n해독이 잘못되었다면 [서포팅 서버](<https://discord.gg/aebSVBgzuG>)에서 제보해주세요!", color=0xffffff)
-            embed.add_field(name="**암호문:**", value=f"```{text}```", inline=False)
-            embed.add_field(name="**해독 결과:**", value=f"```{data}```", inline=False)
-            await ctx.respond(embed=embed)
-        except:
-            await ctx.respond('올바른 암호문을 입력해주세요.')
 
     @slash_command(description='WhiteBot 시스템에 가입합니다.')
     async def register(self, ctx):
