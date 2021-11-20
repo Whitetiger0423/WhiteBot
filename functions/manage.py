@@ -39,6 +39,7 @@ class Dropdown(discord.ui.Select):
             options=options,
         )
         
+    select = discord.ui.Select
     selections = int(select.values[0])
     if selectons == 1:
         embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 관리 명령어 도움말",  description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
