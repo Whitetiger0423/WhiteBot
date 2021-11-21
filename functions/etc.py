@@ -23,10 +23,10 @@ bot = commands.Bot(command_prefix='/', help_command=None)
 def encrypt(plain: str):
     parsed: list = list(plain)
     encrypted: list = [str(ord(x)) for x in parsed]
-    return ' '.join(' '.join(encrypted)).strip()
+    return ' '.join(encrypted).strip()
 
 def decrypt(encrypted: str):
-    parsed: list = [x.replace(' ', '') for x in encrypted.split("  ")]
+    parsed: list = [x for x in encrypted.split("  ")]
     decrypted: list = [chr(int(x, 10)) for x in parsed]
     return ''.join(decrypted)
 
