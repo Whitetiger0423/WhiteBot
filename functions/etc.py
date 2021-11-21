@@ -26,8 +26,8 @@ def encrypt(plain: str):
     return ' '.join(encrypted).strip()
 
 def decrypt(encrypted: str):
-    parsed: list = [x for x in encrypted.split("  ")]
-    decrypted: list = [chr(int(x, 10)) for x in parsed]
+    parsed: list = [int(x) for x in encrypted.split(' ')]
+    decrypted: list = [chr(x) for x in parsed]
     return ''.join(decrypted)
 
 class etc(commands.Cog):
