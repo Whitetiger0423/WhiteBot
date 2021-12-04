@@ -102,25 +102,25 @@ class manage(commands.Cog):
             await ctx.respond(embed=embed)
 
     @slash_command(description='서버 정보를 전송합니다.')
-    async def server(self, ctx):
+    async def server(ctx):
         embed = discord.Embed(title='서버 정보', color=0xffffff)
-        embed.set_thumbnail(url=ctx.message.guild.icon_url)
-        embed.add_field(name='이름: ', value=f'{ctx.message.guild.name}', inline = False)
-        embed.add_field(name='ID: ', value=f'`{ctx.message.guild.id}`', inline = False)
-        embed.add_field(name='지역: ', value=f'{ctx.message.guild.region}', inline = False)
-        embed.add_field(name='부스트 레벨: ', value=f'{ctx.message.guild.premium_tier}레벨', inline = False)
-        embed.add_field(name='멤버 수: ', value=f'{ctx.message.guild.member_count}', inline = False)
-        embed.add_field(name='보안 단계:',value=f'{ctx.message.guild.verification_level}')
+        embed.set_thumbnail(url=ctx.guild.icon_url)
+        embed.add_field(name='이름: ', value=f'{ctx.guild.name}', inline = False)
+        embed.add_field(name='ID: ', value=f'`{ctx.guild.id}`', inline = False)
+        embed.add_field(name='지역: ', value=f'{ctx.guild.region}', inline = False)
+        embed.add_field(name='부스트 레벨: ', value=f'{ctx.guild.premium_tier}레벨', inline = False)
+        embed.add_field(name='멤버 수: ', value=f'{ctx.guild.member_count}', inline = False)
+        embed.add_field(name='보안 단계:',value=f'{ctx.guild.verification_level}')
         await ctx.respond(embed=embed)
 
     @slash_command(description='유저의 정보를 전송합니다.')
-    async def user(self, ctx):
+    async def user(ctx):
         embed = discord.Embed(title='유저 정보', color=0xffffff)
-        embed.set_thumbnail(url=ctx.message.author.avatar_url)
-        embed.add_field(name='계정명: ', value=f'{ctx.message.author.name}', inline = False)
-        embed.add_field(name='ID: ', value=f'`{ctx.message.author.id}`', inline = False)
-        embed.add_field(name='이 서버에서의 별명: ', value=f'{ctx.message.author.display_name}', inline = False)
-        embed.add_field(name='멘션: ', value=f'{ctx.message.author.mention}', inline = False)
+        embed.set_thumbnail(url=ctx.author.avatar_url)
+        embed.add_field(name='계정명: ', value=f'{ctx.author.name}', inline = False)
+        embed.add_field(name='ID: ', value=f'`{ctx.author.id}`', inline = False)
+        embed.add_field(name='이 서버에서의 별명: ', value=f'{ctx.author.display_name}', inline = False)
+        embed.add_field(name='멘션: ', value=f'{ctx.author.mention}', inline = False)
         await ctx.respond(embed=embed)
 
     @slash_command(description='봇의 정보를 전송합니다.')

@@ -46,7 +46,7 @@ class playing(commands.Cog):
                 await ctx.respond(embed=embed)
         except:
             embed = discord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)
-            embed.add_field(name="오류 내용:", value="1. 자연수가 아닌 수를 쓰셨는지 확인해주세요.\n2. 첫번째 숫자가 두번째 숫자보다 더 큰지 확인해주세요.\n3. 너무 긴 숫자가 아닌지 확인해주세요.", inline=False)
+            embed.add_field(name="오류 내용:", value="1. 자연수가 아닌 수를 쓰셨는지 확인해주세요.\n2. 첫번째 숫자가 두번째 숫자보다 더 큰지 확인해주세요.", inline=False)
             await ctx.respond(embed=embed)
 
 
