@@ -19,8 +19,6 @@ class HelpDropdown(discord.ui.Select):
         manageembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 관리 명령어 도움말",  description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
         manageembed.add_field(name="/ping", value="봇의 핑을 알려줍니다.", inline=False)
         manageembed.add_field(name="/delete `[n]`", value="메시지를 `[n]`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.", inline=False)
-        manageembed.add_field(name="/server", value="서버 정보를 전송합니다.", inline=False)
-        manageembed.add_field(name="/user", value="유저 정보를 전송합니다.", inline=False)
 
         playembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 놀이 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
         playembed.add_field(name="/rsp `[가위, 바위, 보]`", value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.", inline=False)
