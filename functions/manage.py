@@ -54,7 +54,6 @@ class HelpDropdown(discord.ui.Select):
         
 
     async def callback(self, select: discord.ui.Select, interaction: discord.Interaction):
-        await FirstHelpEmbed.delete()
         await interaction.response.send_message(
             f'{self.values[0]}'
         )
