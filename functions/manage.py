@@ -35,13 +35,13 @@ class HelpDropdown(discord.ui.Select):
 
         options = [
             discord.SelectOption(
-                label="관리", description="관리와 관련된 명령어들을 소개합니다.", value = f'{manageembed}'
+                label="관리", description="관리와 관련된 명령어들을 소개합니다.", value = manageembed
             ),
             discord.SelectOption(
-                label="놀이", description="혼자, 또는 같이 놀때 필요한 여러 편의기능들을 소개합니다.", value = f'{playembed}'
+                label="놀이", description="혼자, 또는 같이 놀때 필요한 여러 편의기능들을 소개합니다.", value = playembed
             ),
             discord.SelectOption(
-                label="유틸리티", description="암호화, 유튜브 투게더 등 여러 유틸리티 기능들을 소개합니다.", value = f'{utilityembed}'
+                label="유틸리티", description="암호화, 검색, 유튜브 투게더 등 여러 유틸리티 기능들을 소개합니다.", value = utilityembed
             ),
         ]
 

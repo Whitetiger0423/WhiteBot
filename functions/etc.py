@@ -55,13 +55,15 @@ class etc(commands.Cog):
 
     @slash_command(description='검색어를 검색합니다.')
     async def search(self, ctx, *, 검색어):
+        google = 'https://www.google.com/search?q=' + 검색어.replace(' ', '%20')
+        naver = 'https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=' + 검색어.replace(' ', '%20')
+        daum = 'https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&q=' + 검색어.replace(' ', '%20')
+        wikipedia = 'https://ko.wikipedia.org/wiki/' + 검색어.replace(' ', '_')
+        termsnaver = 'https://terms.naver.com/search.naver?query=' + 검색어.replace(" ", "%20")
+        namu = 'https://namu.wiki/Search?q=' + 검색어.replace(" ", "%20")
         embed = discord.Embed(title="<a:check:824251178493411368> 검색결과", description="여러 사이트에서 검색한 결과입니다.", color=0xffffff)
-        embed.add_field(name="구글 검색결과", value=('https://www.google.com/search?q=' + 검색어.replace(" ", "%20")), inline=False)
-        embed.add_field(name="네이버 검색결과", value=('https://search.naver.com/search.naver?query=' + 검색어.replace(" ", "%20")), inline=False)
-        embed.add_field(name="다음 검색결과", value=('https://search.daum.net/search?w=tot&q=' + 검색어.replace(" ", "%20")), inline=False)
-        embed.add_field(name="위키백과 검색결과",  value=('https://ko.wikipedia.org/wiki/특수:검색/' + 검색어.replace(" ", "_")), inline=False)
-        embed.add_field(name="지식백과 검색결과", value=('https://terms.naver.com/search.naver?query=' + 검색어.replace(" ", "%20")), inline=False)
-        embed.add_field(name="나무위키 검색결과", value=('https://namu.wiki/Search?q=' + 검색어.replace(" ", "%20")), inline=False)
+        embed.add_field(name="포털 사이트 검색 결과", value=(f'[**구글**]({google}\n[**네이버**]{naver}\n[다음]({daum})\n[지식백과]({termsnaver})'), inline=False)
+        embed.add_field(name="위키 사이트 검색 결과",  value=(f'[**위키백과**]({wikipedia}\n[**나무위키**]{namu}'), inline=False)
         await ctx.respond(embed=embed)
 
     @slash_command(description='내용을 전송합니다.')
