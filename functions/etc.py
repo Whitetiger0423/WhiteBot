@@ -61,7 +61,7 @@ class etc(commands.Cog):
         wikipedia = 'https://ko.wikipedia.org/wiki/' + 검색어.replace(' ', '_')
         termsnaver = 'https://terms.naver.com/search.naver?query=' + 검색어.replace(" ", "%20")
         namu = 'https://namu.wiki/Search?q=' + 검색어.replace(" ", "%20")
-        embed = discord.Embed(title="<a:check:824251178493411368> 검색결과", description="여러 사이트에서 검색한 결과입니다.", color=0xffffff)
+        embed = discord.Embed(title="<a:check:824251178493411368> 검색결과", description=f"여러 사이트에서 {검색어}를 검색한 결과입니다.", color=0xffffff)
         embed.add_field(name="포털 사이트 검색 결과", value=(f'[**구글**]({google})\n[**네이버**]({naver})\n[다음]({daum})\n[지식백과]({termsnaver})'), inline=False)
         embed.add_field(name="위키 사이트 검색 결과",  value=(f'[**위키백과**]({wikipedia})\n[**나무위키**]({namu})'), inline=False)
         await ctx.respond(embed=embed)
