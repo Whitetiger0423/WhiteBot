@@ -54,8 +54,9 @@ class HelpDropdown(discord.ui.Select):
         
 
     async def callback(self, select: discord.ui.Select, interaction: discord.Interaction):
+        await FirstHelpEmbed.delete()
         await interaction.response.send_message(
-            f'{select.values[0]}'
+            f'{self.values[0]}'
         )
 
 class DropdownView(discord.ui.View):
@@ -81,7 +82,7 @@ class manage(commands.Cog):
             if ctx.author.guild_permissions.administrator:
                 if count:
                     await asyncio.sleep(2)
-                    await ctx.channel.purge(limit=count + 1)
+                    await ctx.channel.purge(limit=count)
                     embed=discord.Embed(title="청소 완료!", color=0xffffff)
                     embed.add_field(name="삭제한 메시지의 수:", value=f"{count}", inline=False)
                     erasemsg = await ctx.respond(embed=embed)
@@ -116,12 +117,12 @@ class manage(commands.Cog):
     @slash_command(description='봇의 도움말을 전송합니다.')
     async def help(self, ctx):
         view = DropdownView()
-        embed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
+        FirstHelpEmbed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
         embed.add_field(name="/help", value="이 메시지를 표출합니다.", inline=False)
         embed.add_field(name="공식 홈페이지", value=":link: [공식 홈페이지](<http://team-white.kro.kr/>)", inline=False)
         embed.add_field(name="공식 서포팅 서버", value=":link: [Team White 공식 서버](<https://discord.gg/aebSVBgzuG>)", inline=False)
         embed.add_field(name="봇 초대 링크", value=":link: [봇 초대하기](<https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot>)", inline=False)
-        await ctx.respond(embed=embed, view=view)
+        await ctx.respond(embed=FirstHelpEmbed, view=view)
 
 def setup(bot):
     bot.add_cog(manage(bot))
