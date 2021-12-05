@@ -85,9 +85,7 @@ class manage(commands.Cog):
                     await ctx.channel.purge(limit=count)
                     embed=discord.Embed(title="청소 완료!", color=0xffffff)
                     embed.add_field(name="삭제한 메시지의 수:", value=f"{count}", inline=False)
-                    erasemsg = await ctx.respond(embed=embed)
-                    await asyncio.sleep(3)
-                    await erasemsg.delete()
+                    await ctx.respond(embed=embed)
                 else:
                     embed=discord.Embed(title="오류 발생!", color=0xff0000)
                     embed.add_field(name="값 오류", value="올바른 자연수 값을 입력해주세요.")
