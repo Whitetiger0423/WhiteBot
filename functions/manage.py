@@ -113,7 +113,7 @@ class manage(commands.Cog):
 
     @slash_command(description='봇의 도움말을 전송합니다.')
     async def help(self, ctx):
-        view = DropdownView()
+        view = HelpDropdown()
         FirstHelpEmbed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
         FirstHelpEmbed.add_field(name="/help", value="이 메시지를 표출합니다.", inline=False)
         FirstHelpEmbed.add_field(name="공식 홈페이지", value=":link: [공식 홈페이지](<http://team-white.kro.kr/>)", inline=False)
