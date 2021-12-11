@@ -119,7 +119,7 @@ class manage(commands.Cog):
         firsthelpembed.add_field(name="공식 홈페이지", value=":link: [공식 홈페이지](<http://team-white.kro.kr/>)", inline=False)
         firsthelpembed.add_field(name="공식 서포팅 서버", value=":link: [Team White 공식 서버](<https://discord.gg/aebSVBgzuG>)", inline=False)
         firsthelpembed.add_field(name="봇 초대 링크", value=":link: [봇 초대하기](<https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot>)", inline=False)
-        await ctx.respond(embed=firsthelpembed, view=view)
+        await ctx.respond(firsthelpembed=embed, view=view)
 
     @commands.command(name='helptest')
     async def helptest(self, ctx):
