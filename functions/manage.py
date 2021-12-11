@@ -35,13 +35,13 @@ class helpdropdown(discord.ui.Select):
 
         options = [
             discord.SelectOption(
-                label="관리", description="관리와 관련된 명령어들을 소개합니다.", value = manageembed.to_dict()
+                label="관리", description="관리와 관련된 명령어들을 소개합니다.", value = manageembed
             ),
             discord.SelectOption(
-                label="놀이", description="혼자, 또는 같이 놀때 필요한 여러 편의기능들을 소개합니다.", value = playembed.to_dict()
+                label="놀이", description="혼자, 또는 같이 놀때 필요한 여러 편의기능들을 소개합니다.", value = playembed
             ),
             discord.SelectOption(
-                label="유틸리티", description="암호화, 검색, 유튜브 투게더 등 여러 유틸리티 기능들을 소개합니다.", value = utilityembed.to_dict()
+                label="유틸리티", description="암호화, 검색, 유튜브 투게더 등 여러 유틸리티 기능들을 소개합니다.", value = utilityembed
             ),
         ]
 
@@ -128,7 +128,7 @@ class manage(commands.Cog):
         firsthelpembed.add_field(name="공식 홈페이지", value=":link: [공식 홈페이지](<http://team-white.kro.kr/>)", inline=False)
         firsthelpembed.add_field(name="공식 서포팅 서버", value=":link: [Team White 공식 서버](<https://discord.gg/aebSVBgzuG>)", inline=False)
         firsthelpembed.add_field(name="봇 초대 링크", value=":link: [봇 초대하기](<https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot>)", inline=False)
-        await ctx.send(embed=firsthelpembed)
+        await ctx.send(embed=firsthelpembed.to_dict())
 
 def setup(bot):
     bot.add_cog(manage(bot))
