@@ -63,7 +63,7 @@ class manage(commands.Cog):
     async def help(self, ctx, sorts = None):
 
         firsthelpembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
-        firsthelpembed.add_field(name="help 명령어 사용법", value="sorts 변수에 `utility`, `play`, `manage` 중 하나를 넣으세요.)", inline=False)
+        firsthelpembed.add_field(name="help 명령어 사용법", value="sorts 변수에 `utility`, `play`, `manage` 중 하나를 넣으세요.", inline=False)
         firsthelpembed.add_field(name="공식 홈페이지", value=":link: [공식 홈페이지](<http://team-white.kro.kr/>)", inline=False)
         firsthelpembed.add_field(name="공식 서포팅 서버", value=":link: [Team White 공식 서버](<https://discord.gg/aebSVBgzuG>)", inline=False)
         firsthelpembed.add_field(name="봇 초대 링크", value=":link: [봇 초대하기](<https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot>)", inline=False)
