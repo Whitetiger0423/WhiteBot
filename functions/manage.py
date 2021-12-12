@@ -92,6 +92,8 @@ class manage(commands.Cog):
             await ctx.respond(embed=playembed)
         elif sorts == "manage":
             await ctx.respond(embed=manageembed)
+        else:
+            await ctx.respond(embed=firsthelpembed)
 
 def setup(bot):
     bot.add_cog(manage(bot))
