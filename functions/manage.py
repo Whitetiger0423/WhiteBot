@@ -13,61 +13,9 @@ from discord.commands import slash_command
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 
-class helpdropdown(discord.ui.Select):
-    def __init__(self):
-
-        manageembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 관리 명령어 도움말",  description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
-        manageembed.add_field(name="/ping", value="봇의 핑을 알려줍니다.", inline=False)
-        manageembed.add_field(name="/delete `[n]`", value="메시지를 `[n]`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.", inline=False)
-
-        playembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 놀이 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
-        playembed.add_field(name="/rsp `[가위, 바위, 보]`", value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.", inline=False)
-        playembed.add_field(name="/dice `[N]` `(n)`", value="주사위를 굴립니다. `[N]`만 쓰면 1부터 `[N]`까지의 숫자를, `(n)`까지 모두 쓰면 `[N]`부터 `(n)`까지의 숫자를 랜덤으로 표출합니다.", inline=False)
-        playembed.add_field(name="/random `[항목들]`", value="`[항목들]` 중에서 하나를 봇이 골라줍니다.", inline=False)
-
-        utilityembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 유틸리티 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
-        utilityembed.add_field(name="/search `[항목]`", value="여러 사이트에서 `[항목]`을 검색합니다.", inline=False)
-        utilityembed.add_field(name="/send `[항목]`", value="`[항목]`을 전송해요!", inline=False)
-        utilityembed.add_field(name="/code `[수신문]`", value="`[수신문]`을 암호화합니다.", inline=False)
-        utilityembed.add_field(name="/decode `[암호문]`", value="`[암호문]`을 해독합니다.", inline=False)
-        utilityembed.add_field(name="/bot", value="봇의 정보를 전송합니다.", inline=False)
-        utilityembed.add_field(name="/youtube", value="들어가 있는 음성 채널에 유튜브 투게더를 활성화 시키는 링크를 보냅니다. 음성 채널에 연결되어 있어야 사용 가능한 명령어입니다.", inline=False)
-
-        options = [
-            discord.SelectOption(
-                label="관리", description="관리와 관련된 명령어들을 소개합니다.", value = manageembed
-            ),
-            discord.SelectOption(
-                label="놀이", description="혼자, 또는 같이 놀때 필요한 여러 편의기능들을 소개합니다.", value = playembed
-            ),
-            discord.SelectOption(
-                label="유틸리티", description="암호화, 검색, 유튜브 투게더 등 여러 유틸리티 기능들을 소개합니다.", value = utilityembed
-            ),
-        ]
-
-        super().__init__(
-            placeholder="보고 싶은 명령어 도움말을 선택하세요!",
-            min_values=1,
-            max_values=1,
-            options=options,
-        )
-        
-
-    async def callback(self, select: discord.ui.Select, interaction: discord.Interaction):
-        await interaction.response.send_message(
-            f'{self.values[0]}'
-        )
-
-class dropdownviews(discord.ui.View):
-    def __init__(self):
-        super().__init__()
-        self.add_item(helpdropdown())
-
 class manage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-
 
     @slash_command(description='봇의 핑을 전송합니다.')
     async def ping(self, ctx):
@@ -112,23 +60,38 @@ class manage(commands.Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(description='봇의 도움말을 전송합니다.')
-    async def help(self, ctx):
-        view = dropdownviews()
-        firsthelpembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
-        firsthelpembed.add_field(name="/help", value="이 메시지를 표출합니다.", inline=False)
-        firsthelpembed.add_field(name="공식 홈페이지", value=":link: [공식 홈페이지](<http://team-white.kro.kr/>)", inline=False)
-        firsthelpembed.add_field(name="공식 서포팅 서버", value=":link: [Team White 공식 서버](<https://discord.gg/aebSVBgzuG>)", inline=False)
-        firsthelpembed.add_field(name="봇 초대 링크", value=":link: [봇 초대하기](<https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot>)", inline=False)
-        await ctx.respond(embed=firsthelpembed, view=view)
+    async def help(self, ctx, sorts = None):
 
-    @commands.command(name='helptest')
-    async def helptest(self, ctx):
         firsthelpembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
-        firsthelpembed.add_field(name="/helptest", value="이 메시지를 표출합니다.", inline=False)
+        firsthelpembed.add_field(name="help 명령어 사용법", value="sorts 변수에 `utility`, `play`, `manage` 중 하나를 넣으세요.)", inline=False)
         firsthelpembed.add_field(name="공식 홈페이지", value=":link: [공식 홈페이지](<http://team-white.kro.kr/>)", inline=False)
         firsthelpembed.add_field(name="공식 서포팅 서버", value=":link: [Team White 공식 서버](<https://discord.gg/aebSVBgzuG>)", inline=False)
         firsthelpembed.add_field(name="봇 초대 링크", value=":link: [봇 초대하기](<https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot>)", inline=False)
-        await ctx.send(embed=firsthelpembed.to_dict())
+        
+        utilityembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 유틸리티 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
+        utilityembed.add_field(name="/search `[항목]`", value="여러 사이트에서 `[항목]`을 검색합니다.", inline=False)
+        utilityembed.add_field(name="/send `[항목]`", value="`[항목]`을 전송해요!", inline=False)
+        utilityembed.add_field(name="/code `[수신문]`", value="`[수신문]`을 암호화합니다.", inline=False)
+        utilityembed.add_field(name="/decode `[암호문]`", value="`[암호문]`을 해독합니다.", inline=False)
+        utilityembed.add_field(name="/bot", value="봇의 정보를 전송합니다.", inline=False)
+        utilityembed.add_field(name="/youtube", value="들어가 있는 음성 채널에 유튜브 투게더를 활성화 시키는 링크를 보냅니다. 음성 채널에 연결되어 있어야 사용 가능한 명령어입니다.", inline=False)
+
+        playembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 놀이 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
+        playembed.add_field(name="/rsp `[가위, 바위, 보]`", value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.", inline=False)
+        playembed.add_field(name="/dice `[N]` `(n)`", value="주사위를 굴립니다. `[N]`만 쓰면 1부터 `[N]`까지의 숫자를, `(n)`까지 모두 쓰면 `[N]`부터 `(n)`까지의 숫자를 랜덤으로 표출합니다.", inline=False)
+
+        manageembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 관리 명령어 도움말",  description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
+        manageembed.add_field(name="/ping", value="봇의 핑을 알려줍니다.", inline=False)
+        manageembed.add_field(name="/delete `[n]`", value="메시지를 `[n]`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.", inline=False)
+
+        if sorts == None:
+            await ctx.respond(embed=firsthelpembed)
+        elif sorts == "utility":
+            await ctx.respond(embed=utilityembed)
+        elif sorts == "play":
+            await ctx.respond(embed=playembed)
+        elif sorts == "manage":
+            await ctx.respond(embed=manageembed)
 
 def setup(bot):
     bot.add_cog(manage(bot))

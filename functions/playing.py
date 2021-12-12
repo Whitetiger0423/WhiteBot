@@ -49,19 +49,5 @@ class playing(commands.Cog):
             embed.add_field(name="오류 내용:", value="1. 자연수가 아닌 수를 쓰셨는지 확인해주세요.\n2. 첫번째 숫자가 두번째 숫자보다 더 큰지 확인해주세요.", inline=False)
             await ctx.respond(embed=embed)
 
-
-    @slash_command(description='여러개의 보기 중 하나를 고릅니다.')
-    async def random(self, ctx, *factor):
-        if factor:
-            randomlists = list(factor)
-            choiced = random.choice(randomlists)
-            embed = discord.Embed(title="룰렛", description=f'{randomlists}', color=0xffffff)
-            embed.add_field(name="**결과:**", value=f'`{choiced}`(이)가 나왔습니다!')
-            await ctx.respond(embed=embed)
-        else:
-            embed = discord.Embed(title="WhiteBot 오류", description="랜덤 기능", color=0xff0000)
-            embed.add_field(name="오류 내용:", value="올바른 값을 입력해주세요.", inline=False)
-            await ctx.respond(embed=embed)
-
 def setup(bot):
     bot.add_cog(playing(bot))
