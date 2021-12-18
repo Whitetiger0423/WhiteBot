@@ -16,6 +16,7 @@ except ImportError:
 from functions import *
 
 
+
 bot = commands.Bot(command_prefix='/', help_command=None)
 DBKR_token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc4Mjc3NzAzNTg5ODYxNzg4NiIsImlhdCI6MTYzNTM4NzQ2MX0.TRov3uSO4wO0MFQQVhppBL_wYpzjTjwC_FIzV9U7awAVWhqZu9taKTfBH64EAa0q7Tgx0vEy0bcnmex2-tyo_QldVnbzU3ZRjH6vhNoZsOvDOnGshA27iTVMNjicNXew8GeB-KnHckVgMyNcb_7otQRPRtmMkNEpWkMsGBE07NQ'
 aiodb = None
@@ -78,5 +79,58 @@ try:
     (asyncio.get_event_loop()).run_until_complete(startup())
 except KeyboardInterrupt:
     (asyncio.get_event_loop()).run_until_complete(shutdown())
+
+@app.command(name="load")
+async def load_commands(ctx, extension):
+    if ctx.author.id == 763422064794796042:
+        if extension == 'all':
+            for filename in os.listdir("functions"):
+                if filename.endswith(".py"):
+                    bot.load_extension(f"functions.{filename[:-3]}")
+            embed = discord.embed(title="Successfully loaded", description=f"모든 커맨드가 성공적으로 로드되었습니다.", color=0xffffff)
+            await ctx.send(embed=embed)
+        else:
+            app.load_extension(f"functions.{extension}")
+            embed = discord.embed(title="Successfully loaded", description=f"{extension} 커맨드가 성공적으로 로드되었습니다.", color=0xffffff)
+            await ctx.send(embed=embed)
+    else:
+        embed = discord.embed(title="Error", description=f"커맨드를 로드할 권한이 없습니다.", color=0xff0000)
+        await ctx.send(embed=embed)
+
+@app.command(name="unload")
+async def unload_commands(ctx, extension):
+    if ctx.author.id == 763422064794796042:
+        if extension == 'all':
+            for filename in os.listdir("functions"):
+                if filename.endswith(".py"):
+                    bot.unload_extension(f"functions.{filename[:-3]}")
+            embed = discord.embed(title="Successfully unloaded", description=f"모든 커맨드가 성공적으로 언로드되었습니다.", color=0xffffff)
+            await ctx.send(embed=embed)
+        else:
+            app.unload_extension(f"functions.{extension}")
+            embed = discord.embed(title="Successfully unloaded", description=f"{extension} 커맨드가 성공적으로 언로드되었습니다.", color=0xffffff)
+            await ctx.send(embed=embed)
+    else:
+        embed = discord.embed(title="Error", description=f"커맨드를 언로드할 권한이 없습니다.", color=0xff0000)
+        await ctx.send(embed=embed)
+
+@app.command(name="reload")
+async def unload_commands(ctx, extension):
+    if ctx.author.id == 763422064794796042:
+        if extension == 'all':
+            for filename in os.listdir("functions"):
+                if filename.endswith(".py"):
+                    bot.unload_extension(f"functions.{filename[:-3]}")
+                    bot.load_extension(f"functions.{filename[:-3]}")
+            embed = discord.embed(title="Successfully reloaded", description=f"모든 커맨드가 성공적으로 리로드되었습니다.", color=0xffffff)
+            await ctx.send(embed=embed)
+        else:
+            app.unload_extension(f"functions.{extension}")
+            app.load_extension(f"functions.{extension}")
+            embed = discord.embed(title="Successfully reloaded", description=f"{extension} 커맨드가 성공적으로 리로드되었습니다.", color=0xffffff)
+            await ctx.send(embed=embed)
+    else:
+        embed = discord.embed(title="Error", description=f"커맨드를 리로드할 권한이 없습니다.", color=0xff0000)
+        await ctx.send(embed=embed)
 
 bot.run('NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.K1mB4kQKkLtDMf1GFzgliFBC_wg')
