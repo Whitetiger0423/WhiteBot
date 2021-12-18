@@ -90,7 +90,7 @@ async def load_commands(ctx, extension):
             embed = discord.embed(title="Successfully loaded", description=f"모든 커맨드가 성공적으로 로드되었습니다.", color=0xffffff)
             await ctx.send(embed=embed)
         else:
-            app.load_extension(f"functions.{extension}")
+            bot.load_extension(f"functions.{extension}")
             embed = discord.embed(title="Successfully loaded", description=f"{extension} 커맨드가 성공적으로 로드되었습니다.", color=0xffffff)
             await ctx.send(embed=embed)
     else:
@@ -107,7 +107,7 @@ async def unload_commands(ctx, extension):
             embed = discord.embed(title="Successfully unloaded", description=f"모든 커맨드가 성공적으로 언로드되었습니다.", color=0xffffff)
             await ctx.send(embed=embed)
         else:
-            app.unload_extension(f"functions.{extension}")
+            bot.unload_extension(f"functions.{extension}")
             embed = discord.embed(title="Successfully unloaded", description=f"{extension} 커맨드가 성공적으로 언로드되었습니다.", color=0xffffff)
             await ctx.send(embed=embed)
     else:
@@ -125,8 +125,8 @@ async def unload_commands(ctx, extension):
             embed = discord.embed(title="Successfully reloaded", description=f"모든 커맨드가 성공적으로 리로드되었습니다.", color=0xffffff)
             await ctx.send(embed=embed)
         else:
-            app.unload_extension(f"functions.{extension}")
-            app.load_extension(f"functions.{extension}")
+            bot.unload_extension(f"functions.{extension}")
+            bot.load_extension(f"functions.{extension}")
             embed = discord.embed(title="Successfully reloaded", description=f"{extension} 커맨드가 성공적으로 리로드되었습니다.", color=0xffffff)
             await ctx.send(embed=embed)
     else:
