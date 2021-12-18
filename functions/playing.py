@@ -10,7 +10,7 @@ class playing(commands.Cog):
         self.bot = bot
 
     @slash_command(description='봇과 가위바위보 게임을 합니다.')
-    async def rsp(self, ctx, user: str):
+    async def rsp(self, ctx, user: Option(str, "낼 것을 선택하세요", choices=["가위", "바위", "보"])):
         rsp_table = ['가위', '바위', '보']
         if user not in rsp_table:
             embed = discord.Embed(title="WhiteBot 오류", description="가위바위보 기능", color=0xff0000)

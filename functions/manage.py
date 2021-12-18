@@ -60,10 +60,9 @@ class manage(commands.Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(description='봇의 도움말을 전송합니다.')
-    async def help(self, ctx, sorts = None):
-
+    async def help(self, ctx, sorts: Option(str, "도움말의 유형을 선택하세요", choices=["기본", "유틸리티", "놀이", "관리"])):
         firsthelpembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
-        firsthelpembed.add_field(name="help 명령어 사용법", value="sorts 변수에 `utility`, `play`, `manage` 중 하나를 넣으세요.", inline=False)
+        firsthelpembed.add_field(name="help 명령어 사용법", value="sorts 변수를 선택하세요.", inline=False)
         firsthelpembed.add_field(name="공식 홈페이지", value=":link: [공식 홈페이지](<http://team-white.kro.kr/>)", inline=False)
         firsthelpembed.add_field(name="공식 서포팅 서버", value=":link: [Team White 공식 서버](<https://discord.gg/aebSVBgzuG>)", inline=False)
         firsthelpembed.add_field(name="봇 초대 링크", value=":link: [봇 초대하기](<https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot>)", inline=False)
@@ -84,15 +83,13 @@ class manage(commands.Cog):
         manageembed.add_field(name="/ping", value="봇의 핑을 알려줍니다.", inline=False)
         manageembed.add_field(name="/delete `[n]`", value="메시지를 `[n]`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.", inline=False)
 
-        if sorts == None:
-            await ctx.respond(embed=firsthelpembed)
-        elif sorts == "utility":
+        if sorts == "유틸리티":
             await ctx.respond(embed=utilityembed)
-        elif sorts == "play":
+        elif sorts == "놀이":
             await ctx.respond(embed=playembed)
-        elif sorts == "manage":
+        elif sorts == "관리":
             await ctx.respond(embed=manageembed)
-        else:
+        elif sorts == "기본":
             await ctx.respond(embed=firsthelpembed)
 
 def setup(bot):
