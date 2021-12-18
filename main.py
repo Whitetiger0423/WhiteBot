@@ -80,7 +80,7 @@ try:
 except KeyboardInterrupt:
     (asyncio.get_event_loop()).run_until_complete(shutdown())
 
-@app.command(name="load")
+@bot.command(name="load")
 async def load_commands(ctx, extension):
     if ctx.author.id == 763422064794796042:
         if extension == 'all':
@@ -97,7 +97,7 @@ async def load_commands(ctx, extension):
         embed = discord.embed(title="Error", description=f"커맨드를 로드할 권한이 없습니다.", color=0xff0000)
         await ctx.send(embed=embed)
 
-@app.command(name="unload")
+@bot.command(name="unload")
 async def unload_commands(ctx, extension):
     if ctx.author.id == 763422064794796042:
         if extension == 'all':
@@ -114,7 +114,7 @@ async def unload_commands(ctx, extension):
         embed = discord.embed(title="Error", description=f"커맨드를 언로드할 권한이 없습니다.", color=0xff0000)
         await ctx.send(embed=embed)
 
-@app.command(name="reload")
+@bot.command(name="reload")
 async def unload_commands(ctx, extension):
     if ctx.author.id == 763422064794796042:
         if extension == 'all':
