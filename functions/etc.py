@@ -33,13 +33,13 @@ def decrypt(encrypted: str):
     return ''.join(decrypted)
 
 def encrypt64(plain: str):
-    stringBytes = string.encode("ascii")
+    stringBytes = str.encode("ascii")
     b64Bytes = base64.b64encode(stringBytes)
     b64String = b64Bytes.decode("ascii")
     return b64String
 
 def decrypt64(plain: str):
-    b64Bytes = string.encode("ascii")
+    b64Bytes = str.encode("ascii")
     stringBytes = base64.b64decode(b64Bytes)
     decodedString = stringBytes.decode("ascii")
     return decodedString
