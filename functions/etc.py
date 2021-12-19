@@ -44,7 +44,7 @@ class etc(commands.Cog):
             embed.add_field(name="**암호문:**", value=f"```{data}```", inline=False)
             await ctx.respond(embed=embed)
         elif type == "base64":
-            embed = discord.embed(title="준비중", description="base64를 기반으로 한 암호문은 아직 준비중에 있습니다.", color=0xffffff)
+            embed = discord.Embed(title="준비중", description="base64를 기반으로 한 암호문은 아직 준비중에 있습니다.", color=0xffffff)
             await ctx.respond(embed=embed)
 
     @slash_command(description='수신문을 해독합니다.')
