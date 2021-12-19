@@ -35,23 +35,38 @@ class etc(commands.Cog):
         self.bot = bot
 
     @slash_command(description='수신문을 암호화합니다.')
-    async def code(self, ctx, text):
-        data = encrypt(text)
-        embed = discord.Embed(title="<a:check:824251178493411368> 암호화 완료!", description="아스키 코드를 기반으로 한 암호문입니다.\n해독할 때 띄어쓰기는 인식되지 않으니 `_`나 `-`등의 문자를 넣는것을 추천해요!", color=0xffffff)
-        embed.add_field(name="**원문:**", value=f"```{text}```", inline=False)
-        embed.add_field(name="**암호문:**", value=f"```{data}```", inline=False)
-        await ctx.respond(embed=embed)
+    async def code(self, ctx, type: Option(str, "암호화 시킬 방식을 선택하세요", choices=["아스키 코드", "base64"]), text):
+        if type == "아스키 코드":
+            data = encrypt(text)
+            embed = discord.Embed(title="<a:check:824251178493411368> 암호화 완료!", description="아스키 코드를 기반으로 한 암호문입니다.\n해독할 때 띄어쓰기는 인식되지 않으니 `_`나 `-`등의 문자를 넣는것을 추천드려요!", color=0xffffff)
+            embed.add_field(name="**원문:**", value=f"```{text}```", inline=False)
+            embed.add_field(name="**암호문:**", value=f"```{data}```", inline=False)
+            await ctx.respond(embed=embed)
+        elif type == "base64":
+            embed = discord.embed(title="준비중", description="base64를 기반으로 한 암호문은 아직 준비중에 있습니다.", color=0xffffff)
+            await ctx.respond(embed=embed)
 
     @slash_command(description='수신문을 해독합니다.')
-    async def decode(self, ctx, text):
-        data = decrypt(text)
-        try:
-            embed = discord.Embed(title="<a:check:824251178493411368> 해독 완료!", description="아스키 코드를 기반으로 한 암호문을 해독하였습니다.\n해독이 잘못되었다면 [서포팅 서버](<https://discord.gg/aebSVBgzuG>)에서 제보해주세요!", color=0xffffff)
-            embed.add_field(name="**암호문:**", value=f"```{text}```", inline=False)
-            embed.add_field(name="**해독 결과:**", value=f"```{data}```", inline=False)
-            await ctx.respond(embed=embed)
-        except:
-            await ctx.respond('올바른 암호문을 입력해주세요.')
+    async def decode(self, ctx, type: Option(str, "해독할 암호몬의 암호화 방식을 선택하세요", choices=["아스키 코드", "base64"]), text):
+        if type == "아스키 코드":
+            data = decrypt(text)
+            try:
+                embed = discord.Embed(title="<a:check:824251178493411368> 해독 완료!", description="아스키 코드를 기반으로 한 암호문을 해독하였습니다.\n해독이 잘못되었다면 [서포팅 서버](<https://discord.gg/aebSVBgzuG>)에서 제보해주세요!", color=0xffffff)
+                embed.add_field(name="**암호문:**", value=f"```{text}```", inline=False)
+                embed.add_field(name="**해독 결과:**", value=f"```{data}```", inline=False)
+                await ctx.respond(embed=embed)
+            except:
+                embed = discord.Embed(title="WhiteBot 오류", description="복호화 기능", color=0xff0000)
+                embed.add_field(name="오류 내용:", value="올바르지 않은 암호문입니다. 올바른 암호문을 입력해주세요.", inline=False)
+                await ctx.respond(embed=embed)
+        elif type == "base64":
+            try:
+                embed = discord.Embed(title="준비중", description="base64를 기반으로 한 암호문은 아직 준비중에 있습니다.", color=0xffffff)
+                await ctx.respond(embed=embed)
+            except:
+                embed = discord.Embed(title="WhiteBot 오류", description="복호화 기능", color=0xff0000)
+                embed.add_field(name="오류 내용:", value="올바르지 않은 암호문입니다. 올바른 암호문을 입력해주세요.", inline=False)
+                await ctx.respond(embed=embed)
 
     @slash_command(description='검색어를 검색합니다.')
     async def search(self, ctx, *, 검색어):

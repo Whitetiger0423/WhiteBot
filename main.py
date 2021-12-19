@@ -80,35 +80,5 @@ try:
 except KeyboardInterrupt:
     (asyncio.get_event_loop()).run_until_complete(shutdown())
 
-@bot.command(name="load")
-async def load_commands(ctx, extension):
-    if ctx.author.id == 763422064794796042:
-        bot.load_extension(f"functions.{extension}")
-        embed = discord.embed(title="Successfully loaded", description=f"{extension} 커맨드가 성공적으로 로드되었습니다.", color=0xffffff)
-        await ctx.send(embed=embed)
-    else:
-        embed = discord.embed(title="Error", description=f"커맨드를 로드할 권한이 없습니다.", color=0xff0000)
-        await ctx.send(embed=embed)
-
-@bot.command(name="unload")
-async def unload_commands(ctx, extension):
-    if ctx.author.id == 763422064794796042:
-        bot.unload_extension(f"functions.{extension}")
-        embed = discord.embed(title="Successfully unloaded", description=f"{extension} 커맨드가 성공적으로 언로드되었습니다.", color=0xffffff)
-        await ctx.send(embed=embed)
-    else:
-        embed = discord.embed(title="Error", description=f"커맨드를 언로드할 권한이 없습니다.", color=0xff0000)
-        await ctx.send(embed=embed)
-
-@bot.command(name="reload")
-async def unload_commands(ctx, extension):
-    if ctx.author.id == 763422064794796042:
-        bot.unload_extension(f"functions.{extension}")
-        bot.load_extension(f"functions.{extension}")
-        embed = discord.embed(title="Successfully reloaded", description=f"{extension} 커맨드가 성공적으로 리로드되었습니다.", color=0xffffff)
-        await ctx.send(embed=embed)
-    else:
-        embed = discord.embed(title="Error", description=f"커맨드를 리로드할 권한이 없습니다.", color=0xff0000)
-        await ctx.send(embed=embed)
 
 bot.run('NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.K1mB4kQKkLtDMf1GFzgliFBC_wg')
