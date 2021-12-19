@@ -65,7 +65,6 @@ class etc(commands.Cog):
                 embed.add_field(name="오류 내용:", value="올바르지 않은 암호문입니다. 올바른 암호문을 입력해주세요.", inline=False)
                 await ctx.respond(embed=embed)
         elif type == "base64":
-            data = decrypt64(text)
             try:
                 string_bytes = text.encode("ascii")
                 base64_bytes = base64.b64decode(string_bytes) 
