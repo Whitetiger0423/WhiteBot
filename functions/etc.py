@@ -32,17 +32,6 @@ def decrypt(encrypted: str):
     decrypted: list = [chr(x) for x in parsed]
     return ''.join(decrypted)
 
-def encrypt64(plain: str):
-    stringBytes = str.encode(str)
-    b64Bytes = base64.b64encode(stringBytes)
-    b64String = b64Bytes.decode(str)
-    return b64String
-
-def decrypt64(plain: str):
-    b64Bytes = str.encode(str)
-    stringBytes = base64.b64decode(b64Bytes)
-    decodedString = stringBytes.decode(str)
-    return decodedString
 
 class etc(commands.Cog):
     def __init__(self, bot):
@@ -56,7 +45,9 @@ class etc(commands.Cog):
             embed.add_field(name="**암호문:**", value=f"```{data}```", inline=False)
             await ctx.respond(embed=embed)
         elif type == "base64":
-            data = encrypt64(text)
+            string_bytes = text.encode("ascii")
+            base64_bytes = base64.b64encode(string_bytes) 
+            data = base64_bytes.decode("ascii") 
             embed = discord.Embed(title="<a:check:824251178493411368> 해독 완료!", description="base64를 기반으로 한 암호문입니다.", color=0xffffff)
             embed.add_field(name="**해독 결과:**", value=f"```{data}```", inline=False)
             await ctx.respond(embed=embed)
@@ -76,6 +67,9 @@ class etc(commands.Cog):
         elif type == "base64":
             data = decrypt64(text)
             try:
+                string_bytes = text.encode("ascii")
+                base64_bytes = base64.b64decode(string_bytes) 
+                data = base64_bytes.decode("ascii")
                 embed = discord.Embed(title="<a:check:824251178493411368> 해독 완료!", description="base64를 기반으로 한 암호문을 해독하였습니다.\n해독이 잘못되었다면 [서포팅 서버](<https://discord.gg/aebSVBgzuG>)에서 제보해주세요!", color=0xffffff)
                 embed.add_field(name="**해독 결과:**", value=f"```{data}```", inline=False)
                 await ctx.respond(embed=embed)
