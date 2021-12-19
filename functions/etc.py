@@ -41,7 +41,7 @@ class etc(commands.Cog):
     async def code(self, ctx, type: Option(str, "암호화 시킬 방식을 선택하세요", choices=["아스키 코드", "base64"]), text):
         if type == "아스키 코드":
             data = encrypt(text)
-            embed = discord.Embed(title="<a:check:824251178493411368> 암호화 완료!", description="아스키 코드를 기반으로 한 암호문입니다.\n해독할 때 띄어쓰기는 인식되지 않으니 `_`나 `-`등의 문자를 넣는것을 추천드려요!", color=0xffffff)
+            embed = discord.Embed(title="<a:check:824251178493411368> 암호화 완료!", description="아스키 코드를 기반으로 한 암호문입니다.", color=0xffffff)
             embed.add_field(name="**암호문:**", value=f"```{data}```", inline=False)
             await ctx.respond(embed=embed)
         elif type == "base64":
