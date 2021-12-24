@@ -95,27 +95,5 @@ class etc(commands.Cog):
         embed = discord.Embed(title=f"Sent by {ctx.author.display_name}", description=f"{내용}", color=0xffffff)
         await ctx.respond(embed=embed)
 
-    @slash_command(description='WhiteBot 시스템에 가입합니다.')
-    async def register(self, ctx):
-        aiocursor = await main.aiodb.execute("select * from user where id=?", (ctx.author.id,))
-        dbdata = await aiocursor.fetchall()
-        await aiocursor.close()
-        if str(dbdata) == '[]':
-            insertdb = True
-        else:
-            insertdb = False
-        if insertdb:
-            aiocursor = await main.aiodb.execute("insert into user (id, tos) values (?, ?)", (ctx.author.id, "True"))
-            await main.aiodb.commit()
-            await aiocursor.close()
-            await ctx.respond(embed=discord.Embed(title="가입 완료", description=f"{ctx.author.mention}\n가입이 완료됐습니다. 이제 봇의 모든 명령어를 사용하실 수 있습니다.", color=0xffffff))
-            return
-        else:
-            aiocursor = await main.aiodb.execute("UPDATE user SET tos = ? WHERE id=?", ("True", ctx.author.id))
-            await main.aiodb.commit()
-            await aiocursor.close()
-            await ctx.respond(embed=discord.Embed(title="가입 완료", description=f"{ctx.author.mention}\n가입이 완료됐습니다. 이제 봇의 모든 명령어를 사용하실 수 있습니다.", color=0xffffff))
-            return
-
 def setup(bot):
     bot.add_cog(etc(bot))
