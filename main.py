@@ -41,10 +41,5 @@ for filename in os.listdir("functions"):
     if filename.endswith(".py"):
         bot.load_extension(f"functions.{filename[:-3]}")
 
-try:
-    (asyncio.get_event_loop()).run_until_complete(startup())
-except KeyboardInterrupt:
-    (asyncio.get_event_loop()).run_until_complete(shutdown())
-
 
 bot.run('NzgyNzc3MDM1ODk4NjE3ODg2.X8RH7A.K1mB4kQKkLtDMf1GFzgliFBC_wg')
