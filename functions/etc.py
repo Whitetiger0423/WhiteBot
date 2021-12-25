@@ -67,7 +67,7 @@ class etc(commands.Cog):
             await ctx.respond(embed=embed)
 
     @slash_command(description='수신문을 해독합니다.')
-    async def decode(self, ctx, type: Option(str, "해독할 암호문의 암호화 방식을 선택하세요", choices=["base32", "base64", "아스키 코드"]), text):
+    async def decode(self, ctx, type: Option(str, "해독할 암호문의 암호화 방식을 선택하세요", choices=["base16", "base32", "base64", "아스키 코드"]), text):
         if type == "base16":
             try:
                 string_bytes = text.encode("utf-8")
