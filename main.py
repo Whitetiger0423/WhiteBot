@@ -1,20 +1,8 @@
 import discord
 import os
-import aiohttp
-import aiofiles
-import aiosqlite
-import pickle
-import asyncio
 import dotenv
 from discord.ext import commands
-import koreanbots
 from koreanbots.client import Koreanbots
-try:
-    import koreanbots
-except ImportError:
-    os.system("pip install koreanbots")
-    import koreanbots
-from functions import *
 
 dotenv.load_dotenv()
 
