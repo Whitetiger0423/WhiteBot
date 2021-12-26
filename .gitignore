@@ -6,5 +6,7 @@ functions/__pycache__/playing.cpython-38.pyc
 .vscode/settings.json
 *.xml
 functions/.idea/functions.iml
-main.py
 *.db
+/venv/
+/.idea/
+.env
