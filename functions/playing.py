@@ -31,7 +31,7 @@ class playing(commands.Cog):
             await ctx.respond(embed=embed)
 
     @slash_command(description='주사위를 굴립니다.')
-    async def dice(self, ctx, firstn: int, secondn: int = None):
+    async def dice(self, ctx, firstn: Option(int, "첫번째 숫자를 정하세요. 두번째 숫자가 없을 경우 범위는 0 ~ firstn으로 결정됩니다."), secondn: Option(int, "두번째 숫자가 있을 경우 범위는 firstn ~ secondn으로 결정됩니다. ") = None):
         try:
             if firstn < 1:
                 embed = discord.Embed(title="WhiteBot 오류", description="주사위 기능", color=0xff0000)

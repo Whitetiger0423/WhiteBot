@@ -38,7 +38,7 @@ class etc(commands.Cog):
         self.bot = bot
 
     @slash_command(description='수신문을 암호화합니다.')
-    async def code(self, ctx, type: Option(str, "암호화 시킬 방식을 선택하세요", choices=["base16", "base32", "base64", "base85" "아스키 코드"]), text):
+    async def code(self, ctx, type: Option(str, "암호화 시킬 방식을 선택하세요", choices=["base16", "base32", "base64", "base85" "아스키 코드"]), text: Option(str, "암호화 시킬 문장을 입력하세요.")):
         if type == "base16":
             string_bytes = text.encode("utf-8")
             base16_bytes = base64.b16encode(string_bytes) 
@@ -74,7 +74,7 @@ class etc(commands.Cog):
             await ctx.respond(embed=embed)
 
     @slash_command(description='수신문을 해독합니다.')
-    async def decode(self, ctx, type: Option(str, "해독할 암호문의 암호화 방식을 선택하세요", choices=["base16", "base32", "base64", "base85", "아스키 코드"]), text):
+    async def decode(self, ctx, type: Option(str, "해독할 암호문의 암호화 방식을 선택하세요", choices=["base16", "base32", "base64", "base85", "아스키 코드"]), text: Option(str, "해독할 암호문을 입력하세요.")):
         if type == "base16":
             try:
                 string_bytes = text.encode("utf-8")
@@ -135,21 +135,21 @@ class etc(commands.Cog):
                 await ctx.respond(embed=embed)
 
     @slash_command(description='검색어를 검색합니다.')
-    async def search(self, ctx, *, 검색어):
-        google = 'https://www.google.com/search?q=' + 검색어.replace(' ', '%20')
-        naver = 'https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=' + 검색어.replace(' ', '%20')
-        daum = 'https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&q=' + 검색어.replace(' ', '%20')
-        wikipedia = 'https://ko.wikipedia.org/wiki/' + 검색어.replace(' ', '_')
-        termsnaver = 'https://terms.naver.com/search.naver?query=' + 검색어.replace(" ", "%20")
-        namu = 'https://namu.wiki/Search?q=' + 검색어.replace(" ", "%20")
-        embed = discord.Embed(title="<a:check:824251178493411368> 검색결과", description=f"`{검색어}`의 검색 결과입니다.", color=0xffffff)
+    async def search(self, ctx, *, searching: Option(str, "검색할 문장을 입력하세요.")):
+        google = 'https://www.google.com/search?q=' + searching.replace(' ', '%20')
+        naver = 'https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=' + searching.replace(' ', '%20')
+        daum = 'https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&q=' + searching.replace(' ', '%20')
+        wikipedia = 'https://ko.wikipedia.org/wiki/' + searching.replace(' ', '_')
+        termsnaver = 'https://terms.naver.com/search.naver?query=' + searching.replace(" ", "%20")
+        namu = 'https://namu.wiki/Search?q=' + searching.replace(" ", "%20")
+        embed = discord.Embed(title="<a:check:824251178493411368> 검색결과", description=f"`{searching}`의 검색 결과입니다.", color=0xffffff)
         embed.add_field(name="포털 사이트 검색 결과", value=(f'[**구글**]({google})\n[**네이버**]({naver})\n[다음]({daum})\n[지식백과]({termsnaver})'), inline=False)
         embed.add_field(name="위키 사이트 검색 결과",  value=(f'[**위키백과**]({wikipedia})\n[**나무위키**]({namu})'), inline=False)
         await ctx.respond(embed=embed)
 
     @slash_command(description='내용을 전송합니다.')
-    async def send(self, ctx, *, 내용):
-        embed = discord.Embed(title=f"Sent by {ctx.author.display_name}", description=f"{내용}", color=0xffffff)
+    async def send(self, ctx, *, text: Option(str, "전송할 내용을 입력하세요. 줄바꿈은 적용되지 않습니다.")):
+        embed = discord.Embed(title=f"Sent by {ctx.author.display_name}", description=f"{text}", color=0xffffff)
         await ctx.respond(embed=embed)
 
 def setup(bot):

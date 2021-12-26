@@ -25,7 +25,7 @@ class manage(commands.Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(description='메시지를 일정 개수만큼 지웁니다.')
-    async def delete(self, ctx, count: int):
+    async def delete(self, ctx, count: Option(int, "삭제할 메시지의 개수를 입력하세요.")):
         try:
             if ctx.author.guild_permissions.administrator:
                 if count:
