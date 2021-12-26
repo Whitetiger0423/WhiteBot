@@ -18,11 +18,16 @@ async def on_ready():
     print("다음으로 로그인합니다 : ")
     print(bot.user.name)
     print(f'Be used in {e} guilds.')
-    try:
-        k = Koreanbots(api_key=os.getenv("DBKR_TOKEN"))
-        await k.guildcount(782777035898617886, servers=len(bot.guilds))
-    except:
-        print("Error while updating Koreanbots server count")
+
+    token = os.getenv("DBKR_TOKEN")
+    if token is not None:
+        try:
+            k = Koreanbots(api_key=os.getenv("DBKR_TOKEN"))
+            await k.guildcount(782777035898617886, servers=len(bot.guilds))
+        except:
+            print("Error while updating Koreanbots server count")
+    else:
+        print("No Koreanbots token provided. Server count will not be updated")
 
 
 for filename in os.listdir("functions"):
