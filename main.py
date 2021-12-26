@@ -22,7 +22,7 @@ async def on_ready():
     token = os.getenv("DBKR_TOKEN")
     if token is not None:
         try:
-            k = Koreanbots(api_key=os.getenv("DBKR_TOKEN"))
+            k = Koreanbots(api_key=token)
             await k.guildcount(782777035898617886, servers=len(bot.guilds))
         except:
             print("Error while updating Koreanbots server count")
