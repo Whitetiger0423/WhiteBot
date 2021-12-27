@@ -56,7 +56,7 @@ class manage(commands.Cog):
         embed.add_field(name='봇 ID: ', value=f'`{self.bot.user.id}`', inline = False)
         embed.add_field(name='봇 버전: ', value='1.3.11', inline = False)
         embed.add_field(name='봇 참가 서버 수: ', value=f'`{g}`개의 서버', inline = False)
-        embed.add_field(name='봇 개발진: ', value='[Team White](<http://team-white.kro.kr/>)', inline = False)
+        embed.add_field(name='봇 개발진: ', value='[Team White](<https://team-white.kro.kr/>)', inline = False)
         embed.add_field(name='서포팅 서버: ', value='[초대 링크](<http://server.whitebot.kro.kr/>)', inline = False)
         await ctx.respond(embed=embed)
 
@@ -64,7 +64,8 @@ class manage(commands.Cog):
     async def help(self, ctx, sorts: Option(str, "도움말의 유형을 선택하세요", choices=["기본", "유틸리티", "놀이", "관리"])):
         firsthelpembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
         firsthelpembed.add_field(name="help 명령어 사용법", value="sorts 변수를 선택하세요.", inline=False)
-        firsthelpembed.add_field(name="공식 홈페이지", value=":link: [공식 홈페이지](<http://team-white.kro.kr/>)", inline=False)
+        firsthelpembed.add_field(name="공식 홈페이지", value=":link: [공식 홈페이지](<https://team-white.kro.kr/>)", inline=False)
+        firsthelpembed.add_field(name="개인정보 처리방침", value=":link: [개인정보 처리방침](<https://team-white.kro.kr/privacy>)", inline=False)
         firsthelpembed.add_field(name="공식 서포팅 서버", value=":link: [Team White 공식 서버](<https://discord.gg/aebSVBgzuG>)", inline=False)
         firsthelpembed.add_field(name="봇 초대 링크", value=":link: [봇 초대하기](<https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot>)", inline=False)
         
