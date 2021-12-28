@@ -1,12 +1,11 @@
 import discord
 import os
 import dotenv
-from discord.ext import commands
 from koreanbots.client import Koreanbots
 
 dotenv.load_dotenv()
 
-bot = commands.Bot(command_prefix='/', help_command=None)
+bot = discord.Bot()
 aiodb = None
 
 

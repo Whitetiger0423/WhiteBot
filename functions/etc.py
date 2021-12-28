@@ -14,13 +14,12 @@ import aiofiles
 import aiosqlite
 import pickle
 import main
-from discord.ext import commands
 from discord.commands import slash_command
 from discord.commands import Option
 import base64
 
 
-bot = commands.Bot(command_prefix='/', help_command=None)
+bot = discord.Bot()
 
 def encrypt(plain: str):
     parsed: list = list(plain)

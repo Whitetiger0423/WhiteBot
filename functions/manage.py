@@ -4,7 +4,6 @@ import random
 import re
 import os, json
 import datetime
-from discord.ext import commands
 import functools
 import itertools
 import math
@@ -12,7 +11,7 @@ from async_timeout import timeout
 from discord.commands import slash_command
 from discord.commands import Option
 
-bot = commands.Bot(command_prefix='/', help_command=None)
+bot = discord.Bot()
 
 class manage(commands.Cog):
     def __init__(self, bot):
