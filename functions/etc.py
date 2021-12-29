@@ -37,7 +37,7 @@ class etc(commands.Cog):
         self.bot = bot
 
     @slash_command(description='수신문을 암호화합니다.')
-    async def code(self, ctx, type: Option(str, "암호화 시킬 방식을 선택하세요", choices=["base16", "base32", "base64", "base85" "아스키 코드"]), text: Option(str, "암호화 시킬 문장을 입력하세요.")):
+    async def code(self, ctx, type: Option(str, "암호화 시킬 방식을 선택하세요", choices=["base16", "base32", "base64", "base85", "아스키 코드"]), text: Option(str, "암호화 시킬 문장을 입력하세요.")):
         if type == "base16":
             string_bytes = text.encode("utf-8")
             base16_bytes = base64.b16encode(string_bytes) 
