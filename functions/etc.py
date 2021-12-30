@@ -14,6 +14,7 @@ import aiofiles
 import aiosqlite
 import pickle
 import main
+from urllib import parse
 from discord.ext import commands
 from discord.commands import slash_command
 from discord.commands import Option
@@ -146,12 +147,12 @@ class etc(commands.Cog):
 
     @slash_command(description='검색어를 검색합니다.')
     async def search(self, ctx, *, searching: Option(str, "검색할 문장을 입력하세요.")):
-        google = 'https://www.google.com/search?q=' + searching.replace(' ', '%20')
-        naver = 'https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=' + searching.replace(' ', '%20')
-        daum = 'https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&q=' + searching.replace(' ', '%20')
-        wikipedia = 'https://ko.wikipedia.org/wiki/' + searching.replace(' ', '_')
+        google = 'https://www.google.com/search?q=' + parse.urlparse(searching)
+        naver = 'https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=' + parse.urlparse(searching)
+        daum = 'https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&q=' + parse.urlparse(searching)
+        wikipedia = 'https://ko.wikipedia.org/wiki/' + parse.urlparse(searching)
         termsnaver = 'https://terms.naver.com/search.naver?query=' + searching.replace(" ", "%20")
-        namu = 'https://namu.wiki/Search?q=' + searching.replace(" ", "%20")
+        namu = 'https://namu.wiki/Search?q=' + parse.urlparse(searching)
         embed = discord.Embed(title="<a:check:824251178493411368> 검색결과", description=f"`{searching}`의 검색 결과입니다.", color=0xffffff)
         embed.add_field(name="포털 사이트 검색 결과", value=(f'[**구글**]({google})\n[**네이버**]({naver})\n[다음]({daum})\n[지식백과]({termsnaver})'), inline=False)
         embed.add_field(name="위키 사이트 검색 결과",  value=(f'[**위키백과**]({wikipedia})\n[**나무위키**]({namu})'), inline=False)
