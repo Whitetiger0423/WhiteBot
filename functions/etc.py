@@ -151,7 +151,7 @@ class etc(commands.Cog):
         naver = 'https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=' + parse.urlparse(searching)
         daum = 'https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&q=' + parse.urlparse(searching)
         wikipedia = 'https://ko.wikipedia.org/wiki/' + parse.urlparse(searching)
-        termsnaver = 'https://terms.naver.com/search.naver?query=' + searching.replace(" ", "%20")
+        termsnaver = 'https://terms.naver.com/search.naver?query=' + parse.urlparse(searching)
         namu = 'https://namu.wiki/Search?q=' + parse.urlparse(searching)
         embed = discord.Embed(title="<a:check:824251178493411368> 검색결과", description=f"`{searching}`의 검색 결과입니다.", color=0xffffff)
         embed.add_field(name="포털 사이트 검색 결과", value=(f'[**구글**]({google})\n[**네이버**]({naver})\n[다음]({daum})\n[지식백과]({termsnaver})'), inline=False)
