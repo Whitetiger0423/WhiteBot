@@ -41,6 +41,7 @@ class youtube(commands.Cog):
             return await ctx.respond(embed=embed)
 
         embed = discord.Embed(title="유튜브 투게더", description=f"[여기를 클릭해주세요](https://discord.gg/{code})", color=0xffffff)
+        embed.set_footer(text="일부 서버에선 작동하지 않는 베타 기능입니다.")
         await ctx.respond(embed=embed)
 
 def setup(bot):
