@@ -1,25 +1,27 @@
 import discord
+import discord.utils
 import os
 import requests
 from requests.utils import quote
 import re
+import json
 from discord.ext import commands
 from discord.commands import slash_command, ApplicationContext, Option, OptionChoice
 
 PAPAGO_URL = "https://openapi.naver.com/v1/papago/n2mt"
+GOOGLE_URL = "https://translation.googleapis.com/language/translate/v2"
 REGEX = re.compile(".+ \\((.+)\\)")
 
 
 class translate(commands.Cog):
     def __init__(self, bot: discord.Bot):
         self.bot = bot
-        self.header = {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "X-Naver-Client-Id": os.getenv("PAPAGO_APPID"),
-            "X-Naver-Client-Secret": os.getenv("PAPAGO_SECRET")
-        }
+        self.papago_id = os.getenv("PAPAGO_APPID")
+        self.papago_secret = os.getenv("PAPAGO_SECRET")
+        self.google_secret = os.getenv("GOOGLE_SECRET")
 
-    @slash_command(description='입력한 내용을 한글에서 영어로 번역합니다. 파파고 API를 사용합니다.')
+
+    @slash_command(description='입력한 내용을 번역합니다.')
     async def translate(
         self,
         ctx: ApplicationContext,
@@ -34,9 +36,20 @@ class translate(commands.Cog):
         text: str
     ):
         src_lang, tar_lang = lang.split(':')
-        data = f"source={src_lang}&target={tar_lang}&text={quote(text)}"
+        if self.use_google:
+            embed = self.google_translate(src_lang, tar_lang, text)
+        else:
+            embed = self.papago_translate(src_lang, tar_lang, text)
+        await ctx.respond(embed=embed)
 
-        res = requests.post(PAPAGO_URL, data=data, headers=self.header)
+    def papago_translate(self, src_lang: str, tar_lang: str, text: str) -> discord.Embed:
+        data = f"source={src_lang}&target={tar_lang}&text={quote(text)}"
+        header = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-Naver-Client-Id": self.papago_id,
+            "X-Naver-Client-Secret": self.papago_secret
+        }
+        res = requests.post(PAPAGO_URL, data=data, headers=header)
         body = res.json()
 
         if res.status_code == 200:
@@ -49,15 +62,47 @@ class translate(commands.Cog):
             print("Papago API has returned 500(Internal Server Error)")
             print("Request:", res.request.method, res.request.url, res.request.headers)
             print("Response:", res.text)
-            embed = discord.Embed(title="오류 발생",
-                                  description="파파고 내부 서버에서 오류가 발생했어요. 잠시 후에 다시 시도해주세요",
-                                  color=0xff0000)
+            return discord.Embed(title="오류 발생",
+                                 description="파파고 내부 서버에서 오류가 발생했어요. 잠시 후에 다시 시도해주세요",
+                                 color=0xff0000)
         else:
-            err_msg = REGEX.match(body['errorMessage']).group(1)
-            embed = discord.Embed(title="오류 발생",
-                                  description=err_msg,
-                                  color=0xff0000)
-        await ctx.respond(embed=embed)
+            if body['errorCode'] == '010':
+                self.use_google = True
+                return self.google_translate(src_lang, tar_lang, text)
+            else:
+                err_msg = REGEX.match(body['errorMessage']).group(1)
+                return discord.Embed(title="오류 발생",
+                                    description=err_msg,
+                                    color=0xff0000)
+
+    def google_translate(self, src_lang: str, tar_lang: str, text: str) -> discord.Embed:
+        data = json.dumps({
+            "q": text,
+            "source": src_lang,
+            "target": tar_lang,
+            "format": "text"
+        })
+        header = {
+            "Authorization": "Bearer " + self.google_secret,
+            "Content-Type": "application / json"
+        }
+
+        res = requests.post(GOOGLE_URL, data=data, headers=header)
+        body = res.json()
+
+        if res.ok:
+            result = body['data']['translations'][0]['translatedText']
+            return discord.Embed(title="번역 완료",
+                                 description=result,
+                                 color=0x00ffc6) \
+                .set_footer(text=f"Google API: {src_lang} -> {tar_lang}")
+        else:
+            print(f"Google API request failed with code {res.status_code}")
+            print("Request:", res.request.method, res.request.url, res.request.headers)
+            print("Response:", res.text)
+            return discord.Embed(title="오류 발생",
+                                 description="오류가 발생했어요. 잠시 후에 다시 시도해주세요",
+                                 color=0xff0000)
 
 
 def setup(bot: discord.Bot):
