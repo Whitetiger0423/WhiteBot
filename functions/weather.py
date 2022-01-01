@@ -106,7 +106,7 @@ class weather(commands.Cogs):
             "nx=" + px + "&" +\
             "ny=" + py
 
-        result = requests.get("http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst?" + payload)
+        result = requests.get("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?" + payload)
 
         items = result.json().get('response').get('body').get('items')
 
