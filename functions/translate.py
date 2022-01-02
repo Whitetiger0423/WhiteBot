@@ -20,14 +20,15 @@ class translate(commands.Cog):
         self.papago_secret = os.getenv("PAPAGO_SECRET")
         self.google_secret = os.getenv("GOOGLE_SECRET")
 
+        self.is_papago_limited = False
 
     @slash_command(description='입력한 내용을 번역합니다.')
     async def translate(
         self,
         ctx: ApplicationContext,
         lang: Option(str, "어느 언어에서 어느 언어로 변역할지 결정합니다", choices=[
-            OptionChoice("한국어 -> 영어", "en:ko"),
-            OptionChoice("영어 -> 한국어", "ko:en"),
+            OptionChoice("한국어 -> 영어", "ko:en"),
+            OptionChoice("영어 -> 한국어", "en:ko"),
             OptionChoice("한국어 -> 일본어", "ko:ja"),
             OptionChoice("일본어 -> 한국어", "ja:ko"),
             OptionChoice("한국어 -> 중국어", "ko:zh-CN"),
@@ -36,7 +37,7 @@ class translate(commands.Cog):
         text: str
     ):
         src_lang, tar_lang = lang.split(':')
-        if self.use_google:
+        if self.is_papago_limited:
             embed = self.google_translate(src_lang, tar_lang, text)
         else:
             embed = self.papago_translate(src_lang, tar_lang, text)
@@ -54,9 +55,9 @@ class translate(commands.Cog):
 
         if res.status_code == 200:
             result = body['message']['result']
-            embed = discord.Embed(title="<a:check:837221276065464370> 번역 완료",
-                                  description=result['translatedText'],
-                                  color=0x00ffc6) \
+            return discord.Embed(title="<a:check:837221276065464370> 번역 완료",
+                                 description=result['translatedText'],
+                                 color=0x00ffc6) \
                 .set_footer(text=f"Papago API: {result['srcLangType']} -> {result['tarLangType']}")
         elif res.status_code == 500:
             print("Papago API has returned 500(Internal Server Error)")
@@ -67,13 +68,13 @@ class translate(commands.Cog):
                                  color=0xff0000)
         else:
             if body['errorCode'] == '010':
-                self.use_google = True
+                self.is_papago_limited = True
                 return self.google_translate(src_lang, tar_lang, text)
             else:
                 err_msg = REGEX.match(body['errorMessage']).group(1)
                 return discord.Embed(title="오류 발생",
-                                    description=err_msg,
-                                    color=0xff0000)
+                                     description=err_msg,
+                                     color=0xff0000)
 
     def google_translate(self, src_lang: str, tar_lang: str, text: str) -> discord.Embed:
         data = json.dumps({
