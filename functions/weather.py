@@ -69,7 +69,7 @@ class weather(commands.Cog):
         y_d = y.strftime("%Y%m%d")
         now = datetime.now()
 
-        base_date, base_time = "0"
+        
         if now.hour<2 or (now.hour==2 and now.minute<=10):
             base_date=y_d 
             base_time="2300"
