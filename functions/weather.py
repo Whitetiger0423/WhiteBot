@@ -143,3 +143,5 @@ class weather(commands.Cog):
         embed.add_field(name="날씨", value=data['weather']['state'], inline=True)
         await ctx.respond(embed=embed)
 
+def setup(bot):
+    bot.add_cog(weather(bot))
