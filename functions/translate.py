@@ -77,6 +77,7 @@ class translate(commands.Cog):
                                  color=0xff0000)
         else:
             if body['errorCode'] == '010':
+                print("Papago API daily limit has been exceeded")
                 self.is_papago_limited = True
                 return self.google_translate(src_lang, tar_lang, text)
             else:
