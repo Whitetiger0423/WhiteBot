@@ -44,7 +44,10 @@ class translate(commands.Cog):
     ):
         src_lang, tar_lang = lang.split(':')
         if self.is_papago_limited:
-            embed = self.google_translate(src_lang, tar_lang, text)
+            # embed = self.google_translate(src_lang, tar_lang, text)
+            embed = discord.Embed(title="지금은 번역이 불가해요",
+                                  description="오늘치 번역 기능을 벌써 다 써버렸네요. 내일 다시 하실 수 있어요",
+                                  color=0xffffff)
         else:
             embed = self.papago_translate(src_lang, tar_lang, text)
         await ctx.respond(embed=embed)
@@ -61,7 +64,7 @@ class translate(commands.Cog):
 
         if res.status_code == 200:
             result = body['message']['result']
-            return discord.Embed(title="<a:check:837221276065464370> 번역 완료",
+            return discord.Embed(title="번역 완료",
                                  description=result['translatedText'],
                                  color=0x00ffc6) \
                 .set_footer(text=f"Papago API: {result['srcLangType']} -> {result['tarLangType']}")
