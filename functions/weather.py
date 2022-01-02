@@ -5,7 +5,7 @@ from datetime import date, datetime, timedelta
 import requests
 
 
-class weather(commands.Cogs):
+class weather(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
