@@ -1,8 +1,9 @@
+import asyncio
 import discord
-import discord.utils
 import os
 import requests
 from requests.utils import quote
+from datetime import datetime
 import re
 import json
 from discord.ext import commands
@@ -21,6 +22,11 @@ class translate(commands.Cog):
         self.google_secret = os.getenv("GOOGLE_SECRET")
 
         self.is_papago_limited = False
+
+        now = datetime.now()
+        tomorrow = datetime(now.year, now.month, now.day + 1)
+        self.loop = asyncio.new_event_loop()
+        self.loop.call_later((tomorrow - now).total_seconds(), self.day_change)
 
     @slash_command(description='입력한 내용을 번역합니다.')
     async def translate(
@@ -104,6 +110,11 @@ class translate(commands.Cog):
             return discord.Embed(title="오류 발생",
                                  description="오류가 발생했어요. 잠시 후에 다시 시도해주세요",
                                  color=0xff0000)
+
+    def day_change(self):
+        self.loop.call_later(60 * 60 * 24, self.day_change)
+        print("day changed")
+        self.is_papago_limited = False
 
 
 def setup(bot: discord.Bot):
