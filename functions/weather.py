@@ -11,7 +11,6 @@ class weather(commands.Cog):
 
     @slash_command(description='현재 날씨를 조회합니다.')
     async def weather(self, ctx, place: Option(str, "날씨를 조회할 장소를 선택해주세요.", choices=["서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종", "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"])):
-        px, py = 0
         if place == "서울":
             px = 60
             py = 127
