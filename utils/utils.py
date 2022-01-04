@@ -8,5 +8,5 @@ def to_querystring(data: dict) -> str:
     |   str: 변환된 쿼리스트링 형태의 문자열
         url body form으로도 사용하기 위해 맨 앞에 ?가 붙어있지 않습니다.
     """
-    parts = [f"{key}={value}" for (key, value) in data]
+    parts = [f"{key}={value}" for key, value in data.items()]
     return '&'.join(parts)
