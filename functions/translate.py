@@ -3,7 +3,7 @@ import discord
 import os
 import requests
 from requests.utils import quote
-from datetime import datetime
+from datetime import datetime, timedelta
 import re
 import json
 from discord.ext import commands
@@ -23,8 +23,9 @@ class translate(commands.Cog):
 
         self.is_papago_limited = False
 
+        tomorrow = datetime.today() + timedelta(days=1)
         now = datetime.now()
-        tomorrow = datetime(now.year, now.month, now.day + 1)
+
         self.loop = asyncio.new_event_loop()
         self.loop.call_later((tomorrow - now).total_seconds(), self.day_change)
 
