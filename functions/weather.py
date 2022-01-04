@@ -72,34 +72,33 @@ class weather(commands.Cog):
         y_d = y.strftime("%Y%m%d")
         now = datetime.now()
 
-        
-        if now.hour<2 or (now.hour==2 and now.minute<=10):
-            base_date=y_d 
-            base_time="2300"
-        elif now.hour<5 or (now.hour==5 and now.minute<=10): 
-            base_date=t_d
-            base_time="0200"
-        elif now.hour<8 or (now.hour==8 and now.minute<=10):
-            base_date=t_d
-            base_time="0500"
-        elif now.hour<=11 or now.minute<=10:
-            base_date=t_d
-            base_time="0800"
-        elif now.hour<14 or (now.hour==14 and now.minute<=10): 
-            base_date=t_d
-            base_time="1100"
-        elif now.hour<17 or (now.hour==17 and now.minute<=10):
-            base_date=t_d
-            base_time="1400"
-        elif now.hour<20 or (now.hour==20 and now.minute<=10):
-            base_date=t_d
-            base_time="1700" 
-        elif now.hour<23 or (now.hour==23 and now.minute<=10):
-            base_date=t_d
-            base_time="2000"
-        else: 
-            base_date=t_d
-            base_time="2300"
+        if now.hour < 2 or (now.hour == 2 and now.minute <= 10):
+            base_date = y_d
+            base_time = "2300"
+        elif now.hour < 5 or (now.hour == 5 and now.minute <= 10):
+            base_date = t_d
+            base_time = "0200"
+        elif now.hour < 8 or (now.hour == 8 and now.minute <= 10):
+            base_date = t_d
+            base_time = "0500"
+        elif now.hour <= 11 or now.minute <= 10:
+            base_date = t_d
+            base_time = "0800"
+        elif now.hour < 14 or (now.hour == 14 and now.minute <= 10):
+            base_date = t_d
+            base_time = "1100"
+        elif now.hour < 17 or (now.hour == 17 and now.minute <= 10):
+            base_date = t_d
+            base_time = "1400"
+        elif now.hour < 20 or (now.hour == 20 and now.minute <= 10):
+            base_date = t_d
+            base_time = "1700"
+        elif now.hour < 23 or (now.hour == 23 and now.minute <= 10):
+            base_date = t_d
+            base_time = "2000"
+        else:
+            base_date = t_d
+            base_time = "2300"
 
         payload = {
             "serviceKey": self.service_key,
@@ -110,7 +109,8 @@ class weather(commands.Cog):
             "ny": py
         }
 
-        result = requests.get("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?" + to_querystring(payload))
+        result = requests.get(
+            "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?" + to_querystring(payload))
 
         items = result.json().get('response').get('body').get('items')
 
@@ -142,10 +142,13 @@ class weather(commands.Cog):
 
         data['weather'] = weather_data
 
-        embed = discord.Embed(title=f"현재 날씨 정보", description=f"현재 날씨 정보를 조회했습니다.", color=0xffffff)
-        embed.add_field(name="기온", value=f"{data['weather']['tmp']}℃", inline=False)
+        embed = discord.Embed(
+            title=f"현재 날씨 정보", description=f"현재 날씨 정보를 조회했습니다.", color=0xffffff)
+        embed.add_field(
+            name="기온", value=f"{data['weather']['tmp']}℃", inline=False)
         embed.add_field(name="날씨", value=data['weather']['state'], inline=True)
         await ctx.respond(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(weather(bot))
