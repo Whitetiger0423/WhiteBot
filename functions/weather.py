@@ -6,6 +6,28 @@ import requests
 import os
 from utils.utils import to_querystring
 
+API_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?"
+
+place_data = {
+    "서울": (60, 127),
+    "부산": (98, 76),
+    "대구": (89, 90),
+    "인천": (55, 124),
+    "광주": (58, 74),
+    "대전": (67, 100),
+    "울산": (102, 84),
+    "세종": (66, 103),
+    "경기": (60, 120),
+    "강원": (73, 134),
+    "충북": (69, 107),
+    "충남": (68, 100),
+    "전북": (63, 89),
+    "전남": (51, 67),
+    "경북": (89, 91),
+    "경남": (91, 77),
+    "제주": (52, 38)
+}
+
 
 class weather(commands.Cog):
     def __init__(self, bot):
@@ -13,92 +35,9 @@ class weather(commands.Cog):
         self.service_key = os.getenv("WEATHER_KEY")
 
     @slash_command(description='현재 날씨를 조회합니다.')
-    async def weather(self, ctx, place: Option(str, "날씨를 조회할 장소를 선택해주세요.", choices=["서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종", "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"])):
-        if place == "서울":
-            px = 60
-            py = 127
-        elif place == "부산":
-            px = 98
-            py = 76
-        elif place == "대구":
-            px = 89
-            py = 90
-        elif place == "인천":
-            px = 55
-            py = 124
-        elif place == "광주":
-            px = 58
-            py = 74
-        elif place == "대전":
-            px = 67
-            py = 100
-        elif place == "울산":
-            px = 102
-            py = 84
-        elif place == "세종":
-            px = 66
-            py = 103
-        elif place == "경기":
-            px = 60
-            py = 120
-        elif place == "강원":
-            px = 73
-            py = 134
-        elif place == "충북":
-            px = 69
-            py = 107
-        elif place == "충남":
-            px = 68
-            py = 100
-        elif place == "전북":
-            px = 63
-            py = 89
-        elif place == "전남":
-            px = 51
-            py = 67
-        elif place == "경북":
-            px = 89
-            py = 91
-        elif place == "경남":
-            px = 91
-            py = 77
-        elif place == "제주":
-            px = 52
-            py = 38
-
-        t = datetime.today()
-        t_d = t.strftime("%Y%m%d")
-        y = date.today() - timedelta(days=1)
-        y_d = y.strftime("%Y%m%d")
-        now = datetime.now()
-
-        if now.hour < 2 or (now.hour == 2 and now.minute <= 10):
-            base_date = y_d
-            base_time = "2300"
-        elif now.hour < 5 or (now.hour == 5 and now.minute <= 10):
-            base_date = t_d
-            base_time = "0200"
-        elif now.hour < 8 or (now.hour == 8 and now.minute <= 10):
-            base_date = t_d
-            base_time = "0500"
-        elif now.hour <= 11 or now.minute <= 10:
-            base_date = t_d
-            base_time = "0800"
-        elif now.hour < 14 or (now.hour == 14 and now.minute <= 10):
-            base_date = t_d
-            base_time = "1100"
-        elif now.hour < 17 or (now.hour == 17 and now.minute <= 10):
-            base_date = t_d
-            base_time = "1400"
-        elif now.hour < 20 or (now.hour == 20 and now.minute <= 10):
-            base_date = t_d
-            base_time = "1700"
-        elif now.hour < 23 or (now.hour == 23 and now.minute <= 10):
-            base_date = t_d
-            base_time = "2000"
-        else:
-            base_date = t_d
-            base_time = "2300"
+    async def weather(self, ctx, place: Option(str, "날씨를 조회할 장소를 선택해주세요.", choices=list(place_data.keys()))):
+        px, py = place_data[place]
+        base_date, base_time = get_base_data_time()
 
         payload = {
             "serviceKey": self.service_key,
@@ -109,10 +48,8 @@ class weather(commands.Cog):
             "ny": py
         }
 
-        result = requests.get(
-            "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?" + to_querystring(payload))
-
-        items = result.json().get('response').get('body').get('items')
+        result = requests.get(API_URL + to_querystring(payload))
+        items = result.json()['response']['body']['items']
 
         data = dict()
         data['date'] = base_date
@@ -152,3 +89,42 @@ class weather(commands.Cog):
 
 def setup(bot):
     bot.add_cog(weather(bot))
+
+
+def get_base_data_time():
+    t = datetime.today()
+    t_d = t.strftime("%Y%m%d")
+    y = date.today() - timedelta(days=1)
+    y_d = y.strftime("%Y%m%d")
+
+    now = datetime.now()
+
+    if now.hour < 2 or (now.hour == 2 and now.minute <= 10):
+        base_date = y_d
+        base_time = "2300"
+    elif now.hour < 5 or (now.hour == 5 and now.minute <= 10):
+        base_date = t_d
+        base_time = "0200"
+    elif now.hour < 8 or (now.hour == 8 and now.minute <= 10):
+        base_date = t_d
+        base_time = "0500"
+    elif now.hour <= 11 or now.minute <= 10:
+        base_date = t_d
+        base_time = "0800"
+    elif now.hour < 14 or (now.hour == 14 and now.minute <= 10):
+        base_date = t_d
+        base_time = "1100"
+    elif now.hour < 17 or (now.hour == 17 and now.minute <= 10):
+        base_date = t_d
+        base_time = "1400"
+    elif now.hour < 20 or (now.hour == 20 and now.minute <= 10):
+        base_date = t_d
+        base_time = "1700"
+    elif now.hour < 23 or (now.hour == 23 and now.minute <= 10):
+        base_date = t_d
+        base_time = "2000"
+    else:
+        base_date = t_d
+        base_time = "2300"
+
+    return (base_date, base_time)
