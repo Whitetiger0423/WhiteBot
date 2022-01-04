@@ -119,7 +119,7 @@ class weather(commands.Cog):
 
         weather_data = dict()
         for item in items['item']:
-            if item['category'] == 'T3H':
+            if item['category'] == 'TMP':
                 weather_data['tmp'] = item['fcstValue']
 
             if item['category'] == 'PTY':
