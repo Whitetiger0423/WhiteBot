@@ -102,8 +102,8 @@ class weather(commands.Cog):
             "dataType=json" + "&" +\
             "base_date=" + base_date + "&" +\
             "base_time=" + base_time + "&" +\
-            "nx=" + px + "&" +\
-            "ny=" + py
+            "nx=" + str(px) + "&" +\
+            "ny=" + str(py)
 
         result = requests.get("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?" + payload)
 
