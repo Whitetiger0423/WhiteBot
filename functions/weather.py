@@ -3,11 +3,14 @@ from discord.ext import commands
 from discord.commands import slash_command, Option
 from datetime import date, datetime, timedelta
 import requests
+import os
+from utils.utils import to_querystring
 
 
 class weather(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.service_key = os.getenv("WEATHER_KEY")
 
     @slash_command(description='현재 날씨를 조회합니다.')
     async def weather(self, ctx, place: Option(str, "날씨를 조회할 장소를 선택해주세요.", choices=["서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종", "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"])):
@@ -98,14 +101,16 @@ class weather(commands.Cog):
             base_date=t_d
             base_time="2300"
 
-        payload = "serviceKey=" + "4yqCoXlfJ9i35%2Fn69zg7LQjUfnOJzHRSthsdNyJWACmg2TK8QRlmwe%2FlcamLJiCJ%2FiXEB4dxQ9KjDF2iwJyK7g%3D%3D" + "&" +\
-            "dataType=json" + "&" +\
-            "base_date=" + base_date + "&" +\
-            "base_time=" + base_time + "&" +\
-            "nx=" + px + "&" +\
-            "ny=" + py
+        payload = {
+            "serviceKey": self.service_key,
+            "dataType": "json",
+            "base_date": base_date,
+            "base_time": base_time,
+            "nx": px,
+            "ny": py
+        }
 
-        result = requests.get("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?" + payload)
+        result = requests.get("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?" + to_querystring(payload))
 
         items = result.json().get('response').get('body').get('items')
 
