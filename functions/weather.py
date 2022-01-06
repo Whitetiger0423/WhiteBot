@@ -87,7 +87,6 @@ class weather(commands.Cog):
                 else:
                     weather_state = '흐림'
 
-        wind_speed = None
         embed = discord.Embed(title="현재 날씨 정보", description="현재 날씨 정보를 조회했습니다.", color=0xffffff) \
             .add_field(name="기온", value=temperature   or '데이터가 없습니다', inline=True) \
             .add_field(name="풍속", value=wind_speed    or '데이터가 없습니다', inline=True) \
