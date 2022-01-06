@@ -59,6 +59,9 @@ class weather(commands.Cog):
             if item['category'] == 'TMP':
                 weather_data['tmp'] = item['fcstValue']
 
+            if item['category'] == 'WSD':
+                weather_data['wsd'] = item['fcstValue']
+
             if item['category'] == 'PTY':
                 weather_code = item['fcstValue']
                 weather_state = ''
@@ -79,12 +82,12 @@ class weather(commands.Cog):
 
         data['weather'] = weather_data
 
-        embed = discord.Embed(
-            title=f"현재 날씨 정보", description=f"현재 날씨 정보를 조회했습니다.", color=0xffffff)
-        embed.add_field(
-            name="기온", value=f"{data['weather']['tmp']}℃", inline=False)
-        embed.add_field(name="날씨", value=data['weather']['state'], inline=True)
         await ctx.respond(embed=embed)
+        embed = discord.Embed(title=f"현재 날씨 정보", description=f"현재 날씨 정보를 조회했습니다.", color=0xffffff) \
+            .add_field(name="기온", value=f"{data['weather']['tmp']}℃", inline=True) \
+            .add_field(name="풍속", value=f"{data['weather']['wsd']} m/s", inline=True) \
+            .add_field(name="날씨", value=data['weather']['state'], inline=False)
+
 
 
 def setup(bot):
