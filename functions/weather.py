@@ -54,41 +54,44 @@ class weather(commands.Cog):
         result = requests.get(API_URL + to_querystring(payload))
         items = result.json()['response']['body']['items']
 
-        data = dict()
-        data['date'] = base_date
+        # API 오류로 데이터가 없을 경우에 네임에러 나지 않게 변수 선정의
+        temperature = None
+        wind_speed = None
+        weather_state = None
 
-        weather_data = dict()
         for item in items['item']:
-            if item['category'] == 'TMP':
-                weather_data['tmp'] = item['fcstValue']
+            category = item['category']
+            value = item['fcstValue']
 
-            if item['category'] == 'WSD':
-                weather_data['wsd'] = item['fcstValue']
+            if category == 'TMP':
+                temperature = f"{value}℃"
+            elif category == 'WSD':
+                wind_speed = f"{value}m/s"
 
-            if item['category'] == 'PTY':
-                weather_code = item['fcstValue']
-                weather_state = ''
-
-                if weather_code == '1':
+            elif category == 'PTY':
+                if value == '1':
                     weather_state = '비 내림'
-                elif weather_code == '2':
+                elif value == '2':
                     weather_state = '진눈깨비 내림'
-                elif weather_code == '3':
+                elif value == '3':
                     weather_state = '눈 내림'
-                elif weather_code == '4':
+                elif value == '4':
                     weather_state = '소나기 내림'
+
+            elif category == 'SKY' and weather_state is None:
+                value = int(value)
+                if value <= 5:
+                    weather_state = '맑음'
+                elif value <= 8:
+                    weather_state = '구름 많음'
                 else:
-                    weather_state = '내리지 않음'
+                    weather_state = '흐림'
 
-                weather_data['code'] = weather_code
-                weather_data['state'] = weather_state
-
-        data['weather'] = weather_data
-
-        embed = discord.Embed(title=f"현재 날씨 정보", description=f"현재 날씨 정보를 조회했습니다.", color=0xffffff) \
-            .add_field(name="기온", value=f"{data['weather']['tmp']}℃", inline=True) \
-            .add_field(name="풍속", value=f"{data['weather']['wsd']} m/s", inline=True) \
-            .add_field(name="날씨", value=data['weather']['state'], inline=False)
+        wind_speed = None
+        embed = discord.Embed(title="현재 날씨 정보", description="현재 날씨 정보를 조회했습니다.", color=0xffffff) \
+            .add_field(name="기온", value=temperature   or '데이터가 없습니다', inline=True) \
+            .add_field(name="풍속", value=wind_speed    or '데이터가 없습니다', inline=True) \
+            .add_field(name="날씨", value=weather_state or '데이터가 없습니다', inline=False)
 
         await ctx.followup.send(embed=embed)
 
