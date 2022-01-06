@@ -1,4 +1,5 @@
 import discord
+from discord.commands.context import ApplicationContext
 from discord.ext import commands
 from discord.commands import slash_command, Option
 from datetime import date, datetime, timedelta
@@ -35,7 +36,9 @@ class weather(commands.Cog):
         self.service_key = os.getenv("WEATHER_KEY")
 
     @slash_command(description='현재 날씨를 조회합니다.')
-    async def weather(self, ctx, place: Option(str, "날씨를 조회할 장소를 선택해주세요.", choices=list(place_data.keys()))):
+    async def weather(self, ctx: ApplicationContext, place: Option(str, "날씨를 조회할 장소를 선택해주세요.", choices=list(place_data.keys()))):
+        await ctx.defer()
+
         px, py = place_data[place]
         base_date, base_time = get_base_data_time()
 
@@ -82,12 +85,12 @@ class weather(commands.Cog):
 
         data['weather'] = weather_data
 
-        await ctx.respond(embed=embed)
         embed = discord.Embed(title=f"현재 날씨 정보", description=f"현재 날씨 정보를 조회했습니다.", color=0xffffff) \
             .add_field(name="기온", value=f"{data['weather']['tmp']}℃", inline=True) \
             .add_field(name="풍속", value=f"{data['weather']['wsd']} m/s", inline=True) \
             .add_field(name="날씨", value=data['weather']['state'], inline=False)
 
+        await ctx.followup.send(embed=embed)
 
 
 def setup(bot):
