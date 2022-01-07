@@ -77,6 +77,7 @@ class manage(commands.Cog):
         utilityembed.add_field(name="/bot", value="봇의 정보를 전송합니다.", inline=False)
         utilityembed.add_field(name="/youtube", value="들어가 있는 음성 채널에 유튜브 투게더를 활성화 시키는 링크를 보냅니다. 음성 채널에 연결되어 있어야 사용 가능하며, 일부 서버에선 작동하지 않습니다.", inline=False)
         utilityembed.add_field(name="/weather `[지역]`", value="`[지역]`의 현재 날씨를 조회합니다.")
+        utilityembed.add_field(name="/translate [lang] `[text]`", value="`[text]`를 번역합니다.", inline=False)
 
         playembed = discord.Embed(title="<a:check:824251178493411368> WhiteBot 놀이 명령어 도움말", description="WhiteBot의 명령어에 대해서 소개합니다.", color=0xffffff)
         playembed.add_field(name="/rsp `[가위, 바위, 보]`", value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.", inline=False)
