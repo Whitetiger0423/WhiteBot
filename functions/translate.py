@@ -6,6 +6,7 @@ from requests.utils import quote
 from datetime import datetime, timedelta
 import re
 import json
+import logging
 from discord.ext import commands
 from utils.commands import slash_command
 from discord.commands import ApplicationContext, Option, OptionChoice
@@ -14,6 +15,7 @@ PAPAGO_URL = "https://openapi.naver.com/v1/papago/n2mt"
 GOOGLE_URL = "https://translation.googleapis.com/language/translate/v2"
 REGEX = re.compile(".+ \\((.+)\\)")
 
+logger = logging.getLogger("translate")
 
 class translate(commands.Cog):
     def __init__(self, bot: discord.Bot):
@@ -29,6 +31,7 @@ class translate(commands.Cog):
 
         self.loop = asyncio.new_event_loop()
         self.loop.call_later((tomorrow - now).total_seconds(), self.day_change)
+        logger.debug("Papago API limit reset has been scheduled on %s", tomorrow.strftime("%b %d %T"))
 
     @slash_command(description='입력한 내용을 번역합니다.')
     async def translate(
@@ -45,6 +48,7 @@ class translate(commands.Cog):
         text: str
     ):
         src_lang, tar_lang = lang.split(':')
+        logger.debug("Command received: %s(%s -> %s)", text, src_lang, tar_lang)
         if self.is_papago_limited:
             # embed = self.google_translate(src_lang, tar_lang, text)
             embed = discord.Embed(title="지금은 번역이 불가해요",
@@ -71,18 +75,19 @@ class translate(commands.Cog):
                                  color=0x00ffc6) \
                 .set_footer(text=f"Papago API: {result['srcLangType']} -> {result['tarLangType']}")
         elif res.status_code == 500:
-            print("Papago API has returned 500(Internal Server Error)")
-            print("Request:", res.request.method, res.request.url, res.request.headers)
-            print("Response:", res.text)
+            logger.warning("Papago API has returned 500(Internal Server Error)")
+            logger.info("Data from Papago API: %s", res.text)
             return discord.Embed(title="오류 발생",
                                  description="파파고 내부 서버에서 오류가 발생했어요. 잠시 후에 다시 시도해주세요",
                                  color=0xff0000)
         else:
             if body['errorCode'] == '010':
-                print("Papago API daily limit has been exceeded")
+                logger.info("Papago API daily limit exceeded")
                 self.is_papago_limited = True
                 return self.google_translate(src_lang, tar_lang, text)
             else:
+                logger.debug("Request toward Papago API failed for user error")
+                logger.debug("Data from Papago API: %s", res.text)
                 err_msg = REGEX.match(body['errorMessage']).group(1)
                 return discord.Embed(title="오류 발생",
                                      description=err_msg,
@@ -110,16 +115,15 @@ class translate(commands.Cog):
                                  color=0x00ffc6) \
                 .set_footer(text=f"Google API: {src_lang} -> {tar_lang}")
         else:
-            print(f"Google API request failed with code {res.status_code}")
-            print("Request:", res.request.method, res.request.url, res.request.headers)
-            print("Response:", res.text)
+            logger.warning("Google API request failed with code %s", res.status_code)
+            logger.info("Data from Google API: %s", res.text)
             return discord.Embed(title="오류 발생",
                                  description="오류가 발생했어요. 잠시 후에 다시 시도해주세요",
                                  color=0xff0000)
 
     def day_change(self):
         self.loop.call_later(60 * 60 * 24, self.day_change)
-        print("day changed")
+        logger.debug("Reset Papago API limit")
         self.is_papago_limited = False
 
 
