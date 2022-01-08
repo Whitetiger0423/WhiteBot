@@ -54,7 +54,7 @@ class manage(commands.Cog):
         embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/782777035898617886/d0ffaea389fce208e560cea5cf082d46.webp?size=1024')
         embed.add_field(name='봇 이름: ', value=f'{self.bot.user.name}', inline = False)
         embed.add_field(name='봇 ID: ', value=f'`{self.bot.user.id}`', inline = False)
-        embed.add_field(name='봇 버전: ', value='1.4.0', inline = False)
+        embed.add_field(name='봇 버전: ', value='1.5.0', inline = False)
         embed.add_field(name='봇 참가 서버 수: ', value=f'`{g}`개의 서버', inline = False)
         embed.add_field(name='봇 개발진: ', value='[Team White](<https://team-white.kro.kr/>)', inline = False)
         embed.add_field(name='서포팅 서버: ', value='[초대 링크](<http://server.whitebot.kro.kr/>)', inline = False)
