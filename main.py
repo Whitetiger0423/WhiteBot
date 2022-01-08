@@ -1,33 +1,36 @@
 import discord
 import os
 import dotenv
+import logging
 from discord.ext import commands
 from koreanbots.client import Koreanbots
 
+logging.basicConfig(level=logging.INFO)
 dotenv.load_dotenv()
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 aiodb = None
+logger = logging.getLogger('main')
 
 
 @bot.event
 async def on_ready():
-    ch = bot.guilds
-    e = len(ch)
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game(f"버전 1.5.0 - {e}개의 서버에서 작동 중"))
-    print("다음으로 로그인합니다 : ")
-    print(bot.user.name)
-    print(f'Be used in {e} guilds.')
+    guild_count = len(bot.guilds)
+
+    logger.info(f"Logged in as {bot.user.name}")
+    logger.info(f'Be used in {guild_count} guilds.')
+
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game(f"버전 1.5.0 - {guild_count}개의 서버에서 작동 중"))
 
     token = os.getenv("DBKR_TOKEN")
     if token is not None:
         try:
             k = Koreanbots(api_key=token)
-            await k.guildcount(782777035898617886, servers=len(bot.guilds))
+            await k.guildcount(782777035898617886, servers=guild_count)
         except:
-            print("Error while updating Koreanbots server count")
+            logger.error("Error while updating Koreanbots server count")
     else:
-        print("No Koreanbots token provided. Server count will not be updated")
+        logger.warning("No Koreanbots token provided. Server count will not be updated")
 
 
 for filename in os.listdir("functions"):
