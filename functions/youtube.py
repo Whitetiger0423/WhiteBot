@@ -10,7 +10,7 @@ import itertools
 import math
 from async_timeout import timeout
 from discord.http import Route
-from discord.commands import slash_command
+from utils.commands import slash_command
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 

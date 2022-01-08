@@ -1,3 +1,6 @@
+from types import LambdaType
+
+
 def to_querystring(data: dict) -> str:
     """사전을 쿼리스트링 형태의 문자열로 변환합니다.
 
@@ -10,3 +13,8 @@ def to_querystring(data: dict) -> str:
     """
     parts = [f"{key}={value}" for key, value in data.items()]
     return '&'.join(parts)
+
+def apply_if_not_none(value: any, block: LambdaType):
+    if value is not None:
+        value = block(value)
+    return value
