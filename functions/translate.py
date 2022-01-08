@@ -7,7 +7,8 @@ from datetime import datetime, timedelta
 import re
 import json
 from discord.ext import commands
-from discord.commands import slash_command, ApplicationContext, Option, OptionChoice
+from utils.commands import slash_command
+from discord.commands import ApplicationContext, Option, OptionChoice
 
 PAPAGO_URL = "https://openapi.naver.com/v1/papago/n2mt"
 GOOGLE_URL = "https://translation.googleapis.com/language/translate/v2"

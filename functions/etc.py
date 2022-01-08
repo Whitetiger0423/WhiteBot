@@ -1,7 +1,8 @@
 import discord
 from urllib import parse
 from discord.ext import commands
-from discord.commands import slash_command, Option
+from discord.commands import Option
+from utils.commands import slash_command
 
 
 class etc(commands.Cog):

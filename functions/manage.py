@@ -9,7 +9,7 @@ import functools
 import itertools
 import math
 from async_timeout import timeout
-from discord.commands import slash_command
+from utils.commands import slash_command
 from discord.commands import Option
 
 bot = commands.Bot(command_prefix='/', help_command=None)

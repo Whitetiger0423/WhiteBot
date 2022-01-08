@@ -1,7 +1,8 @@
 import discord
 from discord.commands.context import ApplicationContext
 from discord.ext import commands
-from discord.commands import slash_command, Option
+from discord.commands import Option
+from utils.commands import slash_command
 from datetime import date, datetime, timedelta
 import requests
 import os
