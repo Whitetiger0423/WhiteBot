@@ -1,14 +1,6 @@
 import asyncio
 import discord
-import random
-import re
-import os, json
-import datetime
 from discord.ext import commands
-import functools
-import itertools
-import math
-from async_timeout import timeout
 from utils.commands import slash_command
 from discord.commands import Option
 
