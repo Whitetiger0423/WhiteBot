@@ -6,7 +6,7 @@ from koreanbots.client import Koreanbots
 
 dotenv.load_dotenv()
 
-bot = commands.Bot(command_prefix='/', help_command=None)
+bot = commands.Bot(command_prefix="/", help_command=None)
 aiodb = None
 
 
@@ -14,10 +14,13 @@ aiodb = None
 async def on_ready():
     ch = bot.guilds
     e = len(ch)
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game(f"버전 1.5.0 - {e}개의 서버에서 작동 중"))
+    await bot.change_presence(
+        status=discord.Status.online,
+        activity=discord.Game(f"버전 1.5.0 - {e}개의 서버에서 작동 중"),
+    )
     print("다음으로 로그인합니다 : ")
     print(bot.user.name)
-    print(f'Be used in {e} guilds.')
+    print(f"Be used in {e} guilds.")
 
     token = os.getenv("DBKR_TOKEN")
     if token is not None:
