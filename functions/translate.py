@@ -48,7 +48,6 @@ class translate(commands.Cog):
         text: str
     ):
         src_lang, tar_lang = lang.split(':')
-        logger.debug("Command received: %s(%s -> %s)", text, src_lang, tar_lang)
         if self.is_papago_limited:
             # embed = self.google_translate(src_lang, tar_lang, text)
             embed = discord.Embed(title="지금은 번역이 불가해요",
@@ -76,6 +75,7 @@ class translate(commands.Cog):
                 .set_footer(text=f"Papago API: {result['srcLangType']} -> {result['tarLangType']}")
         elif res.status_code == 500:
             logger.warning("Papago API has returned 500(Internal Server Error)")
+            logger.info("User input: %s -> %s [%s]", src_lang, tar_lang, text)
             logger.info("Data from Papago API: %s", res.text)
             return discord.Embed(title="오류 발생",
                                  description="파파고 내부 서버에서 오류가 발생했어요. 잠시 후에 다시 시도해주세요",
@@ -87,6 +87,7 @@ class translate(commands.Cog):
                 return self.google_translate(src_lang, tar_lang, text)
             else:
                 logger.debug("Request toward Papago API failed for user error")
+                logger.debug("User input: %s -> %s [%s]", src_lang, tar_lang, text)
                 logger.debug("Data from Papago API: %s", res.text)
                 err_msg = REGEX.match(body['errorMessage']).group(1)
                 return discord.Embed(title="오류 발생",
