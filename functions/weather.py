@@ -32,8 +32,7 @@ place_data = {
 
 
 class weather(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self):
         self.service_key = os.getenv("WEATHER_KEY")
 
     @slash_command(description="현재 날씨를 조회합니다.")
@@ -105,7 +104,7 @@ class weather(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(weather(bot))
+    bot.add_cog(weather())
 
 
 def get_base_data_time():

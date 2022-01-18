@@ -6,9 +6,6 @@ from discord.commands import Option
 
 
 class playing(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
     @slash_command(description="봇과 가위바위보 게임을 합니다.")
     async def rsp(
         self, ctx, user: Option(str, "낼 것을 선택하세요", choices=["가위", "바위", "보"])
@@ -53,7 +50,8 @@ class playing(commands.Cog):
                 embed = discord.Embed(
                     title="WhiteBot 오류", description="주사위 기능", color=0xFF0000
                 )
-                embed.add_field(name="오류 내용:", value="자연수 값만 허용됩니다.", inline=False)
+                embed.add_field(
+                    name="오류 내용:", value="자연수 값만 허용됩니다.", inline=False)
                 await ctx.respond(embed=embed)
             elif secondn:
                 embed = discord.Embed(
@@ -88,4 +86,4 @@ class playing(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(playing(bot))
+    bot.add_cog(playing())

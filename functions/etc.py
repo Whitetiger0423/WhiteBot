@@ -13,9 +13,6 @@ NAMU_WIKI_URL = "https://namu.wiki/Search?q="
 
 
 class etc(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
     @slash_command(description="검색어를 검색합니다.")
     async def search(self, ctx, *, searching: Option(str, "검색할 문장을 입력하세요.")):
         encoded = parse.quote(searching)
@@ -57,4 +54,4 @@ class etc(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(etc(bot))
+    bot.add_cog(etc())

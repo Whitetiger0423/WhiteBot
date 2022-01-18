@@ -5,9 +5,6 @@ from utils.commands import slash_command
 
 
 class youtube(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
     @slash_command(description="유튜브 투게더에 접속할 수 있는 링크를 전송합니다. 음성 채널에 연결되어 있어야 됩니다.")
     async def youtube(self, ctx):
         voice = ctx.author.voice
@@ -27,7 +24,7 @@ class youtube(commands.Cog):
         }
 
         try:
-            code = (await self.bot.http.request(r, json=payload))["code"]
+            code = (await ctx.bot.http.request(r, json=payload))["code"]
         except discord.Forbidden:
             embed = discord.Embed(description="봇이 초대할 수 있는 권한이 없습니다.", color=0xFF0000)
             return await ctx.respond(embed=embed)
@@ -42,4 +39,4 @@ class youtube(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(youtube(bot))
+    bot.add_cog(youtube())

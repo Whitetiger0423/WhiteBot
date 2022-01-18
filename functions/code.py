@@ -6,9 +6,6 @@ from utils.commands import slash_command
 
 
 class code(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
     @slash_command(description="수신문을 암호화합니다.")
     async def code(
         self,
@@ -81,7 +78,7 @@ class code(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(code(bot))
+    bot.add_cog(code())
 
 
 # ---------------------------

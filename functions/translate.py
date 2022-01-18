@@ -16,8 +16,7 @@ REGEX = re.compile(".+ \\((.+)\\)")
 
 
 class translate(commands.Cog):
-    def __init__(self, bot: discord.Bot):
-        self.bot = bot
+    def __init__(self):
         self.papago_id = os.getenv("PAPAGO_APPID")
         self.papago_secret = os.getenv("PAPAGO_SECRET")
         self.google_secret = os.getenv("GOOGLE_SECRET")
@@ -72,7 +71,8 @@ class translate(commands.Cog):
                 .set_footer(text=f"Papago API: {result['srcLangType']} -> {result['tarLangType']}")
         elif res.status_code == 500:
             print("Papago API has returned 500(Internal Server Error)")
-            print("Request:", res.request.method, res.request.url, res.request.headers)
+            print("Request:", res.request.method,
+                  res.request.url, res.request.headers)
             print("Response:", res.text)
             return discord.Embed(title="오류 발생",
                                  description="파파고 내부 서버에서 오류가 발생했어요. 잠시 후에 다시 시도해주세요",
@@ -111,7 +111,8 @@ class translate(commands.Cog):
                 .set_footer(text=f"Google API: {src_lang} -> {tar_lang}")
         else:
             print(f"Google API request failed with code {res.status_code}")
-            print("Request:", res.request.method, res.request.url, res.request.headers)
+            print("Request:", res.request.method,
+                  res.request.url, res.request.headers)
             print("Response:", res.text)
             return discord.Embed(title="오류 발생",
                                  description="오류가 발생했어요. 잠시 후에 다시 시도해주세요",
@@ -124,4 +125,4 @@ class translate(commands.Cog):
 
 
 def setup(bot: discord.Bot):
-    bot.add_cog(translate(bot))
+    bot.add_cog(translate())
