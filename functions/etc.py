@@ -4,6 +4,13 @@ from discord.ext import commands
 from discord.commands import Option
 from utils.commands import slash_command
 
+GOOGLE_URL = "https://www.google.com/search?q="
+NAVER_URL = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query="
+DAUM_URL = "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&q="
+WIKIPEDIA_URL = "https://ko.wikipedia.org/wiki/"
+NAVER_TERMS_URL = "https://terms.naver.com/search.naver?query="
+NAMU_WIKI_URL = "https://namu.wiki/Search?q="
+
 
 class etc(commands.Cog):
     def __init__(self, bot):
@@ -11,20 +18,15 @@ class etc(commands.Cog):
 
     @slash_command(description="검색어를 검색합니다.")
     async def search(self, ctx, *, searching: Option(str, "검색할 문장을 입력하세요.")):
-        google = "https://www.google.com/search?q=" + parse.quote(searching)
-        naver = (
-            "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query="
-            + parse.quote(searching)
-        )
-        daum = (
-            "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&q="
-            + parse.quote(searching)
-        )
-        wikipedia = "https://ko.wikipedia.org/wiki/" + parse.quote(searching)
-        termsnaver = "https://terms.naver.com/search.naver?query=" + parse.quote(
-            searching
-        )
-        namu = "https://namu.wiki/Search?q=" + parse.quote(searching)
+        encoded = parse.quote(searching)
+
+        google = GOOGLE_URL + encoded
+        naver = NAVER_URL + encoded
+        daum = DAUM_URL + encoded
+        wikipedia = WIKIPEDIA_URL + encoded
+        termsnaver = NAVER_TERMS_URL + encoded
+        namu = NAMU_WIKI_URL + encoded
+
         embed = discord.Embed(
             title="<a:check:824251178493411368> 검색결과",
             description=f"`{searching}`의 검색 결과입니다.",
