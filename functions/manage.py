@@ -2,12 +2,12 @@ import asyncio
 import discord
 from discord.ext import commands
 from utils.commands import slash_command
-from discord.commands import Option
+from discord.commands import ApplicationContext, Option
 
 
 class manage(commands.Cog):
     @slash_command(description="봇의 핑을 전송합니다.")
-    async def ping(self, ctx):
+    async def ping(self, ctx: ApplicationContext):
         embed = discord.Embed(title=":ping_pong: 퐁!", color=0xFFFFFF)
         embed.add_field(
             name="discord API Ping: ", value=f"{round(ctx.bot.latency * 1000)} ms"
@@ -15,9 +15,11 @@ class manage(commands.Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(description="메시지를 일정 개수만큼 지웁니다.")
-    async def delete(self, ctx, count: Option(int, "삭제할 메시지의 개수를 입력하세요.")):
+    async def delete(
+        self, ctx: ApplicationContext, count: Option(int, "삭제할 메시지의 개수를 입력하세요.")
+    ):
         try:
-            if ctx.author.guild_permissions.administrator:
+            if ctx.author().guild_permissions.administrator:
                 if count:
                     await asyncio.sleep(2)
                     await ctx.channel.purge(limit=count)
@@ -37,9 +39,7 @@ class manage(commands.Cog):
             await ctx.respond(embed=embed)
 
     @slash_command(description="봇의 정보를 전송합니다.")
-    async def bot(self, ctx):
-        ch = ctx.bot.guilds
-        g = len(ch)
+    async def bot(self, ctx: ApplicationContext):
         embed = discord.Embed(title="봇 정보", color=0xFFFFFF)
         embed.set_thumbnail(
             url="https://cdn.discordapp.com/avatars/782777035898617886/d0ffaea389fce208e560cea5cf082d46.webp?size=1024"
@@ -47,7 +47,9 @@ class manage(commands.Cog):
         embed.add_field(name="봇 이름: ", value=f"{ctx.bot.user.name}", inline=False)
         embed.add_field(name="봇 ID: ", value=f"`{ctx.bot.user.id}`", inline=False)
         embed.add_field(name="봇 버전: ", value="1.5.0", inline=False)
-        embed.add_field(name="봇 참가 서버 수: ", value=f"`{g}`개의 서버", inline=False)
+        embed.add_field(
+            name="봇 참가 서버 수: ", value=f"`{len(ctx.bot.guilds)}`개의 서버", inline=False
+        )
         embed.add_field(
             name="봇 개발진: ",
             value="[Team White](<https://team-white.kro.kr/>)",

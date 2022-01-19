@@ -1,7 +1,7 @@
 import discord
 import base64
 from discord.ext import commands
-from discord.commands import Option
+from discord.commands import ApplicationContext, Option
 from utils.commands import slash_command
 
 
@@ -9,7 +9,7 @@ class code(commands.Cog):
     @slash_command(description="수신문을 암호화합니다.")
     async def code(
         self,
-        ctx,
+        ctx: ApplicationContext,
         type: Option(
             str,
             "암호화 시킬 방식을 선택하세요",
@@ -39,7 +39,7 @@ class code(commands.Cog):
     @slash_command(description="수신문을 해독합니다.")
     async def decode(
         self,
-        ctx,
+        ctx: ApplicationContext,
         type: Option(
             str,
             "해독할 암호문의 암호화 방식을 선택하세요",

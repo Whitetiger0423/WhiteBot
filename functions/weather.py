@@ -1,11 +1,9 @@
 import discord
-from discord.commands.context import ApplicationContext
 from discord.ext import commands
-from discord.commands import Option
+from discord.commands import ApplicationContext, Option
 from utils.commands import slash_command
 from datetime import date, datetime, timedelta
-import requests
-import os
+import requests, os
 from utils.utils import to_querystring
 
 API_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?"

@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from utils.commands import slash_command
-from discord.commands import Option
+from discord.commands import ApplicationContext, Option
 
 basic_commands = (
     discord.Embed(
@@ -89,7 +89,7 @@ class help(commands.Cog):
     @slash_command(description="봇의 도움말을 전송합니다.")
     async def help(
         self,
-        ctx,
+        ctx: ApplicationContext,
         sorts: Option(str, "도움말의 유형을 선택하세요", choices=["기본", "유틸리티", "놀이", "관리"]),
     ):
         if sorts == "유틸리티":

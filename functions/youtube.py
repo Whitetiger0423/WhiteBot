@@ -1,15 +1,16 @@
 import discord
 from discord.ext import commands
 from discord.http import Route
+from discord.commands import ApplicationContext
 from utils.commands import slash_command
 
 
 class youtube(commands.Cog):
     @slash_command(description="유튜브 투게더에 접속할 수 있는 링크를 전송합니다. 음성 채널에 연결되어 있어야 됩니다.")
-    async def youtube(self, ctx):
-        voice = ctx.author.voice
+    async def youtube(self, ctx: ApplicationContext):
+        voice = ctx.author().voice
 
-        if not voice:
+        if voice is not discord.VoiceState:
             embed = discord.Embed(
                 description="이 명령을 사용하려면 사용자가 음성 채널에 있어야합니다.", color=0xFF0000
             )
