@@ -5,11 +5,13 @@ import logging
 from discord.ext import commands
 from koreanbots.client import Koreanbots
 
-logging.basicConfig(level=logging.INFO)
 dotenv.load_dotenv()
 
-bot = commands.Bot(command_prefix='/', help_command=None)
-aiodb = None
+loggingLevel = logging.INFO \
+    if os.getenv("TEST_GUILD_ID") is None else logging.DEBUG
+logging.basicConfig(level=loggingLevel)
+
+bot = commands.Bot(command_prefix="/", help_command=None)
 logger = logging.getLogger('main')
 
 
