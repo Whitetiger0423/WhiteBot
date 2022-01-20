@@ -2,16 +2,16 @@ import discord
 import os
 import dotenv
 import logging
+import utils.logging
 from discord.ext import commands
 from koreanbots.client import Koreanbots
 
-logging.basicConfig(level=logging.INFO)
 dotenv.load_dotenv()
+utils.logging.setup_logging()
 
 bot = commands.Bot(command_prefix='/', help_command=None)
 aiodb = None
 logger = logging.getLogger('main')
-
 
 @bot.event
 async def on_ready():
