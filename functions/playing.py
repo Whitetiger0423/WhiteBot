@@ -2,7 +2,7 @@ import discord
 import random
 from discord.ext import commands
 from utils.commands import slash_command
-from discord.commands import Option
+from discord.commands import ApplicationContext, Option
 
 
 class playing(commands.Cog):
@@ -83,9 +83,9 @@ class playing(commands.Cog):
                 inline=False,
             )
             await ctx.respond(embed=embed)
-    @slash_command(description="홀짝 게임을 합니다.")
-    async def 홀짝(ctx):
-    import random
+
+    @slash_command(name="홀짝", description="홀짝 게임을 합니다.")
+    async def holjjac(self, ctx: ApplicationContext):
         dice = random.randint(1, 6)
         embed = discord.Embed(title='홀, 짝중에 하나를 선택해주세요.',
                           description='선택 한 뒤에 어떤 수가 나왔는지 알려드려요.')
@@ -96,12 +96,11 @@ class playing(commands.Cog):
         await msg.add_reaction('🔴')
         await msg.add_reaction('🔵')
         try:
-
             def check(reaction, user):
                 return str(reaction) in ['🔴', '🔵'] and \
                 user == ctx.author and reaction.message.id == msg.id
 
-            reaction, user = await bot.wait_for('reaction_add', check=check)
+            reaction, user = await ctx.bot.wait_for('reaction_add', check=check)
             if  (str(reaction) == '🔴' and dice % 2 == 1) or \
                 (str(reaction) == '🔵' and dice % 2 == 0):
                 embed = discord.Embed(title='홀, 짝중에 하나를 선택해주세요.',
