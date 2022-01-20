@@ -1,30 +1,18 @@
-import asyncio
 import discord
 import logging
-import random
-import re
-import os, json
-import datetime
 from discord.ext import commands
-import functools
-import itertools
-import math
-from async_timeout import timeout
 from discord.http import Route
+from discord.commands import ApplicationContext
 from utils.commands import slash_command
 
-bot = commands.Bot(command_prefix='/', help_command=None)
 logger = logging.getLogger(__name__)
 
 class youtube(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
     @slash_command(description='유튜브 투게더에 접속할 수 있는 링크를 전송합니다. 음성 채널에 연결되어 있어야 됩니다.')
-    async def youtube(self, ctx):
-        voice = ctx.author.voice
+    async def youtube(self, ctx: ApplicationContext):
+        voice = ctx.author().voice
 
-        if not voice:
+        if voice is not discord.VoiceState:
             logger.debug("Unable to execute: member is not connected to a voice channel")
             embed = discord.Embed(description="이 명령을 사용하려면 사용자가 음성 채널에 있어야합니다.", color=0xff0000)
             return await ctx.respond(embed=embed)
@@ -46,7 +34,7 @@ class youtube(commands.Cog):
 
         except discord.Forbidden as e:
             logger.debug("Forbidden request\n=> Payload: %s\n=> Response: %s", str(payload), e.text)
-            embed = discord.Embed(description="봇이 초대할 수 있는 권한이 없습니다.", color=0xff0000)
+            embed = discord.Embed(description="초대 코드 생성 권한이 없습니다.", color=0xff0000)
             await ctx.respond(embed=embed)
         except discord.HTTPException as e:
             logger.error("Discord API has returned %d\n=> Payload: %s\n=> Response: %s", e.code, str(payload), e.text)
@@ -58,5 +46,6 @@ class youtube(commands.Cog):
             await ctx.respond(embed=embed)
 
 
+
 def setup(bot):
-    bot.add_cog(youtube(bot))
+    bot.add_cog(youtube())

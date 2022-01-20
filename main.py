@@ -9,7 +9,7 @@ from koreanbots.client import Koreanbots
 dotenv.load_dotenv()
 utils.logging.setup_logging()
 
-bot = commands.Bot(command_prefix='/', help_command=None)
+bot = commands.Bot(command_prefix="/", help_command=None)
 aiodb = None
 logger = logging.getLogger('main')
 
@@ -20,13 +20,16 @@ async def on_ready():
     logger.info(f"Logged in as {bot.user.name}")
     logger.info(f'Be used in {guild_count} guilds.')
 
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game(f"버전 1.5.0 - {guild_count}개의 서버에서 작동 중"))
+    await bot.change_presence(
+        status=discord.Status.online,
+        activity=discord.Game(f"버전 1.5.0 - {guild_count}개의 서버에서 작동 중"),
+    )
 
     token = os.getenv("DBKR_TOKEN")
     if token is not None:
         try:
             k = Koreanbots(api_key=token)
-            await k.guildcount(782777035898617886, servers=guild_count)
+            await k.guildcount(bot.user.id, servers=guild_count)
         except:
             logger.error("Error while updating Koreanbots server count")
     else:

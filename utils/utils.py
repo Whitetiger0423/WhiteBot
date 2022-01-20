@@ -12,7 +12,8 @@ def to_querystring(data: dict) -> str:
         url body form으로도 사용하기 위해 맨 앞에 ?가 붙어있지 않습니다.
     """
     parts = [f"{key}={value}" for key, value in data.items()]
-    return '&'.join(parts)
+    return "&".join(parts)
+
 
 def apply_if_not_none(value: any, block: LambdaType):
     if value is not None:
