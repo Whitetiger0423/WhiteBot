@@ -19,7 +19,7 @@ class manage(commands.Cog):
         self, ctx: ApplicationContext, count: Option(int, "삭제할 메시지의 개수를 입력하세요.")
     ):
         try:
-            if ctx.author().guild_permissions.administrator:
+            if ctx.author.guild_permissions.administrator:
                 if count:
                     await asyncio.sleep(2)
                     await ctx.channel.purge(limit=count)

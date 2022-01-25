@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class youtube(commands.Cog):
     @slash_command(description='유튜브 투게더에 접속할 수 있는 링크를 전송합니다. 음성 채널에 연결되어 있어야 됩니다.')
     async def youtube(self, ctx: ApplicationContext):
-        voice = ctx.author().voice
+        voice = ctx.author.voice
 
         if voice is not discord.VoiceState:
             logger.debug("Unable to execute: member is not connected to a voice channel")

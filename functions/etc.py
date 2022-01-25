@@ -53,7 +53,7 @@ class etc(commands.Cog):
         text: Option(str, "전송할 내용을 입력하세요. 줄바꿈은 적용되지 않습니다."),
     ):
         embed = discord.Embed(
-            title=f"Sent by {ctx.author().display_name}",
+            title=f"Sent by {ctx.author.display_name}",
             description=f"{text}",
             color=0xFFFFFF,
         )

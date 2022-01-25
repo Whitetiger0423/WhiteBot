@@ -27,12 +27,12 @@ class playing(commands.Cog):
             if result == 0:
                 forsend = f"{user} vs {bot}\n비겼네요!"
             elif result == 1 or result == -2:
-                forsend = f"{user} vs {bot}\n{ctx.author().display_name}님이 이겼어요!"
+                forsend = f"{user} vs {bot}\n{ctx.author.display_name}님이 이겼어요!"
             else:
                 forsend = f"{user} vs {bot}\n봇이 이겼습니다!"
             embed = discord.Embed(
                 title="가위바위보",
-                description=f"봇 vs {ctx.author().display_name}",
+                description=f"봇 vs {ctx.author.display_name}",
                 color=0xFFFFFF,
             )
             embed.add_field(name="**결과:**", value=f"{forsend}", inline=False)
