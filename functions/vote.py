@@ -30,13 +30,17 @@ class vote(commands.Cog):
         for choice in choices:
             choice_id = self.service.create_vote_choice(choice.strip(), vote_id)
             button = Button(style = discord.ButtonStyle.primary, label = choice, custom_id = str(choice_id))
+            button.callback = self.button_callback
             view.add_item(button)
 
         await ctx.respond(
-            embed=discord.Embed(title=name, description="아래 버튼을 눌러 투표에 참여해주세요.", color=0xFF0000)
+            embed=discord.Embed(title=name, description="아래 버튼을 눌러 투표에 참여해주세요.", color=0xFFFFFF)
                 .set_footer(text=f"Started by {ctx.author.display_name}", icon_url=ctx.author.display_avatar),
             view=view
         )
+
+    async def button_callback(self, interaction: discord.Interaction):
+        self.service.create_voter(interaction.user.id, interaction.data["custom_id"])
 
 
 class vote_service():
@@ -47,6 +51,7 @@ class vote_service():
     ]
     CREATE_VOTE = "INSERT INTO votes (name, state, user_id, interaction_token) VALUES (?, 0, ?, ?)"
     CREATE_VOTE_CHOICE = "INSERT INTO vote_choices (name, value, vote) VALUES (?, 0, ?)"
+    CREATE_VOTER = "INSERT INTO voters (id, choice) VALUES (?, ?)"
 
     def __init__(self, db_path: str):
         self.conn = sqlite3.connect(db_path)
@@ -62,6 +67,10 @@ class vote_service():
 
     def create_vote_choice(self, name, vote) -> int:
         with self.conn.execute(self.CREATE_VOTE_CHOICE, (name, vote)) as cursor:
+            return cursor.lastrowid
+
+    def create_voter(self, id, choice) -> int:
+        with self.conn.execute(self.CREATE_VOTER, (id, choice)) as cursor:
             return cursor.lastrowid
 
 
