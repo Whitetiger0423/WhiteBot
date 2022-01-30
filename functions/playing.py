@@ -86,7 +86,7 @@ class playing(commands.Cog):
             )
             await ctx.respond(embed=embed)
 
-    @slash_command(name="홀짝", description="홀짝 게임을 시작합니다.")
+    @slash_command(description="홀짝 게임을 시작합니다.")
     async def holjjac(self, ctx: ApplicationContext):
         dice = random.randint(1, 6)
         embed = discord.Embed(title='홀짝 게임',
