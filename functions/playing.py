@@ -3,7 +3,9 @@ import random
 from discord.ext import commands
 from utils.commands import slash_command
 from discord.commands import ApplicationContext, Option
+import logging
 
+logger = logging.getLogger(__name__)
 
 class playing(commands.Cog):
     @slash_command(description="봇과 가위바위보 게임을 합니다.")
@@ -110,7 +112,10 @@ class playing(commands.Cog):
                                   description=f'틀렸습니다.. (주사위: {dice})', color=0xFFFFFF)
             await msg.edit(embed=embed)
         except:
-            pass
+            logger.exception("Unexpected exception from holjjac")
+
+            embed = discord.Embed(title="오류가 발생했어요", description="잠시 후에 다시 시도해주세요", color=0xFF0000)
+            await msg.edit(embed=embed)
 
 
 def setup(bot):
