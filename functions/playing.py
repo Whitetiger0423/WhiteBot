@@ -84,12 +84,12 @@ class playing(commands.Cog):
             )
             await ctx.respond(embed=embed)
 
-    @slash_command(name="홀짝", description="홀짝 게임을 합니다.")
+    @slash_command(name="홀짝", description="홀짝 게임을 시작합니다.")
     async def holjjac(self, ctx: ApplicationContext):
         dice = random.randint(1, 6)
-        embed = discord.Embed(title='홀, 짝중에 하나를 선택해주세요.',
-                          description='선택 한 뒤에 어떤 수가 나왔는지 알려드려요.')
-        embed.add_field(name='> 주사위의 눈', value='???')
+        embed = discord.Embed(title='홀짝 게임',
+                          description='1부터 6까지 나오는 주사위들의 수가 짝수일지, 홀수일지 아래의 반응을 눌러 예측해보세요!', color=0xFFFFFF)
+        embed.add_field(name='> 주사위의 눈', value='?')
         embed.add_field(name='> 홀수', value='🔴')
         embed.add_field(name='> 짝수', value='🔵')
         msg = await ctx.respond(embed=embed)
@@ -103,15 +103,11 @@ class playing(commands.Cog):
             reaction, user = await ctx.bot.wait_for('reaction_add', check=check)
             if  (str(reaction) == '🔴' and dice % 2 == 1) or \
                 (str(reaction) == '🔵' and dice % 2 == 0):
-                embed = discord.Embed(title='홀, 짝중에 하나를 선택해주세요.',
-                                  description='정답입니다! 계속해서 도전해보세요!')
+                embed = discord.Embed(title='홀짝 게임',
+                                  description=f'정답입니다! (주사위: {dice})', color=0xFFFFFF)
             else:
-                embed = discord.Embed(title='홀, 짝중에 하나를 선택해주세요.',
-                                  description='틀렸습니다... 계속해서 도전해보세요!')
-            embed.add_field(name='> 주사위의 눈', value=str(dice))
-            embed.add_field(name='> 홀수', value='🔴')
-            embed.add_field(name='> 짝수', value='🔵')
-            await msg.clear_reactions()
+                embed = discord.Embed(title='홀짝 게임',
+                                  description=f'틀렸습니다.. (주사위: {dice})', color=0xFFFFFF)
             await msg.edit(embed=embed)
         except:
             pass
