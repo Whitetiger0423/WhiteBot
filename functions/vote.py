@@ -6,7 +6,9 @@ from discord.ui import View, Button
 import sqlite3
 import os
 import re
+import logging
 
+logger = logging.getLogger(__name__)
 
 class vote(commands.Cog):
     def __init__(self):
@@ -24,12 +26,16 @@ class vote(commands.Cog):
         await ctx.defer()
 
         vote_id = self.service.create_vote(name, ctx.author.id, ctx.interaction.token)
+        logger.info(f"vote entity created(id: {vote_id}, name: {name})")
 
         choices = choices.split(",", 25)
         view = View()
         for choice in choices:
-            choice_id = self.service.create_vote_choice(choice.strip(), vote_id)
-            button = Button(style = discord.ButtonStyle.primary, label = choice, custom_id = str(choice_id))
+            choice_name = choice.strip()
+            choice_id = self.service.create_vote_choice(choice_name, vote_id)
+            logger.info(f"vote choice entity created(id: {choice_id}, name: {choice_name}, vote: {vote_id})")
+
+            button = Button(style = discord.ButtonStyle.primary, label = choice_name, custom_id = str(choice_id))
             button.callback = self.button_callback
             view.add_item(button)
 
@@ -40,7 +46,11 @@ class vote(commands.Cog):
         )
 
     async def button_callback(self, interaction: discord.Interaction):
-        self.service.create_voter(interaction.user.id, interaction.data["custom_id"])
+        user_id = interaction.user.id
+        choice_id = interaction.data["custom_id"]
+
+        self.service.create_voter(user_id, choice_id)
+        logger.info(f"voter entity created(id: {user_id}, choice: {choice_id})")
 
 
 class vote_service():
@@ -52,6 +62,8 @@ class vote_service():
     CREATE_VOTE = "INSERT INTO votes (name, state, user_id, interaction_token) VALUES (?, 0, ?, ?)"
     CREATE_VOTE_CHOICE = "INSERT INTO vote_choices (name, value, vote) VALUES (?, 0, ?)"
     CREATE_VOTER = "INSERT INTO voters (id, choice) VALUES (?, ?)"
+
+    GET_VOTER = "SELECT * FROM voters WHERE id=? AND choice=?"
 
     def __init__(self, db_path: str):
         self.conn = sqlite3.connect(db_path)
