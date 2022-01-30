@@ -10,7 +10,9 @@ logger = logging.getLogger(__name__)
 class playing(commands.Cog):
     @slash_command(description="봇과 가위바위보 게임을 합니다.")
     async def rsp(
-        self, ctx, user: Option(str, "낼 것을 선택하세요", choices=["가위", "바위", "보"])
+        self,
+        ctx: ApplicationContext,
+        user: Option(str, "낼 것을 선택하세요", choices=["가위", "바위", "보"]),
     ):
         rsp_table = ["가위", "바위", "보"]
         if user not in rsp_table:
@@ -41,7 +43,7 @@ class playing(commands.Cog):
     @slash_command(description="주사위를 굴립니다.")
     async def dice(
         self,
-        ctx,
+        ctx: ApplicationContext,
         firstn: Option(int, "첫번째 숫자를 정하세요. 두번째 숫자가 없을 경우 범위는 0 ~ firstn으로 결정됩니다."),
         secondn: Option(
             int, "두번째 숫자가 있을 경우 범위는 firstn ~ secondn으로 결정됩니다. ", required=False
@@ -52,8 +54,7 @@ class playing(commands.Cog):
                 embed = discord.Embed(
                     title="WhiteBot 오류", description="주사위 기능", color=0xFF0000
                 )
-                embed.add_field(
-                    name="오류 내용:", value="자연수 값만 허용됩니다.", inline=False)
+                embed.add_field(name="오류 내용:", value="자연수 값만 허용됩니다.", inline=False)
                 await ctx.respond(embed=embed)
             elif secondn:
                 embed = discord.Embed(

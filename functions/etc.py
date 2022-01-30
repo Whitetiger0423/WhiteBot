@@ -1,7 +1,7 @@
 import discord
 from urllib import parse
 from discord.ext import commands
-from discord.commands import Option
+from discord.commands import ApplicationContext, Option
 from utils.commands import slash_command
 
 GOOGLE_URL = "https://www.google.com/search?q="
@@ -14,7 +14,9 @@ NAMU_WIKI_URL = "https://namu.wiki/Search?q="
 
 class etc(commands.Cog):
     @slash_command(description="검색어를 검색합니다.")
-    async def search(self, ctx, *, searching: Option(str, "검색할 문장을 입력하세요.")):
+    async def search(
+        self, ctx: ApplicationContext, *, searching: Option(str, "검색할 문장을 입력하세요.")
+    ):
         encoded = parse.quote(searching)
 
         google = GOOGLE_URL + encoded
@@ -44,7 +46,12 @@ class etc(commands.Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(description="내용을 전송합니다.")
-    async def send(self, ctx, *, text: Option(str, "전송할 내용을 입력하세요. 줄바꿈은 적용되지 않습니다.")):
+    async def send(
+        self,
+        ctx: ApplicationContext,
+        *,
+        text: Option(str, "전송할 내용을 입력하세요. 줄바꿈은 적용되지 않습니다."),
+    ):
         embed = discord.Embed(
             title=f"Sent by {ctx.author.display_name}",
             description=f"{text}",
