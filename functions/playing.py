@@ -84,7 +84,26 @@ class playing(commands.Cog):
                 inline=False,
             )
             await ctx.respond(embed=embed)
-
+    @slash_command(description="워들을 플레이합니다.")
+    async def wordle(
+        self,
+        ctx: ApplicationContext,
+        user: Option(str, "단어를 입력하세요, 단어는 영어 5자만 가능합니다")
+    ):
+        if user.isalpha() and user.islower() and len(user) == 5:#조건 맞음
+            word = open("wordle.txt")
+            data = word.readlines()
+            await ctx.respond(data[random.randint(1,2316)])#2316은 파일 줄 수+1로 수정필요
+        else:
+            embed = discord.Embed(
+                title="WhiteBot 오류", description="워들 기능", color=0xFF0000
+            )
+            embed.add_field(
+                name="오류 내용:",
+                value="1. 영어가 아닌 문자를 쓰셨는지 확인해주세요.\n2. 모든 철자가 소문자인지 확인해주세요",
+                inline=False,
+            )
+            await ctx.respond(embed=embed)
 
 def setup(bot):
     bot.add_cog(playing())
