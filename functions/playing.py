@@ -87,8 +87,8 @@ class playing(commands.Cog):
             await ctx.respond(embed=embed)
 
     @slash_command(description="틱택토(삼목) 게임을 진행합니다.")
-    async def tictactoe(self, ctx):
-        await ctx.respond("틱택토(삼목) 게임을 시작합니다. X부터 시작해요!", view=TicTacToe())
+    async def tictactoe(self, ctx: ApplicationContext, rival: Option(discord.User, description="같이 게임을 할 유저를 선택하세요")):
+        await ctx.respond("틱택토(삼목) 게임을 시작합니다. X부터 시작해요!", view=TicTacToe(ctx.user.id, rival.id))
 
 
 class TicTacToeButton(discord.ui.Button["TicTacToe"]):
@@ -105,6 +105,8 @@ class TicTacToeButton(discord.ui.Button["TicTacToe"]):
             return
 
         if view.current_player == view.X:
+            if interaction.user.id != view.x_member_id:
+                return
             self.style = discord.ButtonStyle.danger
             self.label = "X"
             self.disabled = True
@@ -112,6 +114,8 @@ class TicTacToeButton(discord.ui.Button["TicTacToe"]):
             view.current_player = view.O
             content = "O의 차례입니다!"
         else:
+            if interaction.user.id != view.o_member_id:
+                return
             self.style = discord.ButtonStyle.success
             self.label = "O"
             self.disabled = True
@@ -142,8 +146,12 @@ class TicTacToe(discord.ui.View):
     O = 1
     Tie = 2
 
-    def __init__(self):
+    def __init__(self, player_id: discord.Member, rival_id: discord.Member):
         super().__init__()
+
+        self.x_member_id = player_id
+        self.o_member_id = rival_id
+
         self.current_player = self.X
         self.board = [
             [0, 0, 0],
