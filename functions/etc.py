@@ -61,7 +61,7 @@ class etc(commands.Cog):
 
     @slash_command(description="유저의 정보를 표시합니다.")
     async def userinfo(
-            self, ctx: ApplicationContext, *, user: Option(discord.User ,"asdf")
+            self, ctx: ApplicationContext, *, user: Option(discord.User, "asdf")
     ):
         embed = discord.Embed(colour=0xffffff, title=user.display_name)
         embed.set_thumbnail(url=user.avatar)
