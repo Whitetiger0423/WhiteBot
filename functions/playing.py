@@ -91,9 +91,10 @@ class playing(commands.Cog):
         user: Option(str, "단어를 입력하세요, 단어는 영어 5자만 가능합니다")
     ):
         if user.isalpha() and user.islower() and len(user) == 5:#조건 맞음
-            word = open("wordle.txt")
+            word = open("wordle.txt", 'r', encoding='UTF8')
             data = word.readlines()
-            await ctx.respond(data[random.randint(1,2316)])#2316은 파일 줄 수+1로 수정필요
+            LastLine = len(data) + 1
+            await ctx.respond(data[random.randint(1, LastLine)])#2316은 파일 줄 수+1로 수정필요 # 완료 - Whitetiger
         else:
             embed = discord.Embed(
                 title="WhiteBot 오류", description="워들 기능", color=0xFF0000
