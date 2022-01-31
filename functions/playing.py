@@ -93,7 +93,7 @@ class playing(commands.Cog):
         if user.isalpha() and user.islower() and len(user) == 5:#조건 맞음
             word = open("wordle.txt", 'r', encoding='UTF8')
             data = word.readlines()
-            LastLine = len(data) + 1
+            LastLine = len(data) - 1
             await ctx.respond(data[random.randint(1, LastLine)])#2316은 파일 줄 수+1로 수정필요 # 완료 - Whitetiger
         else:
             embed = discord.Embed(
