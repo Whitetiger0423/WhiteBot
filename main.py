@@ -12,7 +12,7 @@ utils.logging.setup_logging()
 
 bot = commands.Bot(command_prefix="/", help_command=None)
 aiodb = None
-logger = logging.getLogger('main')
+logger = logging.getLogger("main")
 
 bot.start_time = time.time()
 
@@ -22,11 +22,11 @@ async def on_ready():
     guild_count = len(bot.guilds)
 
     logger.info(f"Logged in as {bot.user.name}")
-    logger.info(f'Be used in {guild_count} guilds.')
+    logger.info(f"Be used in {guild_count} guilds.")
 
     await bot.change_presence(
         status=discord.Status.online,
-        activity=discord.Game(f"버전 1.5.0 - {guild_count}개의 서버에서 작동 중"),
+        activity=discord.Game(f"버전 1.6.0 - {guild_count}개의 서버에서 작동 중"),
     )
 
     token = os.getenv("DBKR_TOKEN")
