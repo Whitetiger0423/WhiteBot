@@ -59,6 +59,18 @@ class etc(commands.Cog):
         )
         await ctx.respond(embed=embed)
 
+    @slash_command(description="유저의 정보를 표시합니다.")
+    async def userinfo(
+            self, ctx: ApplicationContext, *, user: Option(discord.User ,"asdf")
+    ):
+        embed = discord.Embed(colour=0xffffff, title=user.display_name)
+        embed.set_thumbnail(url=user.avatar)
+        embed.add_field(name="계정명", value=user.name + "#" + user.discriminator)
+        embed.add_field(name="닉네임", value=user.display_name)
+        embed.add_field(name="ID", value=user.id)
+        embed.add_field(name="최상위 역할", value=user.top_role)
+        embed.add_field(name="계정 생성 날짜", value=user.created_at)
+        await ctx.respond(embed=embed)
 
 def setup(bot):
     bot.add_cog(etc())
