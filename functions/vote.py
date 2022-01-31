@@ -103,41 +103,41 @@ class vote_service():
         self.conn = sqlite3.connect(db_path)
 
     def create_tables(self):
-        with self.conn.cursor() as cursor:
-            for smt in self.CREATE_TABLES:
-                cursor.execute(smt)
+        cursor = self.conn.cursor()
+        for smt in self.CREATE_TABLES:
+            cursor.execute(smt)
 
     def create_vote(self, name, user_id, interaction_token) -> int:
-        with self.conn.execute(self.CREATE_VOTE, (name, user_id, interaction_token)) as cursor:
-            return cursor.lastrowid
+        cursor = self.conn.execute(self.CREATE_VOTE, (name, user_id, interaction_token))
+        return cursor.lastrowid
 
     def create_vote_choice(self, name, vote) -> int:
-        with self.conn.execute(self.CREATE_VOTE_CHOICE, (name, vote)) as cursor:
-            return cursor.lastrowid
+        cursor = self.conn.execute(self.CREATE_VOTE_CHOICE, (name, vote))
+        return cursor.lastrowid
 
     def create_voter(self, id, choice) -> int:
-        with self.conn.execute(self.CREATE_VOTER, (id, choice)) as cursor:
-            return cursor.lastrowid
+        cursor = self.conn.execute(self.CREATE_VOTER, (id, choice))
+        return cursor.lastrowid
 
     def get_latest_vote(self, user_id) -> int:
-        with self.conn.execute(self.GET_LATEST_VOTE, (user_id)) as cursor:
-            return cursor.lastrowid
+        cursor = self.conn.execute(self.GET_LATEST_VOTE, (user_id))
+        return cursor.lastrowid
 
     def get_vote(self, vote_id) -> tuple:
-        with self.conn.execute(self.GET_VOTE, (vote_id)) as cursor:
-            return cursor.fetchone()
+        cursor = self.conn.execute(self.GET_VOTE, (vote_id))
+        return cursor.fetchone()
 
     def get_choice(self, choice_id) -> tuple:
-        with self.conn.execute(self.GET_CHOICE, (choice_id)) as cursor:
-            return cursor.fetchone()
+        cursor = self.conn.execute(self.GET_CHOICE, (choice_id))
+        return cursor.fetchone()
 
     def get_choices(self, vote_id) -> list[tuple]:
-        with self.conn.execute(self.GET_CHOICES, (vote_id)) as cursor:
-            return cursor.fetchall()
+        cursor = self.conn.execute(self.GET_CHOICES, (vote_id))
+        return cursor.fetchall()
 
     def get_voter_count(self, choice_id) -> int:
-        with self.conn.execute(self.GET_VOTER_COUNT, (choice_id)) as cursor:
-            return cursor.rowcount
+        cursor = self.conn.execute(self.GET_VOTER_COUNT, (choice_id))
+        return cursor.rowcount
 
     def set_vote_state(self, state, vote_id) -> None:
         self.conn.execute(self.SET_VOTE_STATE, (state, vote_id))
