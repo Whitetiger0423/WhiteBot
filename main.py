@@ -5,6 +5,7 @@ import logging
 import utils.logging
 from discord.ext import commands
 from koreanbots.client import Koreanbots
+import time
 
 dotenv.load_dotenv()
 utils.logging.setup_logging()
@@ -12,6 +13,7 @@ utils.logging.setup_logging()
 bot = commands.Bot(command_prefix="/", help_command=None)
 aiodb = None
 logger = logging.getLogger('main')
+bot.starttime=time.time()
 
 @bot.event
 async def on_ready():
@@ -42,3 +44,4 @@ for filename in os.listdir("functions"):
 
 
 bot.run(os.getenv("BOT_TOKEN"))
+bot.run(dotenv.get_key(".env", "TOKEN"))
