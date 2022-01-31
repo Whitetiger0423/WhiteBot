@@ -94,7 +94,7 @@ class playing(commands.Cog):
             word = open("wordle.txt", 'r', encoding='UTF8')
             data = word.readlines()
             LastLine = len(data) - 1
-            await ctx.respond(data[random.randint(1, LastLine)])#2316은 파일 줄 수+1로 수정필요 # 완료 - Whitetiger
+            await ctx.respond(data[random.randint(1, LastLine)])
         else:
             embed = discord.Embed(
                 title="WhiteBot 오류", description="워들 기능", color=0xFF0000
