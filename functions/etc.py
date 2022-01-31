@@ -65,7 +65,7 @@ class etc(commands.Cog):
     ):
         embed = discord.Embed(colour=0xffffff, title=user.display_name)
         embed.set_thumbnail(url=user.avatar)
-        embed.add_field(name="계정명", value=user.name + "#" + user.discriminator)
+        embed.add_field(name="계정명", value=str(user))
         embed.add_field(name="닉네임", value=user.display_name)
         embed.add_field(name="ID", value=user.id)
         embed.add_field(name="최상위 역할", value=user.top_role)
