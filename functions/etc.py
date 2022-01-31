@@ -73,5 +73,6 @@ class etc(commands.Cog):
 {user.created_at.hour}:{user.created_at.minute}:{user.created_at.second} ({user.created_at.tzinfo})")
         await ctx.respond(embed=embed)
 
+
 def setup(bot):
     bot.add_cog(etc())
