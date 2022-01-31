@@ -11,6 +11,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 class vote(commands.Cog):
+    VOTE_ID_REGEX = re.compile("#?(\\d+)")
+
     def __init__(self):
         db_path = os.getenv("DATABASE_PATH") or ":memory:"
         self.service = vote_service(db_path)
@@ -40,7 +42,7 @@ class vote(commands.Cog):
             view.add_item(button)
 
         await ctx.respond(
-            embed=discord.Embed(title=name, description="아래 버튼을 눌러 투표에 참여해주세요.", color=0xFFFFFF)
+            embed=discord.Embed(title=f"#{vote_id} {name}", description="아래 버튼을 눌러 투표에 참여해주세요.", color=0xFFFFFF)
                 .set_footer(text=f"Started by {ctx.author.display_name}", icon_url=ctx.author.display_avatar),
             view=view
         )
@@ -48,9 +50,35 @@ class vote(commands.Cog):
     async def button_callback(self, interaction: discord.Interaction):
         user_id = interaction.user.id
         choice_id = interaction.data["custom_id"]
+        vote_id = self.service.get_choice(choice_id)[3]
+
+        if self.service.get_vote(vote_id)[2] != 0:
+            return await interaction.response.send_message("투표가 종료되었습니다", ephemeral=True)
 
         self.service.create_voter(user_id, choice_id)
         logger.info(f"voter entity created(id: {user_id}, choice: {choice_id})")
+
+    @slash_command(description="투표를 끝냅니다")
+    async def end_vote(self, ctx: ApplicationContext, _vote_id: Option(str, description="투표 아이디(미입력시 가장 최근에 시작한 투표)", required = False)):
+        await ctx.defer()
+
+        if _vote_id is None:
+            vote_id = self.service.get_latest_vote(ctx.user.id)
+        else:
+            regex_match = self.VOTE_ID_REGEX.match(_vote_id)
+            if regex_match is None:
+                return await ctx.respond("투표 아이디가 올바르지 않습니다", ephemeral=True)
+            vote_id = regex_match.group(1)
+
+        self.service.set_vote_state(1, vote_id)
+
+        vote = self.service.get_vote(vote_id)
+        embed = discord.Embed(title="투표 결과", description=f"#{vote_id} {vote[1]}\n투표가 종료되었습니다", color=0xFFFFFF)
+
+        for choice in self.service.get_choices(vote_id):
+            embed.add_field(name=choice[1], value=self.service.get_voter_count(choice[0]))
+
+        ctx.respond(embed=embed)
 
 
 class vote_service():
@@ -63,7 +91,13 @@ class vote_service():
     CREATE_VOTE_CHOICE = "INSERT INTO vote_choices (name, value, vote) VALUES (?, 0, ?)"
     CREATE_VOTER = "INSERT INTO voters (id, choice) VALUES (?, ?)"
 
-    GET_VOTER = "SELECT * FROM voters WHERE id=? AND choice=?"
+    GET_LATEST_VOTE = "SELECT * FROM votes WHERE user_id=? ORDER BY id DESC LIMIT 1"
+    GET_VOTE = "SELECT * FROM votes WHERE id=?"
+    GET_CHOICE = "SELECT * FROM choices WHERE id=?"
+    GET_CHOICES = "SELECT * FROM choices WHERE vote=?"
+    GET_VOTER_COUNT = "SELECT * FROM voters WHERE choice=?"
+
+    SET_VOTE_STATE = "UPDATE votes SET state=? WHERE id=?"
 
     def __init__(self, db_path: str):
         self.conn = sqlite3.connect(db_path)
@@ -84,6 +118,29 @@ class vote_service():
     def create_voter(self, id, choice) -> int:
         with self.conn.execute(self.CREATE_VOTER, (id, choice)) as cursor:
             return cursor.lastrowid
+
+    def get_latest_vote(self, user_id) -> int:
+        with self.conn.execute(self.GET_LATEST_VOTE, (user_id)) as cursor:
+            return cursor.lastrowid
+
+    def get_vote(self, vote_id) -> tuple:
+        with self.conn.execute(self.GET_VOTE, (vote_id)) as cursor:
+            return cursor.fetchone()
+
+    def get_choice(self, choice_id) -> tuple:
+        with self.conn.execute(self.GET_CHOICE, (choice_id)) as cursor:
+            return cursor.fetchone()
+
+    def get_choices(self, vote_id) -> list[tuple]:
+        with self.conn.execute(self.GET_CHOICES, (vote_id)) as cursor:
+            return cursor.fetchall()
+
+    def get_voter_count(self, choice_id) -> int:
+        with self.conn.execute(self.GET_VOTER_COUNT, (choice_id)) as cursor:
+            return cursor.rowcount
+
+    def set_vote_state(self, state, vote_id) -> None:
+        self.conn.execute(self.SET_VOTE_STATE, (state, vote_id))
 
 
 def setup(bot: discord.Bot):
