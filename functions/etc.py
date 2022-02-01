@@ -6,7 +6,9 @@ from utils.commands import slash_command
 
 GOOGLE_URL = "https://www.google.com/search?q="
 NAVER_URL = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query="
-DAUM_URL = "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&q="
+DAUM_URL = (
+    "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&q="
+)
 WIKIPEDIA_URL = "https://ko.wikipedia.org/wiki/"
 NAVER_TERMS_URL = "https://terms.naver.com/search.naver?query="
 NAMU_WIKI_URL = "https://namu.wiki/Search?q="
@@ -57,20 +59,6 @@ class etc(commands.Cog):
             description=f"{text}",
             color=0xFFFFFF,
         )
-        await ctx.respond(embed=embed)
-
-    @slash_command(description="유저의 정보를 표시합니다.")
-    async def userinfo(
-            self, ctx: ApplicationContext, *, user: Option(discord.User, "asdf")
-    ):
-        embed = discord.Embed(colour=0xffffff, title=user.display_name)
-        embed.set_thumbnail(url=user.avatar)
-        embed.add_field(name="계정명", value=str(user))
-        embed.add_field(name="닉네임", value=user.display_name)
-        embed.add_field(name="ID", value=user.id)
-        embed.add_field(name="최상위 역할", value=user.top_role)
-        embed.add_field(name="계정 생성 일시", value=f"{user.created_at.year}년 {user.created_at.month}월 {user.created_at.day}일 \
-{user.created_at.hour}:{user.created_at.minute}:{user.created_at.second} ({user.created_at.tzinfo})")
         await ctx.respond(embed=embed)
 
 
