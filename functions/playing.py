@@ -7,6 +7,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class playing(commands.Cog):
     @slash_command(description="봇과 가위바위보 게임을 합니다.")
     async def rsp(
@@ -90,33 +91,48 @@ class playing(commands.Cog):
     @slash_command(description="홀짝 게임을 시작합니다.")
     async def holjjac(self, ctx: ApplicationContext):
         dice = random.randint(1, 6)
-        embed = discord.Embed(title='홀짝 게임',
-                          description='1부터 6까지 나오는 주사위들의 수가 짝수일지, 홀수일지 아래의 반응을 눌러 예측해보세요!', color=0xFFFFFF)
-        embed.add_field(name='> 주사위의 눈', value='?')
-        embed.add_field(name='> 홀수', value='🔴')
-        embed.add_field(name='> 짝수', value='🔵')
+        embed = discord.Embed(
+            title="홀짝 게임",
+            description="1부터 6까지 나오는 주사위의 수가 짝수일지, 홀수일지 아래의 반응을 눌러 예측해보세요!",
+            color=0xFFFFFF,
+        )
+        embed.add_field(name="> 주사위의 눈", value="?", inline=False)
+        embed.add_field(name="> 선택지", value="홀수: 🔴\n짝수: 🔵", inline=True)
         interaction = await ctx.interaction.response.send_message(embed=embed)
         msg = await interaction.original_message()
-        await msg.add_reaction('🔴')
-        await msg.add_reaction('🔵')
+        await msg.add_reaction("🔴")
+        await msg.add_reaction("🔵")
         try:
-            def check(reaction, user):
-                return str(reaction) in ['🔴', '🔵'] and \
-                user == ctx.author and reaction.message.id == msg.id
 
-            reaction, user = await ctx.bot.wait_for('reaction_add', check=check)
-            if  (str(reaction) == '🔴' and dice % 2 == 1) or \
-                (str(reaction) == '🔵' and dice % 2 == 0):
-                embed = discord.Embed(title='홀짝 게임',
-                                  description=f'정답입니다! (주사위: {dice})', color=0xFFFFFF)
+            def check(reaction, user):
+                return (
+                    str(reaction) in ["🔴", "🔵"]
+                    and user == ctx.author
+                    and reaction.message.id == msg.id
+                )
+
+            reaction, user = await ctx.bot.wait_for("reaction_add", check=check)
+            if (str(reaction) == "🔴" and dice % 2 == 1) or (
+                str(reaction) == "🔵" and dice % 2 == 0
+            ):
+                embed = discord.Embed(
+                    title="홀짝 게임", description=f"정답입니다!", color=0xFFFFFF
+                )
+                embed.add_field(name="> 주사위의 눈", value=f"{dice}")
+                embed.add_field(name="> 당신의 선택", value=f"{str(reaction)}", inline=False)
             else:
-                embed = discord.Embed(title='홀짝 게임',
-                                  description=f'틀렸습니다.. (주사위: {dice})', color=0xFFFFFF)
+                embed = discord.Embed(
+                    title="홀짝 게임", description=f"틀렸습니다..", color=0xFFFFFF
+                )
+                embed.add_field(name="> 주사위의 눈", value=f"{dice}")
+                embed.add_field(name="> 당신의 선택", value=f"{str(reaction)}", inline=False)
             await msg.edit(embed=embed)
         except:
             logger.exception("Unexpected exception from holjjac")
 
-            embed = discord.Embed(title="오류가 발생했어요", description="잠시 후에 다시 시도해주세요", color=0xFF0000)
+            embed = discord.Embed(
+                title="오류가 발생했어요", description="잠시 후에 다시 시도해주세요", color=0xFF0000
+            )
             await msg.edit(embed=embed)
 
 
