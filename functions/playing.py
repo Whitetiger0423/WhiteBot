@@ -95,8 +95,7 @@ class playing(commands.Cog):
         embed.add_field(name='> 주사위의 눈', value='?')
         embed.add_field(name='> 홀수', value='🔴')
         embed.add_field(name='> 짝수', value='🔵')
-        interaction = await ctx.interaction.response.send_message(embed=embed)
-        msg = await interaction.original_message()
+        msg = await ctx.respond(embed=embed)
         await msg.add_reaction('🔴')
         await msg.add_reaction('🔵')
         try:
