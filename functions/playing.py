@@ -129,7 +129,6 @@ class playing(commands.Cog):
             await msg.edit(embed=embed)
         except:
             logger.exception("Unexpected exception from holjjac")
-
             embed = discord.Embed(
                 title="오류가 발생했어요", description="잠시 후에 다시 시도해주세요", color=0xFF0000
             )
