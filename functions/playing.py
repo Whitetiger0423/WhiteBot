@@ -87,8 +87,15 @@ class playing(commands.Cog):
             await ctx.respond(embed=embed)
 
     @slash_command(description="틱택토(삼목) 게임을 진행합니다.")
-    async def tictactoe(self, ctx: ApplicationContext, rival: Option(discord.User, description="같이 게임을 할 유저를 선택하세요")):
-        await ctx.respond("틱택토(삼목) 게임을 시작합니다. X부터 시작해요!", view=TicTacToe(ctx.user.id, rival.id))
+    async def tictactoe(
+        self,
+        ctx: ApplicationContext,
+        rival: Option(discord.User, description="같이 게임을 할 유저를 선택하세요"),
+    ):
+        await ctx.respond(
+            f"틱택토(삼목) 게임을 시작합니다. {ctx.user.mention}(X) vs {rival.mention}(O) - X부터 시작합니다.",
+            view=TicTacToe(ctx.user.id, rival.id),
+        )
 
 
 class TicTacToeButton(discord.ui.Button["TicTacToe"]):
@@ -112,7 +119,7 @@ class TicTacToeButton(discord.ui.Button["TicTacToe"]):
             self.disabled = True
             view.board[self.y][self.x] = view.X
             view.current_player = view.O
-            content = "O의 차례입니다!"
+            content = f"<@{view.o_member_id}>(O)의 차례입니다!"
         else:
             if interaction.user.id != view.o_member_id:
                 return
@@ -121,14 +128,14 @@ class TicTacToeButton(discord.ui.Button["TicTacToe"]):
             self.disabled = True
             view.board[self.y][self.x] = view.O
             view.current_player = view.X
-            content = "X의 차례입니다!"
+            content = f"<@{view.x_member_id}>(X)의 차례입니다!"
 
         winner = view.check_board_winner()
         if winner is not None:
             if winner == view.X:
-                content = "X 승리!"
+                content = f"<@{view.x_member_id}>(X) 승리!"
             elif winner == view.O:
-                content = "O 승리!"
+                content = f"<@{view.o_member_id}>(O) 승리!"
             else:
                 content = "비겼습니다."
 
