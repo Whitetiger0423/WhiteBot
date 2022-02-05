@@ -4,4 +4,5 @@
 ; F821 undefined name
 ignore = E501, F722, F821
 exclude = venv, .venv, .git, __pycache__
+max-complexity = 10
 count = True
