@@ -61,11 +61,13 @@ class code(commands.Cog):
 
             embed = discord.Embed(
                 title="<a:check:824251178493411368> 해독 완료!",
-                description="**base16**을 기반으로 한 암호문을 해독하였습니다.\n"
-                + "해독이 잘못되었다면 [서포팅 서버](<https://discord.gg/aebSVBgzuG>)에서 제보해주세요!",
+                description=(
+                    "**base16**을 기반으로 한 암호문을 해독하였습니다.\n"
+                    + "해독이 잘못되었다면 [서포팅 서버](<https://discord.gg/aebSVBgzuG>)에서 제보해주세요!"
+                ),
                 color=0xFFFFFF,
             ).add_field(name="**해독 결과:**", value=f"```{data}```", inline=False)
-        except:
+        except Exception:
             embed = discord.Embed(
                 title="WhiteBot 오류", description="해독 기능", color=0xFF0000
             ).add_field(
