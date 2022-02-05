@@ -34,7 +34,7 @@ async def on_ready():
         try:
             k = Koreanbots(api_key=token)
             await k.guildcount(bot.user.id, servers=guild_count)
-        except:
+        except Exception:
             logger.error("Error while updating Koreanbots server count")
     else:
         logger.warning("No Koreanbots token provided. Server count will not be updated")

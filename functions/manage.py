@@ -37,7 +37,7 @@ class manage(commands.Cog):
                 embed = discord.Embed(title="오류 발생!", color=0xFF0000)
                 embed.add_field(name="권한 오류", value="권한 확인 후 다시 시도해주세요.", inline=False)
                 await ctx.respond(embed=embed)
-        except:
+        except Exception:
             embed = discord.Embed(title="오류 발생!", color=0xFF0000)
             embed.add_field(name="권한 오류", value="권한 확인 후 다시 시도해주세요.", inline=False)
             await ctx.respond(embed=embed)

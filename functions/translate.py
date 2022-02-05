@@ -18,6 +18,7 @@ LIMITED_STATE_EMBED = discord.Embed(title="지금은 번역이 불가해요", de
 
 logger = logging.getLogger("translate")
 
+
 class translate(commands.Cog):
     def __init__(self):
         self.papago_id = os.getenv("PAPAGO_APPID")

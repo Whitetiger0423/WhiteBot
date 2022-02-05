@@ -3,7 +3,8 @@ from discord.ext import commands
 from discord.commands import ApplicationContext, Option
 from utils.commands import slash_command
 from datetime import date, datetime, timedelta
-import requests, os
+import requests
+import os
 from utils.utils import to_querystring
 
 API_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?"

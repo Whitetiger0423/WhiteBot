@@ -7,6 +7,7 @@ from utils.commands import slash_command
 
 logger = logging.getLogger(__name__)
 
+
 class youtube(commands.Cog):
     @slash_command(description='유튜브 투게더에 접속할 수 있는 링크를 전송합니다. 음성 채널에 연결되어 있어야 됩니다.')
     async def youtube(self, ctx: ApplicationContext):
@@ -38,13 +39,12 @@ class youtube(commands.Cog):
             await ctx.respond(embed=embed)
         except discord.HTTPException as e:
             logger.error("Discord API has returned %d\n=> Payload: %s\n=> Response: %s", e.code, str(payload), e.text)
-            embed = discord.Embed(description="오류가 발생했어요. 잠시 후에 다시 시도해주세요",color=0xff0000)
+            embed = discord.Embed(description="오류가 발생했어요. 잠시 후에 다시 시도해주세요", color=0xff0000)
             await ctx.respond(embed=embed)
-        except Exception as e:
+        except Exception:
             logger.exception("Unexpected exception occurred")
-            embed = discord.Embed(description="오류가 발생했어요. 잠시 후에 다시 시도해주세요",color=0xff0000)
+            embed = discord.Embed(description="오류가 발생했어요. 잠시 후에 다시 시도해주세요", color=0xff0000)
             await ctx.respond(embed=embed)
-
 
 
 def setup(bot):

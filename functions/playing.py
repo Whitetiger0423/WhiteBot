@@ -77,7 +77,7 @@ class playing(commands.Cog):
                     inline=False,
                 )
                 await ctx.respond(embed=embed)
-        except:
+        except Exception:
             embed = discord.Embed(
                 title="WhiteBot 오류", description="주사위 기능", color=0xFF0000
             )
@@ -116,18 +116,18 @@ class playing(commands.Cog):
                 str(reaction) == "🔵" and dice % 2 == 0
             ):
                 embed = discord.Embed(
-                    title="홀짝 게임", description=f"정답입니다!", color=0xFFFFFF
+                    title="홀짝 게임", description="정답입니다!", color=0xFFFFFF
                 )
                 embed.add_field(name="> 주사위의 눈", value=f"{dice}")
                 embed.add_field(name="> 당신의 선택", value=f"{str(reaction)}", inline=False)
             else:
                 embed = discord.Embed(
-                    title="홀짝 게임", description=f"틀렸습니다..", color=0xFFFFFF
+                    title="홀짝 게임", description="틀렸습니다..", color=0xFFFFFF
                 )
                 embed.add_field(name="> 주사위의 눈", value=f"{dice}")
                 embed.add_field(name="> 당신의 선택", value=f"{str(reaction)}", inline=False)
             await msg.edit(embed=embed)
-        except:
+        except Exception:
             logger.exception("Unexpected exception from holjjac")
             embed = discord.Embed(
                 title="오류가 발생했어요", description="잠시 후에 다시 시도해주세요", color=0xFF0000
