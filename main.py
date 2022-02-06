@@ -3,8 +3,8 @@ import os
 import dotenv
 import logging
 import utils.logging
+import utils.koreanbots
 from discord.ext import commands
-from koreanbots.client import Koreanbots
 import time
 
 dotenv.load_dotenv()
@@ -29,15 +29,8 @@ async def on_ready():
         activity=discord.Game(f"버전 1.6.0 - {guild_count}개의 서버에서 작동 중"),
     )
 
-    token = os.getenv("DBKR_TOKEN")
-    if token is not None:
-        try:
-            k = Koreanbots(api_key=token)
-            await k.guildcount(bot.user.id, servers=guild_count)
-        except Exception:
-            logger.error("Error while updating Koreanbots server count")
-    else:
-        logger.warning("No Koreanbots token provided. Server count will not be updated")
+    dbkr_token = os.getenv("DBKR_TOKEN")
+    utils.koreanbots.update_guild_count(dbkr_token, bot.user.id, guild_count)
 
 
 for filename in os.listdir("functions"):
