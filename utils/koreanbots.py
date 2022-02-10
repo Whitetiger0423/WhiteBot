@@ -17,5 +17,5 @@ async def update_guild_count(token: Optional[str], bot_id: int, guild_count: int
     except ImportError:
         logger.warning("Koreanbots module is not installed")
         logger.warning("Server count will not be updated")
-    except:
+    except Exception:
         logger.exception("Error while updating Koreanbots server count")

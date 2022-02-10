@@ -30,7 +30,7 @@ async def on_ready():
     )
 
     dbkr_token = os.getenv("DBKR_TOKEN")
-    utils.koreanbots.update_guild_count(dbkr_token, bot.user.id, guild_count)
+    await utils.koreanbots.update_guild_count(dbkr_token, bot.user.id, guild_count)
 
 
 for filename in os.listdir("functions"):
