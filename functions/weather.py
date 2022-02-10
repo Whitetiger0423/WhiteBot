@@ -69,10 +69,10 @@ class weather(commands.Cog):
         result = requests.get(API_URL + to_querystring(payload))
         data = result.json()["response"]["body"]["items"]["item"]
 
-        data = to_dict(data, lambda x: x["category"])
+        data = to_dict(data, lambda k: k["category"], lambda v: v["fcstValue"])
 
-        temperature = apply_if_not_none(data.get("TMP"), lambda x: "%s℃" % x["fcstValue"])
-        wind_speed = apply_if_not_none(data.get("WSD"), lambda x: "%sm/s" % x["fcstValue"])
+        temperature = apply_if_not_none(data.get("TMP"), lambda x: f"{x}℃")
+        wind_speed = apply_if_not_none(data.get("WSD"), lambda x: f"{x}m/s")
         weather_state = apply_if_not_none(data.get("PTY"), self.process_pty)
 
         if weather_state is None:
@@ -89,8 +89,7 @@ class weather(commands.Cog):
 
         await ctx.followup.send(embed=embed)
 
-    def process_pty(self, data) -> str:
-        value = data["fcstValue"]
+    def process_pty(self, value) -> str:
         if value == "1":
             return "비 내림"
         elif value == "2":
@@ -102,8 +101,8 @@ class weather(commands.Cog):
         else:
             return None
 
-    def process_sky(self, data) -> str:
-        value = int(data["fcstValue"])
+    def process_sky(self, value) -> str:
+        value = int(value)
         if value <= 5:
             return "맑음"
         elif value <= 8:
