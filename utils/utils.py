@@ -15,7 +15,14 @@ def to_querystring(data: dict) -> str:
     return "&".join(parts)
 
 
-def apply_if_not_none(value: any, block: LambdaType):
+def apply_if_not_none(value, block: LambdaType):
     if value is not None:
         value = block(value)
     return value
+
+
+def to_dict(data, get_key) -> dict:
+    items = {}
+    for datum in data:
+        items[get_key(datum)] = datum
+    return items
