@@ -3,8 +3,10 @@ from discord.ext import commands
 from discord.commands import ApplicationContext, Option
 from utils.commands import slash_command
 from datetime import date, datetime, timedelta
-import requests, os
+import requests
+import os
 from utils.utils import to_querystring
+import logging
 
 API_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?"
 
@@ -28,10 +30,14 @@ place_data = {
     "제주": (52, 38),
 }
 
+logger = logging.getLogger(__name__)
+
 
 class weather(commands.Cog):
     def __init__(self):
         self.service_key = os.getenv("WEATHER_KEY")
+        if self.service_key is None:
+            logger.warning("Weather API key not provided. Weather feature will be disabled")
 
     @slash_command(description="현재 날씨를 조회합니다.")
     async def weather(
@@ -39,6 +45,13 @@ class weather(commands.Cog):
         ctx: ApplicationContext,
         place: Option(str, "날씨를 조회할 장소를 선택해주세요.", choices=list(place_data.keys())),
     ):
+        if self.service_key is None:
+            embed = discord.Embed(
+                title="날씨 기능이 비활성화 되어있어요",
+                description="관리자에게 문의해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
+                color=0xffffff)
+            return await ctx.respond(embed=embed)
+
         await ctx.defer()
 
         px, py = place_data[place]

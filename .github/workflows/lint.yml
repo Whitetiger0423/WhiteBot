@@ -2,9 +2,11 @@ name: Lint
 
 on:
   push:
-    branch: [ main ]
+    branches:
+      - main
   pull_request:
-    branch: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -23,6 +25,4 @@ jobs:
         pip install flake8
 
     - name: Lint
-      run: |
-        flake8 . --select=E9,F63,F7,F82
-        flake8 . --exit-zero --max-complexity=10 --max-line-length=127
+      run: flake8 . --max-line-length=127

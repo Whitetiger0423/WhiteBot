@@ -1,9 +1,9 @@
 [flake8]
-; E401 multiple imports on line line
 ; E501 line too long(maximum 79 characters)
-; E722 do not use bare except
 ; F722 syntax error in forward annotation
 ; F821 undefined name
-ignore = E401, E501, E722, F722, F821
+; W503 line break before binary operator
+ignore = E501, F722, F821, W503
 exclude = venv, .venv, .git, __pycache__
+max-complexity = 10
 count = True
