@@ -4,6 +4,9 @@ from discord.ext import commands
 from utils.commands import slash_command
 from discord.commands import ApplicationContext, Option
 from typing import List
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class playing(commands.Cog):
@@ -107,35 +110,35 @@ class TicTacToeButton(discord.ui.Button["TicTacToe"]):
     async def callback(self, interaction: discord.Interaction):
         assert self.view is not None
         view: TicTacToe = self.view
-        state = view.board[self.y][self.x]
-        if state in (view.X, view.O):
-            return
 
-        if view.current_player == view.X:
+        assert view.board[self.y][self.x] == 0
+
+        if view.current_player == view.x_member_id:
             if interaction.user.id != view.x_member_id:
                 return
             self.style = discord.ButtonStyle.danger
             self.label = "X"
             self.disabled = True
-            view.board[self.y][self.x] = view.X
-            view.current_player = view.O
-            content = f"<@{view.o_member_id}>(O)의 차례입니다!"
+            view.board[self.y][self.x] = view.x_member_id
+            view.current_player = view.o_member_id
+            content = f"<@{-view.o_member_id}>(O)의 차례입니다!"
         else:
-            if interaction.user.id != view.o_member_id:
+            if interaction.user.id != -view.o_member_id:
                 return
             self.style = discord.ButtonStyle.success
             self.label = "O"
             self.disabled = True
-            view.board[self.y][self.x] = view.O
-            view.current_player = view.X
+            view.board[self.y][self.x] = view.o_member_id
+            view.current_player = view.x_member_id
             content = f"<@{view.x_member_id}>(X)의 차례입니다!"
 
+        logger.debug("Board %s", str(view.board))
         winner = view.check_board_winner()
         if winner is not None:
-            if winner == view.X:
+            if winner == view.x_member_id:
                 content = f"<@{view.x_member_id}>(X) 승리!"
-            elif winner == view.O:
-                content = f"<@{view.o_member_id}>(O) 승리!"
+            elif winner == view.o_member_id:
+                content = f"<@{-view.o_member_id}>(O) 승리!"
             else:
                 content = "비겼습니다."
 
@@ -149,56 +152,48 @@ class TicTacToeButton(discord.ui.Button["TicTacToe"]):
 
 class TicTacToe(discord.ui.View):
     children: List[TicTacToeButton]
-    X = -1
-    O = 1
-    Tie = 2
 
     def __init__(self, player_id: discord.Member, rival_id: discord.Member):
         super().__init__()
 
         self.x_member_id = player_id
-        self.o_member_id = rival_id
+        self.o_member_id = -rival_id
 
-        self.current_player = self.X
+        self.current_player = self.x_member_id
         self.board = [
             [0, 0, 0],
             [0, 0, 0],
             [0, 0, 0],
         ]
 
+        logger.debug("Board %s", str(self.board))
+
         for x in range(3):
             for y in range(3):
                 self.add_item(TicTacToeButton(x, y))
 
     def check_board_winner(self):
-        for across in self.board:
-            value = sum(across)
-            if value == 3:
-                return self.O
-            elif value == -3:
-                return self.X
+        for line in range(3):
+            if self.board[line][0] == self.board[line][1] == self.board[line][2] != 0:
+                logger.debug("[Game Set] Horizontal(line %d)", line)
+                return self.board[line][0]
 
         for line in range(3):
-            value = self.board[0][line] + self.board[1][line] + self.board[2][line]
-            if value == 3:
-                return self.O
-            elif value == -3:
-                return self.X
+            if self.board[0][line] == self.board[1][line] == self.board[2][line] != 0:
+                logger.debug("[Game Set] Vertical(line %d)", line)
+                return self.board[0][line]
 
-        diag = self.board[0][2] + self.board[1][1] + self.board[2][0]
-        if diag == 3:
-            return self.O
-        elif diag == -3:
-            return self.X
+        if self.board[0][2] == self.board[1][1] == self.board[2][0] != 0:
+            logger.debug("[Game Set] Diagonal ↙")
+            return self.board[0][2]
 
-        diag = self.board[0][0] + self.board[1][1] + self.board[2][2]
-        if diag == 3:
-            return self.O
-        elif diag == -3:
-            return self.X
+        if self.board[0][0] == self.board[1][1] == self.board[2][2] != 0:
+            logger.debug("[Game Set] Diagonal ↘")
+            return self.board[0][0]
 
         if all(i != 0 for row in self.board for i in row):
-            return self.Tie
+            logger.debug("[Game Set] Draw")
+            return 0
 
         return None
 
