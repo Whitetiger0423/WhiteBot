@@ -15,25 +15,34 @@ class vote(commands.Cog):
         db_path = os.getenv("DATABASE_PATH") or ":memory:"
         self.conn = sqlite3.connect(db_path)
 
+        logger.debug("Connected to database: %s", db_path)
+
         cursor = self.conn.cursor()
-        cursor.execute("CREATE TABLE IF NOT EXISTS votes(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, state INTEGER, user_id INTEGER, interaction_token TEXT)")
-        cursor.execute("CREATE TABLE IF NOT EXISTS vote_choices(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, vote REFERENCES votes)")
-        cursor.execute("CREATE TABLE IF NOT EXISTS voters(id INTEGER, choice REFERENCES voice_choices)")
+        cursor.execute("CREATE TABLE IF NOT EXISTS votes(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, state INTEGER, user_id INTEGER, interaction_token TEXT, flag INTEGER)")
+        cursor.execute("CREATE TABLE IF NOT EXISTS vote_choices(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, color INTEGER, emoji TEXT, vote REFERENCES votes)")
+        cursor.execute("CREATE TABLE IF NOT EXISTS voters(id INTEGER, vote REFERENCES votes, choice REFERENCES voice_choices)")
         cursor.close()
+        self.conn.commit()
 
     @slash_command(description="투표를 시작합니다")
     async def vote(
         self,
         ctx: ApplicationContext,
         name: Option(str, description="새로 만들 투표의 이름입니다"),
-        choices: Option(str, description="투표의 선택지입니다(쉼표로 구분, 최대 25개)")
+        choices: Option(str, description="투표의 선택지입니다(쉼표로 구분, 최대 25개)"),
+        mv: Option(str, description="중복 투표 가능 여부입니다", choices=["허용"], required=False)
     ):
         await ctx.defer()
 
         cursor = self.conn.cursor()
 
-        cursor.execute(f"INSERT INTO votes (name, state, user_id, interaction_token) VALUES ('{name}', 0, {ctx.author.id}, '{ctx.interaction.token}')")
+        flag = 0
+        if mv == "허용":
+            flag |= 1
+
+        cursor.execute(f"INSERT INTO votes (name, state, user_id, interaction_token, flag) VALUES ('{name}', 0, {ctx.author.id}, '{ctx.interaction.token}', {flag})")
         vote_id = cursor.lastrowid
+        logger.debug("Created new vote(id=%d, name=%s, user=%d, flag=%d)", vote_id, name, ctx.author.id, flag)
 
         choices = choices.split(",", 25)
         view = View()
@@ -41,6 +50,7 @@ class vote(commands.Cog):
             choice_name = choice.strip()
             cursor.execute(f"INSERT INTO vote_choices (name, vote) VALUES ('{choice_name}', {vote_id})")
             choice_id = cursor.lastrowid
+            logger.debug("Created new vote choice(id=%d, name=%s, vote=%d)", choice_id, choice_name, vote_id)
 
             button = Button(style=discord.ButtonStyle.primary, label=choice_name, custom_id=str(choice_id))
             button.callback = self.button_callback
@@ -58,17 +68,27 @@ class vote(commands.Cog):
         cursor = self.conn.cursor()
 
         user_id = interaction.user.id
-        choice_id = interaction.data["custom_id"]
+        choice_id = int(interaction.data["custom_id"])
 
         cursor.execute(f"SELECT vote FROM vote_choices WHERE id={choice_id}")
         (vote_id,) = cursor.fetchone()
 
-        cursor.execute(f"SELECT state FROM votes WHERE id={vote_id}")
-        (vote_state,) = cursor.fetchone()
+        logger.debug("Checking state of vote #%d", vote_id)
+        cursor.execute(f"SELECT state, flag FROM votes WHERE id={vote_id}")
+        (vote_state, flag) = cursor.fetchone()
         if vote_state != 0:
+            logger.debug("Vote #%d is in non-zero state")
             return await interaction.response.send_message("투표가 종료되었습니다", ephemeral=True)
 
-        cursor.execute(f"INSERT INTO voters (id, choice) VALUES ({user_id}, {choice_id})")
+        if not (flag & 1):
+            logger.debug("Checking history of %d", user_id)
+            cursor.execute(f"SELECT * FROM voters WHERE id={user_id} AND vote={vote_id}")
+            if cursor.fetchone() is not None:
+                logger.debug("%d has already voted on vote #%d", user_id, vote_id)
+                return await interaction.response.send_message("이미 투표하셨습니다", ephemeral=True)
+
+        cursor.execute(f"INSERT INTO voters (id, vote, choice) VALUES ({user_id}, {vote_id}, {choice_id})")
+        logger.debug("Created new voter(id=%d, vote=%d, choice=%d)", user_id, vote_id, choice_id)
 
         cursor.close()
         self.conn.commit()
