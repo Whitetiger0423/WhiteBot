@@ -98,10 +98,15 @@ class vote(commands.Cog):
         await ctx.defer()
 
         cursor = self.conn.cursor()
+
+        cursor.execute(f"SELECT name, user_id FROM votes WHERE id={vote_id}")
+        (vote_name, user_id) = cursor.fetchone()
+
+        if ctx.author.id != user_id:
+            return await ctx.respond("투표는 투표를 시작한 사람만 종료할 수 있습니다.")
+
         cursor.execute(f"UPDATE votes SET state=1 WHERE id={vote_id}")
 
-        cursor.execute(f"SELECT name FROM votes WHERE id={vote_id}")
-        (vote_name,) = cursor.fetchone()
         embed = discord.Embed(title=f"#{vote_id} {vote_name}", description="투표가 종료되었습니다", color=0xFFFFFF)
 
         cursor.execute(f"SELECT id, name FROM vote_choices WHERE vote={vote_id}")
