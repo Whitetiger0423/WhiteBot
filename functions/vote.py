@@ -21,7 +21,7 @@ class Vote(commands.Cog):
 
     def create_tables(self):
         cursor = self.conn.cursor()
-        cursor.execute("CREATE TABLE IF NOT EXISTS votes(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, state INTEGER, user_id INTEGER, flag INTEGER)")
+        cursor.execute("CREATE TABLE IF NOT EXISTS votes(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, state INTEGER, user_id INTEGER, message_id INTEGER, flag INTEGER)")
         cursor.execute("CREATE TABLE IF NOT EXISTS vote_choices(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, color INTEGER, emoji TEXT, vote REFERENCES votes)")
         cursor.execute("CREATE TABLE IF NOT EXISTS voters(id INTEGER, vote REFERENCES votes, choice REFERENCES voice_choices)")
         cursor.close()
@@ -76,11 +76,14 @@ class Vote(commands.Cog):
             button.callback = self.button_callback
             view.add_item(button)
 
-        await ctx.respond(
+        msg = await ctx.respond(
             embed=discord.Embed(title=f"#{vote_id} {name}", description="아래 버튼을 눌러 투표에 참여해주세요.", color=0xFFFFFF)
             .set_footer(text=f"Started by {ctx.author.display_name}", icon_url=ctx.author.display_avatar),
             view=view
         )
+        cursor.execute(f"UPDATE votes SET message_id={msg.id} WHERE id={vote_id}")
+        logger.debug("Updated vote(id=%d, message=%d)", vote_id, msg.id)
+
         cursor.close()
         self.conn.commit()
 
@@ -119,8 +122,9 @@ class Vote(commands.Cog):
 
         cursor = self.conn.cursor()
 
-        cursor.execute(f"SELECT name, state, user_id FROM votes WHERE id={vote_id}")
-        (vote_name, state, user_id) = cursor.fetchone()
+        cursor.execute(f"SELECT name, state, user_id, message_id FROM votes WHERE id={vote_id}")
+        (vote_name, state, user_id, message_id) = cursor.fetchone()
+        logger.debug("Fetched vote(id=%d, name=%s, state=%d, user=%d, message=%d)", vote_id, vote_name, state, user_id, message_id)
 
         if state != 0:
             return await ctx.respond("투표가 이미 종료되었습니다.", ephemeral=True)
@@ -136,6 +140,8 @@ class Vote(commands.Cog):
                 break
 
         embed = discord.Embed(title=f"#{vote_id} {vote_name}", description="투표가 종료되었습니다", color=0xFFFFFF)
+
+        await ctx.channel.get_partial_message(message_id).edit(embed=embed.copy(), view=None)
 
         cursor.execute(f"SELECT id, name FROM vote_choices WHERE vote={vote_id}")
         for (choice_id, choice_name) in cursor.fetchall():
