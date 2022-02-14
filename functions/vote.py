@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.commands import ApplicationContext, Option
 from utils.commands import slash_command
 from discord.ui import View, Button
+from discord.http import Route
 import sqlite3
 import os
 import logging
@@ -133,6 +134,7 @@ class Vote(commands.Cog):
                 break
 
         embed = discord.Embed(title=f"#{vote_id} {vote_name}", description="투표가 종료되었습니다", color=0xFFFFFF)
+        await self.edit_original_message(ctx.bot, interaction_token, embed.copy())
 
         cursor.execute(f"SELECT id, name FROM vote_choices WHERE vote={vote_id}")
         for (choice_id, choice_name) in cursor.fetchall():
@@ -143,6 +145,19 @@ class Vote(commands.Cog):
         await ctx.respond(embed=embed)
         cursor.close()
         self.conn.commit()
+
+    async def edit_original_message(self, bot: discord.Bot, token: str, embed: discord.Embed):
+        route = Route(
+            'PATCH',
+            '/webhooks/{application_id}/{interaction_token}/messages/@original',
+            application_id=bot.user.id,
+            interaction_token=token,
+        )
+        payload = {
+            "embeds": [embed.copy().to_dict()],
+            "components": []
+        }
+        await bot.http.request(route, json=payload)
 
 
 def setup(bot: discord.Bot):
