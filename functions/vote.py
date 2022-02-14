@@ -91,10 +91,10 @@ class Vote(commands.Cog):
         cursor = self.conn.cursor()
 
         user_id = interaction.user.id
-        choice_id = int(interaction.data["custom_id"].removeprefix("vote:"))
+        choice_id = int(interaction.data["custom_id"][5:])
 
-        cursor.execute(f"SELECT vote FROM vote_choices WHERE id={choice_id}")
-        (vote_id,) = cursor.fetchone()
+        cursor.execute(f"SELECT name, vote FROM vote_choices WHERE id={choice_id}")
+        (choice_name, vote_id) = cursor.fetchone()
 
         logger.debug("Checking state of vote #%d", vote_id)
         cursor.execute(f"SELECT state, flag FROM votes WHERE id={vote_id}")
@@ -112,6 +112,8 @@ class Vote(commands.Cog):
 
         cursor.execute(f"INSERT INTO voters (id, vote, choice) VALUES ({user_id}, {vote_id}, {choice_id})")
         logger.debug("Created new voter(id=%d, vote=%d, choice=%d)", user_id, vote_id, choice_id)
+
+        await interaction.response.send_message(f"{choice_name}에 투표하셨습니다.", ephemeral=True)
 
         cursor.close()
         self.conn.commit()
