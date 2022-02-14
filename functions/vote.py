@@ -114,17 +114,20 @@ class Vote(commands.Cog):
         cursor.close()
         self.conn.commit()
 
-    @slash_command(description="투표를 종료합니다. 이미 종료한 투표 기록을 볼 때도 사용할 수 있습니다.")
+    @slash_command(description="투표를 종료합니다")
     async def end_vote(self, ctx: ApplicationContext, vote_id: Option(int, description="종료할 투표 아이디입니다")):
         await ctx.defer()
 
         cursor = self.conn.cursor()
 
-        cursor.execute(f"SELECT name, user_id FROM votes WHERE id={vote_id}")
-        (vote_name, user_id) = cursor.fetchone()
+        cursor.execute(f"SELECT name, state, user_id, interaction_token FROM votes WHERE id={vote_id}")
+        (vote_name, state, user_id, interaction_token) = cursor.fetchone()
+
+        if state != 0:
+            return await ctx.respond("투표가 이미 종료되었습니다.", ephemeral=True)
 
         if ctx.author.id != user_id:
-            return await ctx.respond("투표는 투표를 시작한 사람만 종료할 수 있습니다.")
+            return await ctx.respond("투표는 투표를 시작한 사람만 종료할 수 있습니다.", ephemeral=True)
 
         cursor.execute(f"UPDATE votes SET state=1 WHERE id={vote_id}")
         for view in ctx.bot.persistent_views:
