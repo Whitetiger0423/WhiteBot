@@ -10,19 +10,38 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class vote(commands.Cog):
-    def __init__(self):
+class Vote(commands.Cog):
+    def __init__(self, bot: discord.Bot):
         db_path = os.getenv("DATABASE_PATH") or ":memory:"
         self.conn = sqlite3.connect(db_path)
-
         logger.debug("Connected to database: %s", db_path)
 
+        self.create_tables()
+        bot.loop.call_soon(self.restore_state, bot)
+
+    def create_tables(self):
         cursor = self.conn.cursor()
         cursor.execute("CREATE TABLE IF NOT EXISTS votes(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, state INTEGER, user_id INTEGER, interaction_token TEXT, flag INTEGER)")
         cursor.execute("CREATE TABLE IF NOT EXISTS vote_choices(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, color INTEGER, emoji TEXT, vote REFERENCES votes)")
         cursor.execute("CREATE TABLE IF NOT EXISTS voters(id INTEGER, vote REFERENCES votes, choice REFERENCES voice_choices)")
         cursor.close()
         self.conn.commit()
+
+    def restore_state(self, bot: discord.Bot):
+        logger.info("Restoring previous state")
+        cursor = self.conn.execute("SELECT id FROM votes WHERE state=0")
+        for (vote_id,) in cursor.fetchall():
+            logger.info("Restoring vote #%d", vote_id)
+            view = View(timeout=None)
+            view.vote_id = vote_id
+
+            cursor.execute(f"SELECT id, name FROM vote_choices WHERE vote={vote_id}")
+            for (choice_id, choice_name) in cursor.fetchall():
+                button = Button(style=discord.ButtonStyle.primary, label=choice_name, custom_id=f"vote:{choice_id}")
+                button.callback = self.button_callback
+                view.add_item(button)
+
+            bot.add_view(view)
 
     @slash_command(description="투표를 시작합니다")
     async def vote(
@@ -45,14 +64,15 @@ class vote(commands.Cog):
         logger.debug("Created new vote(id=%d, name=%s, user=%d, flag=%d)", vote_id, name, ctx.author.id, flag)
 
         choices = choices.split(",", 25)
-        view = View()
+        view = View(timeout=None)
+        view.vote_id = vote_id
         for choice in choices:
             choice_name = choice.strip()
             cursor.execute(f"INSERT INTO vote_choices (name, vote) VALUES ('{choice_name}', {vote_id})")
             choice_id = cursor.lastrowid
             logger.debug("Created new vote choice(id=%d, name=%s, vote=%d)", choice_id, choice_name, vote_id)
 
-            button = Button(style=discord.ButtonStyle.primary, label=choice_name, custom_id=str(choice_id))
+            button = Button(style=discord.ButtonStyle.primary, label=choice_name, custom_id=f"vote:{choice_id}")
             button.callback = self.button_callback
             view.add_item(button)
 
@@ -68,7 +88,7 @@ class vote(commands.Cog):
         cursor = self.conn.cursor()
 
         user_id = interaction.user.id
-        choice_id = int(interaction.data["custom_id"])
+        choice_id = int(interaction.data["custom_id"].removeprefix("vote:"))
 
         cursor.execute(f"SELECT vote FROM vote_choices WHERE id={choice_id}")
         (vote_id,) = cursor.fetchone()
@@ -93,7 +113,7 @@ class vote(commands.Cog):
         cursor.close()
         self.conn.commit()
 
-    @slash_command(description="투표를 종료합니다")
+    @slash_command(description="투표를 종료합니다. 이미 종료한 투표 기록을 볼 때도 사용할 수 있습니다.")
     async def end_vote(self, ctx: ApplicationContext, vote_id: Option(int, description="종료할 투표 아이디입니다")):
         await ctx.defer()
 
@@ -106,6 +126,11 @@ class vote(commands.Cog):
             return await ctx.respond("투표는 투표를 시작한 사람만 종료할 수 있습니다.")
 
         cursor.execute(f"UPDATE votes SET state=1 WHERE id={vote_id}")
+        for view in ctx.bot.persistent_views:
+            if hasattr(view, "vote_id") and view.vote_id == vote_id:
+                view.stop()
+                logger.debug("View for vote #%d has stopped", vote_id)
+                break
 
         embed = discord.Embed(title=f"#{vote_id} {vote_name}", description="투표가 종료되었습니다", color=0xFFFFFF)
 
@@ -121,4 +146,4 @@ class vote(commands.Cog):
 
 
 def setup(bot: discord.Bot):
-    bot.add_cog(vote())
+    bot.add_cog(Vote(bot))
