@@ -21,7 +21,7 @@ class Vote(commands.Cog):
 
     def create_tables(self):
         cursor = self.conn.cursor()
-        cursor.execute("CREATE TABLE IF NOT EXISTS votes(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, state INTEGER, user_id INTEGER, interaction_token TEXT, flag INTEGER)")
+        cursor.execute("CREATE TABLE IF NOT EXISTS votes(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, state INTEGER, user_id INTEGER, flag INTEGER)")
         cursor.execute("CREATE TABLE IF NOT EXISTS vote_choices(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, color INTEGER, emoji TEXT, vote REFERENCES votes)")
         cursor.execute("CREATE TABLE IF NOT EXISTS voters(id INTEGER, vote REFERENCES votes, choice REFERENCES voice_choices)")
         cursor.close()
@@ -59,7 +59,7 @@ class Vote(commands.Cog):
         if mv == "허용":
             flag |= 1
 
-        cursor.execute(f"INSERT INTO votes (name, state, user_id, interaction_token, flag) VALUES ('{name}', 0, {ctx.author.id}, '{ctx.interaction.token}', {flag})")
+        cursor.execute(f"INSERT INTO votes (name, state, user_id, flag) VALUES ('{name}', 0, {ctx.author.id}, {flag})")
         vote_id = cursor.lastrowid
         logger.debug("Created new vote(id=%d, name=%s, user=%d, flag=%d)", vote_id, name, ctx.author.id, flag)
 
@@ -119,8 +119,8 @@ class Vote(commands.Cog):
 
         cursor = self.conn.cursor()
 
-        cursor.execute(f"SELECT name, state, user_id, interaction_token FROM votes WHERE id={vote_id}")
-        (vote_name, state, user_id, interaction_token) = cursor.fetchone()
+        cursor.execute(f"SELECT name, state, user_id FROM votes WHERE id={vote_id}")
+        (vote_name, state, user_id) = cursor.fetchone()
 
         if state != 0:
             return await ctx.respond("투표가 이미 종료되었습니다.", ephemeral=True)
