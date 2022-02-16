@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from discord.commands import ApplicationContext, Option
+from discord.commands import ApplicationContext, Option, AutocompleteContext, OptionChoice
 from utils.commands import slash_command
 from discord.ui import View, Button
 import sqlite3
@@ -41,6 +41,10 @@ class Vote(commands.Cog):
                 button.callback = self.button_callback
                 view.add_item(button)
 
+            button = Button(style=discord.ButtonStyle.danger, label="투표 취소", emoji="🔥", custom_id=f"vote:cancel:{vote_id}")
+            button.callback = self.cancel_vote
+            view.add_item(button)
+
             bot.add_view(view)
 
     @slash_command(description="투표를 시작합니다")
@@ -48,7 +52,7 @@ class Vote(commands.Cog):
         self,
         ctx: ApplicationContext,
         name: Option(str, description="새로 만들 투표의 이름입니다"),
-        choices: Option(str, description="투표의 선택지입니다(쉼표로 구분, 최대 25개)"),
+        choices: Option(str, description="투표의 선택지입니다(쉼표로 구분, 최대 20개)"),
         mv: Option(str, description="중복 투표 가능 여부입니다", choices=["허용"], required=False)
     ):
         await ctx.defer()
@@ -63,7 +67,7 @@ class Vote(commands.Cog):
         vote_id = cursor.lastrowid
         logger.debug("Created new vote(id=%d, name=%s, user=%d, flag=%d)", vote_id, name, ctx.author.id, flag)
 
-        choices = choices.split(",", 25)
+        choices = choices.split(",", 20)
         view = View(timeout=None)
         view.vote_id = vote_id
         for choice in choices:
@@ -75,6 +79,10 @@ class Vote(commands.Cog):
             button = Button(style=discord.ButtonStyle.primary, label=choice_name, custom_id=f"vote:{choice_id}")
             button.callback = self.button_callback
             view.add_item(button)
+
+        button = Button(style=discord.ButtonStyle.danger, label="투표 취소", emoji="🔥", custom_id=f"vote:cancel:{vote_id}")
+        button.callback = self.cancel_vote
+        view.add_item(button)
 
         msg = await ctx.respond(
             embed=discord.Embed(title=f"#{vote_id} {name}", description="아래 버튼을 눌러 투표에 참여해주세요.", color=0xFFFFFF)
@@ -101,7 +109,7 @@ class Vote(commands.Cog):
         (vote_state, flag) = cursor.fetchone()
         if vote_state != 0:
             logger.debug("Vote #%d is in non-zero state")
-            return await interaction.response.send_message("투표가 종료되었습니다", ephemeral=True)
+            return await interaction.response.send_message("투표가 이미 종료되었습니다", ephemeral=True)
 
         if not (flag & 1):
             logger.debug("Checking history of %d", user_id)
@@ -118,15 +126,54 @@ class Vote(commands.Cog):
         cursor.close()
         self.conn.commit()
 
-    @slash_command(description="투표를 종료합니다")
-    async def end_vote(self, ctx: ApplicationContext, vote_id: Option(int, description="종료할 투표 아이디입니다")):
-        await ctx.defer()
-
+    async def cancel_vote(self, interaction: discord.Interaction):
         cursor = self.conn.cursor()
 
-        cursor.execute(f"SELECT name, state, user_id, message_id FROM votes WHERE id={vote_id}")
+        user_id = interaction.user.id
+        vote_id = int(interaction.data["custom_id"][12:])
+
+        logger.debug("Checking state of vote #%d", vote_id)
+        cursor.execute(f"SELECT state FROM votes WHERE id={vote_id}")
+        (vote_state,) = cursor.fetchone()
+        if vote_state != 0:
+            logger.debug("Vote #%d is in non-zero state")
+            return await interaction.response.send_message("투표가 이미 종료되었습니다", ephemeral=True)
+
+        logger.debug("Checking history of %d", user_id)
+        cursor.execute(f"SELECT id FROM voters WHERE id={user_id} AND vote={vote_id} LIMIT 1")
+        if cursor.fetchone() is None:
+            logger.debug("%d has never voted on vote #%d", user_id, vote_id)
+            return await interaction.response.send_message("투표하지 않았습니다", ephemeral=True)
+
+        cursor.execute(f"DELETE FROM voters WHERE id={user_id} AND vote={vote_id}")
+        logger.debug("Deleted voter(id=%d, vote=%d)", user_id, vote_id)
+
+        await interaction.response.send_message("투표 기록이 초기화되었습니다", ephemeral=True)
+        cursor.close()
+        self.conn.commit()
+
+    async def vote_autocomplete(self, ctx: AutocompleteContext):
+        cursor = self.conn.cursor()
+        result = []
+        value = ctx.value
+
+        logger.debug("Autocompleting %s", value)
+
+        cursor.execute(f"SELECT id, name FROM votes WHERE user_id={ctx.interaction.user.id} AND state=0")
+        for (id, name) in cursor:
+            format = f"#{id} {name}"
+            if value in format:
+                result.append(OptionChoice(format, id))
+
+        return result
+
+    @slash_command(description="투표를 종료합니다")
+    async def end_vote(self, ctx: ApplicationContext, vote: Option(int, description="종료할 투표를 선택해주세요", autocomplete=vote_autocomplete)):
+        cursor = self.conn.cursor()
+
+        cursor.execute(f"SELECT name, state, user_id, message_id FROM votes WHERE id={vote}")
         (vote_name, state, user_id, message_id) = cursor.fetchone()
-        logger.debug("Fetched vote(id=%d, name=%s, state=%d, user=%d, message=%d)", vote_id, vote_name, state, user_id, message_id)
+        logger.debug("Fetched vote(id=%d, name=%s, state=%d, user=%d, message=%d)", vote, vote_name, state, user_id, message_id)
 
         if state != 0:
             return await ctx.respond("투표가 이미 종료되었습니다.", ephemeral=True)
@@ -134,18 +181,18 @@ class Vote(commands.Cog):
         if ctx.author.id != user_id:
             return await ctx.respond("투표는 투표를 시작한 사람만 종료할 수 있습니다.", ephemeral=True)
 
-        cursor.execute(f"UPDATE votes SET state=1 WHERE id={vote_id}")
+        cursor.execute(f"UPDATE votes SET state=1 WHERE id={vote}")
         for view in ctx.bot.persistent_views:
-            if hasattr(view, "vote_id") and view.vote_id == vote_id:
+            if hasattr(view, "vote_id") and view.vote_id == vote:
                 view.stop()
-                logger.debug("View for vote #%d has stopped", vote_id)
+                logger.debug("View for vote #%d has stopped", vote)
                 break
 
-        embed = discord.Embed(title=f"#{vote_id} {vote_name}", description="투표가 종료되었습니다", color=0xFFFFFF)
+        embed = discord.Embed(title=f"#{vote} {vote_name}", description="투표가 종료되었습니다", color=0xFFFFFF)
 
         await ctx.channel.get_partial_message(message_id).edit(embed=embed.copy(), view=None)
 
-        cursor.execute(f"SELECT id, name FROM vote_choices WHERE vote={vote_id}")
+        cursor.execute(f"SELECT id, name FROM vote_choices WHERE vote={vote}")
         for (choice_id, choice_name) in cursor.fetchall():
             cursor.execute(f"SELECT * FROM voters WHERE choice={choice_id}")
             voter_count = len(cursor.fetchall())
