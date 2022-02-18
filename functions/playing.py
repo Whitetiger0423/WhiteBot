@@ -4,6 +4,7 @@ from discord.ext import commands
 from utils.commands import slash_command
 from discord.commands import ApplicationContext, Option
 import logging
+from typing import List
 
 logger = logging.getLogger(__name__)
 
@@ -189,7 +190,7 @@ class TicTacToeButton(discord.ui.Button["TicTacToe"]):
 
 
 class TicTacToe(discord.ui.View):
-    children: list[TicTacToeButton]
+    children: List[TicTacToeButton]
 
     def __init__(self, player_id: discord.Member, rival_id: discord.Member):
         super().__init__()
