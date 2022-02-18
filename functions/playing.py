@@ -143,7 +143,11 @@ class playing(commands.Cog):
             embed = discord.Embed(title="WhiteBot 오류", description="틱택토 기능", color=0xFF0000)
             embed.add_field(name="오류 내용:", value="봇과는 대결할 수 없습니다.", inline=False)
             await ctx.respond(embed=embed)
-        else:await ctx.respond("틱택토(삼목) 게임을 시작합니다. X부터 시작해요!", view=TicTacToe(ctx.user.id, rival.id))
+        else:
+            await ctx.respond(
+                f"틱택토(삼목) 게임을 시작합니다. {ctx.user.mention}(X) vs {rival.mention}(O) - X부터 시작합니다.",
+                view=TicTacToe(ctx.user.id, rival.id),
+            )
         )
 
 
