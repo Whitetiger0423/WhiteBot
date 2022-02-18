@@ -35,7 +35,8 @@ class Vote(commands.Cog):
             view = View(timeout=None)
             view.vote_id = vote_id
 
-            cursor.execute(f"SELECT id, name FROM vote_choices WHERE vote={vote_id}")
+            param = {"vote_id": vote_id}
+            cursor.execute("SELECT id, name FROM vote_choices WHERE vote=:vote_id", param)
             for (choice_id, choice_name) in cursor.fetchall():
                 button = Button(style=discord.ButtonStyle.primary, label=choice_name, custom_id=f"vote:{choice_id}")
                 button.callback = self.button_callback
@@ -63,7 +64,8 @@ class Vote(commands.Cog):
         if mv == "허용":
             flag |= 1
 
-        cursor.execute(f"INSERT INTO votes (name, state, user_id, flag) VALUES ('{name}', 0, {ctx.author.id}, {flag})")
+        param = {"name": name, "state": 0, "user_id": ctx.author.id, "flag": flag}
+        cursor.execute("INSERT INTO votes (name, state, user_id, flag) VALUES (:name, :state, :user_id, :flag)", param)
         vote_id = cursor.lastrowid
         logger.debug("Created new vote(id=%d, name=%s, user=%d, flag=%d)", vote_id, name, ctx.author.id, flag)
 
@@ -72,7 +74,8 @@ class Vote(commands.Cog):
         view.vote_id = vote_id
         for choice in choices:
             choice_name = choice.strip()
-            cursor.execute(f"INSERT INTO vote_choices (name, vote) VALUES ('{choice_name}', {vote_id})")
+            param = {"name": choice_name, "vote": vote_id}
+            cursor.execute("INSERT INTO vote_choices (name, vote) VALUES (:name, :vote)", param)
             choice_id = cursor.lastrowid
             logger.debug("Created new vote choice(id=%d, name=%s, vote=%d)", choice_id, choice_name, vote_id)
 
@@ -89,7 +92,8 @@ class Vote(commands.Cog):
             .set_footer(text=f"Started by {ctx.author.display_name}", icon_url=ctx.author.display_avatar),
             view=view
         )
-        cursor.execute(f"UPDATE votes SET message_id={msg.id} WHERE id={vote_id}")
+        param = {"message_id": msg.id, "id": vote_id}
+        cursor.execute("UPDATE votes SET message_id=:message_id WHERE id=:id", param)
         logger.debug("Updated vote(id=%d, message=%d)", vote_id, msg.id)
 
         cursor.close()
@@ -101,11 +105,13 @@ class Vote(commands.Cog):
         user_id = interaction.user.id
         choice_id = int(interaction.data["custom_id"][5:])
 
-        cursor.execute(f"SELECT name, vote FROM vote_choices WHERE id={choice_id}")
+        param = {"id": choice_id}
+        cursor.execute("SELECT name, vote FROM vote_choices WHERE id=:id", param)
         (choice_name, vote_id) = cursor.fetchone()
 
         logger.debug("Checking state of vote #%d", vote_id)
-        cursor.execute(f"SELECT state, flag FROM votes WHERE id={vote_id}")
+        param = {"id": vote_id}
+        cursor.execute("SELECT state, flag FROM votes WHERE id=:id", param)
         (vote_state, flag) = cursor.fetchone()
         if vote_state != 0:
             logger.debug("Vote #%d is in non-zero state")
@@ -113,12 +119,14 @@ class Vote(commands.Cog):
 
         if not (flag & 1):
             logger.debug("Checking history of %d", user_id)
-            cursor.execute(f"SELECT * FROM voters WHERE id={user_id} AND vote={vote_id}")
+            param = {"id": user_id, "vote": vote_id}
+            cursor.execute("SELECT * FROM voters WHERE id=:id AND vote=:vote", param)
             if cursor.fetchone() is not None:
                 logger.debug("%d has already voted on vote #%d", user_id, vote_id)
                 return await interaction.response.send_message("이미 투표하셨습니다", ephemeral=True)
 
-        cursor.execute(f"INSERT INTO voters (id, vote, choice) VALUES ({user_id}, {vote_id}, {choice_id})")
+        param = {"id": user_id, "vote": vote_id, "choice": choice_id}
+        cursor.execute("INSERT INTO voters (id, vote, choice) VALUES (:id, :vote, :choice)", param)
         logger.debug("Created new voter(id=%d, vote=%d, choice=%d)", user_id, vote_id, choice_id)
 
         await interaction.response.send_message(f"{choice_name}에 투표하셨습니다.", ephemeral=True)
@@ -133,19 +141,22 @@ class Vote(commands.Cog):
         vote_id = int(interaction.data["custom_id"][12:])
 
         logger.debug("Checking state of vote #%d", vote_id)
-        cursor.execute(f"SELECT state FROM votes WHERE id={vote_id}")
+        param = {"id": vote_id}
+        cursor.execute("SELECT state FROM votes WHERE id=:id", param)
         (vote_state,) = cursor.fetchone()
         if vote_state != 0:
             logger.debug("Vote #%d is in non-zero state")
             return await interaction.response.send_message("투표가 이미 종료되었습니다", ephemeral=True)
 
         logger.debug("Checking history of %d", user_id)
-        cursor.execute(f"SELECT id FROM voters WHERE id={user_id} AND vote={vote_id} LIMIT 1")
+        param = {"id": user_id, "vote": vote_id}
+        cursor.execute("SELECT id FROM voters WHERE id=:id AND vote=:vote LIMIT 1", param)
         if cursor.fetchone() is None:
             logger.debug("%d has never voted on vote #%d", user_id, vote_id)
             return await interaction.response.send_message("투표하지 않았습니다", ephemeral=True)
 
-        cursor.execute(f"DELETE FROM voters WHERE id={user_id} AND vote={vote_id}")
+        param = {"id": user_id, "vote": vote_id}
+        cursor.execute("DELETE FROM voters WHERE id=:id AND vote=:vote", param)
         logger.debug("Deleted voter(id=%d, vote=%d)", user_id, vote_id)
 
         await interaction.response.send_message("투표 기록이 초기화되었습니다", ephemeral=True)
@@ -159,7 +170,8 @@ class Vote(commands.Cog):
 
         logger.debug("Autocompleting %s", value)
 
-        cursor.execute(f"SELECT id, name FROM votes WHERE user_id={ctx.interaction.user.id} AND state=0")
+        param = {"user_id": ctx.interaction.user.id, "state": 0}
+        cursor.execute("SELECT id, name FROM votes WHERE user_id=:user_id AND state=:state", param)
         for (id, name) in cursor:
             format = f"#{id} {name}"
             if value in format:
@@ -171,7 +183,8 @@ class Vote(commands.Cog):
     async def end_vote(self, ctx: ApplicationContext, vote: Option(int, description="종료할 투표를 선택해주세요", autocomplete=vote_autocomplete)):
         cursor = self.conn.cursor()
 
-        cursor.execute(f"SELECT name, state, user_id, message_id FROM votes WHERE id={vote}")
+        param = {"id": vote}
+        cursor.execute("SELECT name, state, user_id, message_id FROM votes WHERE id=:id", param)
         (vote_name, state, user_id, message_id) = cursor.fetchone()
         logger.debug("Fetched vote(id=%d, name=%s, state=%d, user=%d, message=%d)", vote, vote_name, state, user_id, message_id)
 
@@ -181,7 +194,8 @@ class Vote(commands.Cog):
         if ctx.author.id != user_id:
             return await ctx.respond("투표는 투표를 시작한 사람만 종료할 수 있습니다.", ephemeral=True)
 
-        cursor.execute(f"UPDATE votes SET state=1 WHERE id={vote}")
+        param = {"state": 1, "id": vote}
+        cursor.execute("UPDATE votes SET state=:state WHERE id=:id", param)
         for view in ctx.bot.persistent_views:
             if hasattr(view, "vote_id") and view.vote_id == vote:
                 view.stop()
@@ -192,9 +206,11 @@ class Vote(commands.Cog):
 
         await ctx.channel.get_partial_message(message_id).edit(embed=embed.copy(), view=None)
 
-        cursor.execute(f"SELECT id, name FROM vote_choices WHERE vote={vote}")
+        param = {"vote": vote}
+        cursor.execute("SELECT id, name FROM vote_choices WHERE vote=:vote", param)
         for (choice_id, choice_name) in cursor.fetchall():
-            cursor.execute(f"SELECT * FROM voters WHERE choice={choice_id}")
+            param = {"choice": choice_id}
+            cursor.execute("SELECT * FROM voters WHERE choice=:choice", param)
             voter_count = len(cursor.fetchall())
             embed.add_field(name=choice_name, value=voter_count)
 
