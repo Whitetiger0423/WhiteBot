@@ -3,8 +3,10 @@ from discord.ext import commands
 from discord.commands import ApplicationContext, Option
 from utils.commands import slash_command
 from datetime import date, datetime, timedelta
-import requests, os
-from utils.utils import to_querystring
+import requests
+import os
+from utils.utils import apply_if_not_none, to_querystring, to_dict
+import logging
 
 API_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?"
 
@@ -28,10 +30,14 @@ place_data = {
     "제주": (52, 38),
 }
 
+logger = logging.getLogger(__name__)
+
 
 class weather(commands.Cog):
     def __init__(self):
         self.service_key = os.getenv("WEATHER_KEY")
+        if self.service_key is None:
+            logger.warning("Weather API key not provided. Weather feature will be disabled")
 
     @slash_command(description="현재 날씨를 조회합니다.")
     async def weather(
@@ -39,6 +45,13 @@ class weather(commands.Cog):
         ctx: ApplicationContext,
         place: Option(str, "날씨를 조회할 장소를 선택해주세요.", choices=list(place_data.keys())),
     ):
+        if self.service_key is None:
+            embed = discord.Embed(
+                title="날씨 기능이 비활성화 되어있어요",
+                description="관리자에게 문의해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
+                color=0xffffff)
+            return await ctx.respond(embed=embed)
+
         await ctx.defer()
 
         px, py = place_data[place]
@@ -54,40 +67,16 @@ class weather(commands.Cog):
         }
 
         result = requests.get(API_URL + to_querystring(payload))
-        items = result.json()["response"]["body"]["items"]
+        data = result.json()["response"]["body"]["items"]["item"]
 
-        # API 오류로 데이터가 없을 경우에 네임에러 나지 않게 변수 선정의
-        temperature = None
-        wind_speed = None
-        weather_state = None
+        data = to_dict(data, lambda k: k["category"], lambda v: v["fcstValue"])
 
-        for item in items["item"]:
-            category = item["category"]
-            value = item["fcstValue"]
+        temperature = apply_if_not_none(data.get("TMP"), lambda x: f"{x}℃")
+        wind_speed = apply_if_not_none(data.get("WSD"), lambda x: f"{x}m/s")
+        weather_state = apply_if_not_none(data.get("PTY"), self.process_pty)
 
-            if category == "TMP":
-                temperature = f"{value}℃"
-            elif category == "WSD":
-                wind_speed = f"{value}m/s"
-
-            elif category == "PTY":
-                if value == "1":
-                    weather_state = "비 내림"
-                elif value == "2":
-                    weather_state = "진눈깨비 내림"
-                elif value == "3":
-                    weather_state = "눈 내림"
-                elif value == "4":
-                    weather_state = "소나기 내림"
-
-            elif category == "SKY" and weather_state is None:
-                value = int(value)
-                if value <= 5:
-                    weather_state = "맑음"
-                elif value <= 8:
-                    weather_state = "구름 많음"
-                else:
-                    weather_state = "흐림"
+        if weather_state is None:
+            weather_state = apply_if_not_none(data.get("SKY"), self.process_sky)
 
         embed = (
             discord.Embed(
@@ -99,6 +88,27 @@ class weather(commands.Cog):
         )
 
         await ctx.followup.send(embed=embed)
+
+    def process_pty(self, value) -> str:
+        if value == "1":
+            return "비 내림"
+        elif value == "2":
+            return "진눈깨비 내림"
+        elif value == "3":
+            return "눈 내림"
+        elif value == "4":
+            return "소나기 내림"
+        else:
+            return None
+
+    def process_sky(self, value) -> str:
+        value = int(value)
+        if value <= 5:
+            return "맑음"
+        elif value <= 8:
+            return "구름 많음"
+        else:
+            return "흐림"
 
 
 def setup(bot):

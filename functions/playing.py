@@ -3,7 +3,9 @@ import random
 from discord.ext import commands
 from utils.commands import slash_command
 from discord.commands import ApplicationContext, Option
-from typing import List
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class playing(commands.Cog):
@@ -75,7 +77,7 @@ class playing(commands.Cog):
                     inline=False,
                 )
                 await ctx.respond(embed=embed)
-        except:
+        except Exception:
             embed = discord.Embed(
                 title="WhiteBot 오류", description="주사위 기능", color=0xFF0000
             )
@@ -86,8 +88,57 @@ class playing(commands.Cog):
             )
             await ctx.respond(embed=embed)
 
+    @slash_command(description="홀짝 게임을 시작합니다.")
+    async def holjjac(self, ctx: ApplicationContext):
+        dice = random.randint(1, 6)
+        embed = discord.Embed(
+            title="홀짝 게임",
+            description="1부터 6까지 나오는 주사위의 수가 짝수일지, 홀수일지 아래의 반응을 눌러 예측해보세요!",
+            color=0xFFFFFF,
+        )
+        embed.add_field(name="> 주사위의 눈", value="?", inline=False)
+        embed.add_field(name="> 선택지", value="홀수: 🔴\n짝수: 🔵", inline=True)
+        interaction = await ctx.interaction.response.send_message(embed=embed)
+        msg = await interaction.original_message()
+        await msg.add_reaction("🔴")
+        await msg.add_reaction("🔵")
+        try:
+            def check(reaction, user):
+                return (
+                    str(reaction) in ["🔴", "🔵"]
+                    and user == ctx.author
+                    and reaction.message.id == msg.id
+                )
+
+            reaction, user = await ctx.bot.wait_for("reaction_add", check=check)
+            if (str(reaction) == "🔴" and dice % 2 == 1) or (
+                str(reaction) == "🔵" and dice % 2 == 0
+            ):
+                embed = discord.Embed(
+                    title="홀짝 게임", description="정답입니다!", color=0xFFFFFF
+                )
+                embed.add_field(name="> 주사위의 눈", value=f"{dice}")
+                embed.add_field(name="> 당신의 선택", value=f"{str(reaction)}", inline=False)
+            else:
+                embed = discord.Embed(
+                    title="홀짝 게임", description="틀렸습니다..", color=0xFFFFFF
+                )
+                embed.add_field(name="> 주사위의 눈", value=f"{dice}")
+                embed.add_field(name="> 당신의 선택", value=f"{str(reaction)}", inline=False)
+            await msg.edit(embed=embed)
+        except Exception:
+            logger.exception("Unexpected exception from holjjac")
+            embed = discord.Embed(
+                title="오류가 발생했어요", description="잠시 후에 다시 시도해주세요", color=0xFF0000
+            )
+            await msg.edit(embed=embed)
+
     @slash_command(description="틱택토(삼목) 게임을 진행합니다.")
-    async def tictactoe(self, ctx: ApplicationContext, rival: Option(discord.User, description="같이 게임을 할 유저를 선택하세요")):
+    async def tictactoe(
+        self,
+        ctx: ApplicationContext,
+        rival: Option(discord.User, description="같이 게임을 할 유저를 선택하세요"),
+    ):
         if rival.bot:
             embed = discord.Embed(
                     title="WhiteBot 오류", description="틱택토 기능", color=0xFF0000
@@ -95,6 +146,7 @@ class playing(commands.Cog):
             embed.add_field(name="오류 내용:", value="봇과는 대결할 수 없습니다.", inline=False)
             await ctx.respond(embed=embed)
         else:await ctx.respond("틱택토(삼목) 게임을 시작합니다. X부터 시작해요!", view=TicTacToe(ctx.user.id, rival.id))
+        )
 
 
 class TicTacToeButton(discord.ui.Button["TicTacToe"]):
@@ -103,101 +155,86 @@ class TicTacToeButton(discord.ui.Button["TicTacToe"]):
         self.x = x
         self.y = y
 
+    styles_by_player = (discord.ButtonStyle.danger, discord.ButtonStyle.success)
+    labels_by_player = ("X", "O")
+
     async def callback(self, interaction: discord.Interaction):
         assert self.view is not None
         view: TicTacToe = self.view
-        state = view.board[self.y][self.x]
-        if state in (view.X, view.O):
+        cp = view.current_player
+
+        assert view.board[self.y][self.x] == -1
+        if interaction.user.id != view.player_ids[cp]:
             return
 
-        if view.current_player == view.X:
-            if interaction.user.id != view.x_member_id:
-                return
-            self.style = discord.ButtonStyle.danger
-            self.label = "X"
-            self.disabled = True
-            view.board[self.y][self.x] = view.X
-            view.current_player = view.O
-            content = "O의 차례입니다!"
-        else:
-            if interaction.user.id != view.o_member_id:
-                return
-            self.style = discord.ButtonStyle.success
-            self.label = "O"
-            self.disabled = True
-            view.board[self.y][self.x] = view.O
-            view.current_player = view.X
-            content = "X의 차례입니다!"
+        view.board[self.y][self.x] = cp
+
+        self.style = self.styles_by_player[cp]
+        self.label = self.labels_by_player[cp]
+        self.disabled = True
+
+        view.current_player = cp = 1 - cp
+        content = f"<@{view.player_ids[cp]}>({self.labels_by_player[cp]})의 차례입니다!"
+
+        logger.debug("Board %s", str(view.board))
 
         winner = view.check_board_winner()
         if winner is not None:
-            if winner == view.X:
-                content = "X 승리!"
-            elif winner == view.O:
-                content = "O 승리!"
-            else:
+            if winner == -1:
                 content = "비겼습니다."
+            else:
+                content = f"<@{view.player_ids[winner]}>({self.labels_by_player[winner]}) 승리!"
 
             for child in view.children:
                 child.disabled = True
-
             view.stop()
 
         await interaction.response.edit_message(content=content, view=view)
 
 
 class TicTacToe(discord.ui.View):
-    children: List[TicTacToeButton]
-    X = -1
-    O = 1
-    Tie = 2
+    children: list[TicTacToeButton]
 
     def __init__(self, player_id: discord.Member, rival_id: discord.Member):
         super().__init__()
 
-        self.x_member_id = player_id
-        self.o_member_id = rival_id
+        self.player_ids = (player_id, rival_id)
 
-        self.current_player = self.X
+        self.current_player = 0
         self.board = [
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0],
+            [-1, -1, -1],
+            [-1, -1, -1],
+            [-1, -1, -1],
         ]
+
+        logger.debug("Board %s", str(self.board))
 
         for x in range(3):
             for y in range(3):
                 self.add_item(TicTacToeButton(x, y))
 
     def check_board_winner(self):
-        for across in self.board:
-            value = sum(across)
-            if value == 3:
-                return self.O
-            elif value == -3:
-                return self.X
+        for line in range(3):
+            if self.board[line][0] == self.board[line][1] == self.board[line][2] != -1:
+                logger.debug("[Game Set] Horizontal(line %d)", line)
+                return self.board[line][0]
 
         for line in range(3):
-            value = self.board[0][line] + self.board[1][line] + self.board[2][line]
-            if value == 3:
-                return self.O
-            elif value == -3:
-                return self.X
+            if self.board[0][line] == self.board[1][line] == self.board[2][line] != -1:
+                logger.debug("[Game Set] Vertical(line %d)", line)
+                return self.board[0][line]
 
-        diag = self.board[0][2] + self.board[1][1] + self.board[2][0]
-        if diag == 3:
-            return self.O
-        elif diag == -3:
-            return self.X
+        if self.board[0][2] == self.board[1][1] == self.board[2][0] != -1:
+            logger.debug("[Game Set] Diagonal ↙")
+            return self.board[0][2]
 
-        diag = self.board[0][0] + self.board[1][1] + self.board[2][2]
-        if diag == 3:
-            return self.O
-        elif diag == -3:
-            return self.X
+        if self.board[0][0] == self.board[1][1] == self.board[2][2] != -1:
+            logger.debug("[Game Set] Diagonal ↘")
+            return self.board[0][0]
 
-        if all(i != 0 for row in self.board for i in row):
-            return self.Tie
+        if all(i != -1 for row in self.board for i in row):
+            logger.debug("[Game Set] Draw")
+            return -1
 
         return None
 

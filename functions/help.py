@@ -68,6 +68,9 @@ playing_commands = (
         value="주사위를 굴립니다. `[N]`만 쓰면 1부터 `[N]`까지의 숫자를, `(n)`까지 모두 쓰면 `[N]`부터 `(n)`까지의 숫자를 랜덤으로 표출합니다.",
         inline=False,
     )
+    .add_field(
+        name="holjjac", value="홀짝 게임을 시작합니다. 직접 반응을 눌러서 홀짝을 맞춰보세요.", inline=False
+    )
 )
 
 manage_commands = (
