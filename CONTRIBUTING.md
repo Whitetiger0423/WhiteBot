@@ -22,14 +22,13 @@ $ git clone https://github.com/<닉네임>/WhiteBot.git
 3. 디펜던시를 설치합니다
 
 먼저 파이썬이 설치되어 있는지 확인해주세요.  
-프로젝트 디렉토리에서 아래 두 명령어를 입력해주시면 디펜던시 설치가 완료됩니다.
+필요한 디펜던시들은 프로젝트 루트 폴더에 있는 requirements.txt에 명시되어있습니다.
 
 ```
 $ pip install -r requirements.txt
-$ pip install git+https://github.com/Pycord-Development/pycord
 ```
 
-Note: 이 프로젝트를 위한 모듈들이 전역에 설치되기를 원하지 않으시면 가상환경을 사용하셔도 좋습니다.
+Note: 모듈들이 전역에 설치되기를 원하지 않으시면 가상환경을 사용하셔도 좋습니다.
 
 4. 작업할 브랜치를 새로 만듭니다
 
