@@ -1,5 +1,5 @@
 # WhiteBot
-![servercount](https://koreanbots.dev/api/widget/bots/servers/782777035898617886.svg?icon=true&scale=1&style=flat) ![Official Discord](https://img.shields.io/discord/795837553684774933?color=7289DA&label=Official%20Discord%20Server&logo=discord&logoColor=7289DA&style=flat-square&link=https://discord.gg/aebSVBgzuG) ![GitHub Repo stars](https://img.shields.io/github/stars/dev-White-team/WhiteBot?style=flat-square)
+![servercount](https://koreanbots.dev/api/widget/bots/servers/782777035898617886.svg?icon=true&scale=1&style=flat) ![Official Discord](https://img.shields.io/discord/795837553684774933?color=7289DA&label=Official%20Discord%20Server&logo=discord&logoColor=7289DA&style=flat-square&link=https://discord.gg/aebSVBgzuG) ![GitHub Repo stars](https://img.shields.io/github/stars/dev-White-team/WhiteBot?style=flat-square&logo=github)
 
 슬래시로 작동하는 유틸리티 만능 봇!\
 번역, 검색, 날씨와 암호화 기능까지 - [여러 유용한 기능들을 채팅하면서 바로 써보세요](https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot%20applications.commands)!
