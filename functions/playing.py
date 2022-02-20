@@ -148,7 +148,6 @@ class playing(commands.Cog):
                 f"틱택토(삼목) 게임을 시작합니다. {ctx.user.mention}(X) vs {rival.mention}(O) - X부터 시작합니다.",
                 view=TicTacToe(ctx.user.id, rival.id),
             )
-        )
 
 
 class TicTacToeButton(discord.ui.Button["TicTacToe"]):
