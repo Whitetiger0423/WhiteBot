@@ -1,13 +1,14 @@
-# 코드 관련
-버그는 [공식 디스코드 서버](https://github.com/dev-White-team/WhiteBot#%EA%B3%B5%EC%8B%9D-%EB%94%94%EC%8A%A4%EC%BD%94%EB%93%9C-%EC%84%9C%EB%B2%84) 또는 [이슈](https://github.com/dev-White-team/WhiteBot/issues)에서 제보하실 수 있으며, 새로운 기능을 코딩하신 뒤 적용하길 바라신다면 [PR](https://github.com/dev-White-team/WhiteBot/pulls)을 하실 수 있습니다.
-
-코드의 무단 이용은 금지되며, 사용시에는 반드시 GPL v3.0 라이선스에 맞추어 사용하여야 합니다. 본 코드의 공개는 교육적인 목적을 위해서입니다. 무단 이용시 법적인 제재를 받을 수 있습니다.
-
-# [WhiteBot](https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot%20applications.commands)
-![servercount](https://koreanbots.dev/api/widget/bots/servers/782777035898617886.svg?icon=true&scale=1&style=classic) ![Official Discord](https://img.shields.io/discord/795837553684774933?color=7289DA&label=Official%20Discord%20Server&logo=discord&logoColor=7289DA&link=https://discord.gg/aebSVBgzuG) ![GitHub Repo stars](https://img.shields.io/github/stars/dev-White-team/WhiteBot?style=social)
+# WhiteBot
+![servercount](https://koreanbots.dev/api/widget/bots/servers/782777035898617886.svg?icon=true&scale=1&style=classic) ![Official Discord](https://img.shields.io/discord/795837553684774933?color=7289DA&label=Official%20Discord%20Server&logo=discord&logoColor=7289DA&style=flat-square&link=https://discord.gg/aebSVBgzuG) ![GitHub Repo stars](https://img.shields.io/github/stars/dev-White-team/WhiteBot?style=flat-square)
 
 슬래시로 작동하는 유틸리티 만능 봇!\
 번역, 검색, 날씨와 암호화 기능까지 - [여러 유용한 기능들을 채팅하면서 바로 써보세요](https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot%20applications.commands)!
+
+## 코드 관련
+버그는 [공식 디스코드 서버](https://discord.gg/aebSVBgzuG) 또는 [이슈](https://github.com/dev-White-team/WhiteBot/issues)에서 제보하실 수 있으며, 새로운 기능을 코딩하신 뒤 적용하길 바라신다면 [PR](https://github.com/dev-White-team/WhiteBot/pulls)을 하실 수 있습니다.
+
+코드의 무단 이용은 금지되며, 사용시에는 반드시 GPL v3.0 라이선스에 맞추어 사용하여야 합니다. 본 코드의 공개는 교육적인 목적을 위해서입니다. 무단 이용시 법적인 제재를 받을 수 있습니다.
+
 
 ## 특징
 - 디스코드의 Slash Command 기능 사용으로, `/`만 누르면 모든 명령어가 한번에 나옵니다.
@@ -48,3 +49,8 @@
 |`/holjjac`|홀짝 게임을 시작합니다.|
 |`/tictactoe`|틱택토(삼목) 게임을 시작합니다. 2인전으로 진행됩니다.|
 |`/youtube`|음성 채널에 유튜브 투게더를 활성화시키는 링크를 보냅니다. 음성 채널에 연결되어 있어야 작동하며, 대부분의 서버에서 정상적으로 작동하지 않습니다.|
+
+## 초대하기
+
+- [WhiteBot 초대하기](https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot%20applications.commands)
+- [공식 디스코드 서버](https://discord.gg/aebSVBgzuG)
