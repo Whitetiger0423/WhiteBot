@@ -4,6 +4,7 @@
 코드의 무단 이용은 금지되며, 사용시에는 반드시 GPL v3.0 라이선스에 맞추어 사용하여야 합니다. 본 코드의 공개는 교육적인 목적을 위해서입니다. 무단 이용시 법적인 제재를 받을 수 있습니다.
 
 # WhiteBot
+![servercount](https://koreanbots.dev/api/widget/bots/servers/782777035898617886.svg?icon=true&scale=1&style=classic) ![Official Discord](https://img.shields.io/discord/795837553684774933?color=7289DA&label=Official%20Discord%20Server&logo=discord&logoColor=7289DA) ![GitHub Repo stars](https://img.shields.io/github/stars/dev-White-team/WhiteBot?style=social)
 
 슬래시로 작동하는 유틸리티 만능 봇!\
 번역, 검색, 날씨와 암호화 기능까지 - 여러 유용한 기능들을 채팅하면서 바로 써보세요!
