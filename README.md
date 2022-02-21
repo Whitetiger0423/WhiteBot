@@ -4,7 +4,8 @@
 [servercount-shield]: https://koreanbots.dev/api/widget/bots/servers/782777035898617886.svg?icon=true&scale=1&style=flat
 [stars-shield]: https://img.shields.io/github/stars/dev-White-team/WhiteBot?style=flat-square&logo=github
 [issues]: https://github.com/dev-White-team/WhiteBot/issues
-[pulls]: https://github.com/dev-white-team/WhiteBt/pulls
+[pulls]: https://github.com/dev-white-team/WhiteBot/pulls
+[contributing]: https://github.com/dev-White-team/WhiteBot/blob/main/CONTRIBUTING.md
 
 # WhiteBot
 
@@ -15,17 +16,15 @@
 슬래시로 작동하는 유틸리티 만능 봇!\
 번역, 검색, 날씨와 암호화 기능까지 - [여러 유용한 기능들을 채팅하면서 바로 써보세요][invite]!
 
-## 코드 관련
-버그는 [공식 디스코드 서버][discord-server] 또는 [이슈][issues]에서 제보하실 수 있으며, 새로운 기능을 코딩하신 뒤 적용하길 바라신다면 [PR][pulls]을 하실 수 있습니다.
-
-코드의 무단 이용은 금지되며, 사용시에는 반드시 GPL v3.0 라이선스에 맞추어 사용하여야 합니다. 본 코드의 공개는 교육적인 목적을 위해서입니다. 무단 이용시 법적인 제재를 받을 수 있습니다.
-
-
 ## 특징
 
 - 디스코드의 Slash Command 기능 사용으로, `/`만 누르면 모든 명령어가 한번에 나옵니다.
 - 번역, 암호화, 날씨 등 실제 채팅할때 유용한 기능들을 담았습니다.
 - 가위바위보 등 혼자서 할 수 있는 놀이부터, 2인전이 가능한 틱택토까지!
+
+## 라이선스
+
+WhiteBot의 모든 코드는 GPL v3에 따라 보호됩니다.
 
 ## 시작하기
 
@@ -63,7 +62,13 @@
 | `/tictactoe` | 틱택토(삼목) 게임을 시작합니다. 2인전으로 진행됩니다. |
 | `/youtube`   | 음성 채널에 유튜브 투게더를 활성화시키는 링크를 보냅니다. 음성 채널에 연결되어 있어야 작동하며, 대부분의 서버에서 정상적으로 작동하지 않습니다. |
 
-## 초대하기
+## 기여하기
 
-- [WhiteBot 초대하기][invite]
-- [공식 디스코드 서버][discord-server]
+WhiteBot에 기여하는 방법에는 여러 가지가 있습니다.
+
+- 버그를 발견하신 경우 [이슈][issues]를 열어주세요.
+- 봇에 추가되기를 원하시는 기능도 언제든지 [이슈][issues]로 열어주세요.
+- 위 내용들은 [공식 디스코드 서버][discord-server]에서 알려주셔도 무방합니다.
+
+코드에 직접 기여하기를 원하신다면, 먼저 [CONTRIBUTING.md][contributing]를 자세히 읽어주세요.  
+코드가 아무리 좋더라도, 가이드라인을 지키지 않으셨다면 PR이 거부될 수 있습니다 :(
