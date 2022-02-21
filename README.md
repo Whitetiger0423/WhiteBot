@@ -1,17 +1,25 @@
 [invite]: https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot%20applications.commands
+[invite-shield]: https://img.shields.io/badge/초대-하기-blue?style=flat-square
 [discord-server]: https://discord.gg/aebSVBgzuG
-[discord-shield]: https://img.shields.io/discord/795837553684774933?color=7289DA&label=Official%20Discord%20Server&logo=discord&logoColor=7289DA&style=flat-square&link=https://discord.gg/aebSVBgzuG
-[servercount-shield]: https://koreanbots.dev/api/widget/bots/servers/782777035898617886.svg?icon=true&scale=1&style=flat
-[stars-shield]: https://img.shields.io/github/stars/dev-White-team/WhiteBot?style=flat-square&logo=github
+[discord-shield]: https://img.shields.io/discord/795837553684774933?style=flat-square&label=디스코드&logo=discord&logoColor=white
+[koreanbots]: https://koreanbots.dev/bots/782777035898617886
+[koreanbots-shield]: https://koreanbots.dev/api/widget/bots/servers/782777035898617886.svg
+[license]: https://github.com/dev-White-team/WhiteBot/blob/main/LICENSE
+[license-shield]: https://img.shields.io/github/license/dev-white-team/WhiteBot?style=flat-square&label=라이선스
+[stars-shield]: https://img.shields.io/github/stars/dev-white-team/WhiteBot?style=flat-square&label=스타&color=yellow
+[python-shield]: https://img.shields.io/badge/파이썬-3.8_|_3.9_|_3.10-blue?style=flat-square&logo=python&logoColor=white
 [issues]: https://github.com/dev-White-team/WhiteBot/issues
 [pulls]: https://github.com/dev-white-team/WhiteBot/pulls
 [contributing]: https://github.com/dev-White-team/WhiteBot/blob/main/CONTRIBUTING.md
 
 # WhiteBot
 
-![servercount][servercount-shield]
-![Official Discord][discord-shield]
-![GitHub Repo stars][stars-shield]
+[![Server Count][koreanbots-shield]][koreanbots]
+[![Invite][invite-shield]][invite]
+[![Official Discord][discord-shield]][discord-server]
+[![License][license-shield]][license]
+![Stars][stars-shield]
+![Python][python-shield]
 
 슬래시로 작동하는 유틸리티 만능 봇!\
 번역, 검색, 날씨와 암호화 기능까지 - [여러 유용한 기능들을 채팅하면서 바로 써보세요][invite]!
