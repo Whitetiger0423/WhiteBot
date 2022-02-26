@@ -42,14 +42,12 @@ utility_commands = (
     .add_field(name="/send `[항목]`", value="`[항목]`을 전송해요!", inline=False)
     .add_field(name="/code `[수신문]`", value="`[수신문]`을 암호화합니다.", inline=False)
     .add_field(name="/decode `[암호문]`", value="`[암호문]`을 해독합니다.", inline=False)
-    .add_field(name="/bot", value="봇의 정보를 전송합니다.", inline=False)
-    .add_field(
-        name="/youtube",
-        value="들어가 있는 음성 채널에 유튜브 투게더를 활성화 시키는 링크를 보냅니다. 음성 채널에 연결되어 있어야 사용 가능하며, 일부 서버에선 작동하지 않습니다.",
-        inline=False,
-    )
     .add_field(name="/weather `[지역]`", value="`[지역]`의 현재 날씨를 조회합니다.")
     .add_field(name="/translate `[언어]` `[텍스트]`", value="`[텍스트]`를 번역합니다.", inline=False)
+    .add_field(
+        name="/vote `[제목]` `[선택지]`", value="`[선택지]`를 대상으로 한 투표를 진행합니다.", inline=False
+    )
+    .add_field(name="/end_vote `[투표]`", value="`[투표]`를 종료합니다.", inline=False)
 )
 
 playing_commands = (
@@ -71,6 +69,11 @@ playing_commands = (
     .add_field(
         name="holjjac", value="홀짝 게임을 시작합니다. 직접 반응을 눌러서 홀짝을 맞춰보세요.", inline=False
     )
+    .add_field(
+        name="/youtube",
+        value="들어가 있는 음성 채널에 유튜브 투게더를 활성화 시키는 링크를 보냅니다. 음성 채널에 연결되어 있어야 사용 가능하며, 일부 서버에선 작동하지 않습니다.",
+        inline=False,
+    )
 )
 
 manage_commands = (
@@ -79,7 +82,9 @@ manage_commands = (
         description="WhiteBot의 명령어에 대해서 소개합니다.",
         color=0xFFFFFF,
     )
-    .add_field(name="/ping", value="봇의 핑을 알려줍니다.", inline=False)
+    .add_field(name="/help", value="봇의 도움말을 전송합니다.", inline=False)
+    .add_field(name="/bot", value="봇의 정보를 전송합니다. 봇의 버전, 업타임 등이 같이 표시됩니다.", inline=False)
+    .add_field(name="/ping", value="봇의 핑을 전송합니다.", inline=False)
     .add_field(
         name="/delete `[n]`",
         value="메시지를 `[n]`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.",
