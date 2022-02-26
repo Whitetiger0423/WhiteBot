@@ -5,8 +5,8 @@
 [koreanbots]: https://koreanbots.dev/bots/782777035898617886
 [koreanbots-shield]: https://koreanbots.dev/api/widget/bots/servers/782777035898617886.svg
 [license]: https://github.com/dev-White-team/WhiteBot/blob/main/LICENSE
-[license-shield]: https://img.shields.io/github/license/dev-white-team/WhiteBot?style=flat-square&label=라이선스
-[stars-shield]: https://img.shields.io/github/stars/dev-white-team/WhiteBot?style=flat-square&label=스타&color=yellow
+[license-shield]: https://img.shields.io/github/license/dev-White-team/WhiteBot?style=flat-square&label=라이선스
+[stars-shield]: https://img.shields.io/github/stars/dev-White-team/WhiteBot?style=flat-square&label=스타&color=yellow
 [python-shield]: https://img.shields.io/badge/파이썬-3.8_|_3.9_|_3.10-blue?style=flat-square&logo=python&logoColor=white
 [issues]: https://github.com/dev-White-team/WhiteBot/issues
 [pulls]: https://github.com/dev-white-team/WhiteBot/pulls
