@@ -82,7 +82,7 @@ playing_commands = (
         inline=False,
     )
     .add_field(
-        name="holjjac", value="홀짝 게임을 시작합니다. 직접 반응을 눌러서 홀짝을 맞춰보세요.", inline=False
+        name="/holjjac", value="홀짝 게임을 시작합니다. 직접 반응을 눌러서 홀짝을 맞춰보세요.", inline=False
     )
     .add_field(
         name="/youtube",
