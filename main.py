@@ -26,7 +26,7 @@ async def on_ready():
 
     await bot.change_presence(
         status=discord.Status.online,
-        activity=discord.Game(f"버전 1.6.0 - {guild_count}개의 서버에서 작동 중"),
+        activity=discord.Game(f"버전 1.7.0 - {guild_count}개의 서버에서 작동 중"),
     )
 
     dbkr_token = os.getenv("DBKR_TOKEN")
