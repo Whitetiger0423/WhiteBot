@@ -64,8 +64,8 @@ playing_commands = (
         inline=False,
     )
     .add_field(
-        name="/dice `[N]` `(n)`",
-        value="주사위를 굴립니다. `[N]`만 쓰면 1부터 `[N]`까지의 숫자를, `(n)`까지 모두 쓰면 `[N]`부터 `(n)`까지의 숫자를 랜덤으로 표출합니다.",
+        name="/dice `[A]` `(B)`",
+        value="주사위를 굴립니다. `[A]`만 쓰면 1부터 `[A]`까지의 숫자를, `(B)`까지 모두 쓰면 `[A]`부터 `(B)`까지의 숫자를 랜덤으로 표출합니다.",
         inline=False,
     )
 )
