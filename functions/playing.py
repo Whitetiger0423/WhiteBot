@@ -140,10 +140,15 @@ class playing(commands.Cog):
         ctx: ApplicationContext,
         rival: Option(discord.User, description="같이 게임을 할 유저를 선택하세요"),
     ):
-        await ctx.respond(
-            f"틱택토(삼목) 게임을 시작합니다. {ctx.user.mention}(X) vs {rival.mention}(O) - X부터 시작합니다.",
-            view=TicTacToe(ctx.user.id, rival.id),
-        )
+        if rival.bot:
+            embed = discord.Embed(title="WhiteBot 오류", description="틱택토 기능", color=0xFF0000)
+            embed.add_field(name="오류 내용:", value="봇과는 대결할 수 없습니다.", inline=False)
+            await ctx.respond(embed=embed)
+        else:
+            await ctx.respond(
+                f"틱택토(삼목) 게임을 시작합니다. {ctx.user.mention}(X) vs {rival.mention}(O) - X부터 시작합니다.",
+                view=TicTacToe(ctx.user.id, rival.id),
+            )
 
 
 class TicTacToeButton(discord.ui.Button["TicTacToe"]):
