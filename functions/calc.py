@@ -26,11 +26,11 @@ class calc(commands.Cog):
         ctx: ApplicationContext,
         type: Option(
             str,
-            "할 연산을 선택하세요.",
+            "수행할 연산을 선택하세요.",
             choices=["더하기", "빼기", "나누기", "곱하기"],
         ),
-        first: Option(str, "연산할 첫번째수를 입력하세요"),
-        second: Option(str, "연산할 첫번째수를 입력하세요"),
+        first: Option(str, "연산할 첫 번째 수를 입력하세요"),
+        second: Option(str, "연산할 두 번째 수를 입력하세요"),
     ):
         if type == "더하기":
             equal = first + second
