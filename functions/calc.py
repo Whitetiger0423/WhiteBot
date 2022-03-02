@@ -29,8 +29,8 @@ class calc(commands.Cog):
             "수행할 연산을 선택하세요.",
             choices=["더하기", "빼기", "나누기", "곱하기"],
         ),
-        first: Option(str, "연산할 첫 번째 수를 입력하세요"),
-        second: Option(str, "연산할 두 번째 수를 입력하세요"),
+        first: Option(int, "연산할 첫 번째 수를 입력하세요"),
+        second: Option(int, "연산할 두 번째 수를 입력하세요"),
     ):
         if type == "더하기":
             equal = first + second
@@ -39,7 +39,7 @@ class calc(commands.Cog):
         elif type == "곱하기":
             equal = first * second
         elif type == "나누기":
-            equal = first / second ,', ', first % second
+            equal = '몫',first / second ,'나머지', first % second
         embed = discord.Embed(
             title="<a:check:824251178493411368> 계산 완료!",
             description=f"**{type}**연산의 결과입니다.",
