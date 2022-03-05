@@ -41,8 +41,10 @@ class calc(commands.Cog):
                 equal = first * second
             elif type == "나누기":
                 equal = first / second
-            if int(equal) == equal:
-                equal=int(equal)
+
+            if equal.is_integer():
+                equal = int(equal)
+
             embed = discord.Embed(
                 title="<a:check:824251178493411368> 계산 완료!",
                 description=f"**{type}** 연산의 결과입니다.",
