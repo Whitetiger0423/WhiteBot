@@ -29,18 +29,18 @@ class calc(commands.Cog):
             "수행할 연산을 선택하세요.",
             choices=["더하기", "빼기", "나누기", "곱하기"],
         ),
-        first: Option(str, "연산할 첫 번째 수를 입력하세요"),
-        second: Option(str, "연산할 두 번째 수를 입력하세요"),
+        first: Option(float, "연산할 첫 번째 수를 입력하세요"),
+        second: Option(float, "연산할 두 번째 수를 입력하세요"),
     ):
         try:
             if type == "더하기":
-                equal = float(first) + float(second)
+                equal = first + second
             elif type == "빼기":
-                equal = float(first) - float(second)
+                equal = first - second
             elif type == "곱하기":
-                equal = float(first) * float(second)
+                equal = first * second
             elif type == "나누기":
-                equal = float(first) / float(second)
+                equal = first / second
             if int(equal) == equal:
                 equal=int(equal)
             embed = discord.Embed(
