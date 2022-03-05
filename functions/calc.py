@@ -15,8 +15,8 @@
 
 from operator import eq
 import discord
+from discord import ApplicationContext, Option, ApplicationCommandInvokeError
 from discord.ext import commands
-from discord.commands import ApplicationContext, Option
 from utils.commands import slash_command
 
 
@@ -33,35 +33,32 @@ class calc(commands.Cog):
         first: Option(float, "연산할 첫 번째 수를 입력하세요"),
         second: Option(float, "연산할 두 번째 수를 입력하세요"),
     ):
-        try:
-            if type == "더하기":
-                equal = first + second
-            elif type == "빼기":
-                equal = first - second
-            elif type == "곱하기":
-                equal = first * second
-            elif type == "나누기":
-                equal = first / second
+        if type == "더하기":
+            equal = first + second
+        elif type == "빼기":
+            equal = first - second
+        elif type == "곱하기":
+            equal = first * second
+        elif type == "나누기":
+            equal = first / second
 
-            if equal.is_integer():
-                equal = int(equal)
+        if equal.is_integer():
+            equal = int(equal)
 
-            embed = discord.Embed(
-                title="<a:check:824251178493411368> 계산 완료!",
-                description=f"**{type}** 연산의 결과입니다.",
-                color=0xFFFFFF,
-            )
-            embed.add_field(name="**결과:**", value=f"```{equal}```", inline=False)
-        except:
-            embed = discord.Embed(
-                title="WhiteBot 오류", description="연산 기능", color=0xFF0000
-            )
-            embed.add_field(
-                name="오류 내용:",
-                value="숫자를 입력해주세요",
-                inline=False,
-            )
+        embed = discord.Embed(
+            title="<a:check:824251178493411368> 계산 완료!",
+            description=f"**{type}** 연산의 결과입니다.",
+            color=0xFFFFFF,
+        )
+        embed.add_field(name="**결과:**", value=f"```{equal}```", inline=False)
         await ctx.respond(embed=embed)
+
+    @calc.error
+    async def calc_error(self, ctx: ApplicationContext, error: ApplicationCommandInvokeError):
+        if isinstance(error.original, ZeroDivisionError):
+            embed = discord.Embed(title = "WhiteBot 오류", description="연산 기능", color=0xFF0000)
+            embed.add_field(name="오류 내용:", value="나누는 수는 0이 될 수 없습니다", inline=False)
+            await ctx.respond(embed=embed)
 
 
 def setup(bot):
