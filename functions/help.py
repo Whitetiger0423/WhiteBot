@@ -73,7 +73,7 @@ playing_commands = (
     )
     .add_field(
         name="/rsp `[가위, 바위, 보]`",
-        value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.",
+        value="봇과 가위바위보를 합니다. `/rsp 가위` 등의 형식으로 쓰면 됩니다.",
         inline=False,
     )
     .add_field(
