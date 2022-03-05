@@ -39,7 +39,7 @@ class calc(commands.Cog):
         elif type == "곱하기":
             equal = first * second
         elif type == "나누기":
-            equal = '몫',first / second ,'나머지', first % second
+            equal = first / second
         embed = discord.Embed(
             title="<a:check:824251178493411368> 계산 완료!",
             description=f"**{type}** 연산의 결과입니다.",
