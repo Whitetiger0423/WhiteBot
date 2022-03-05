@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-from operator import eq
 import discord
 from discord import ApplicationContext, Option, ApplicationCommandInvokeError
 from discord.ext import commands
@@ -56,7 +55,7 @@ class calc(commands.Cog):
     @calc.error
     async def calc_error(self, ctx: ApplicationContext, error: ApplicationCommandInvokeError):
         if isinstance(error.original, ZeroDivisionError):
-            embed = discord.Embed(title = "WhiteBot 오류", description="연산 기능", color=0xFF0000)
+            embed = discord.Embed(title="WhiteBot 오류", description="연산 기능", color=0xFF0000)
             embed.add_field(name="오류 내용:", value="나누는 수는 0이 될 수 없습니다", inline=False)
             await ctx.respond(embed=embed)
 
