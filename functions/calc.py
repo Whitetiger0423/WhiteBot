@@ -19,6 +19,7 @@ from discord.ext import commands
 from discord.commands import ApplicationContext, Option
 from utils.commands import slash_command
 
+
 class calc(commands.Cog):
     @slash_command(description="간단한 연산을 수행합니다.")
     async def calc(
@@ -27,7 +28,7 @@ class calc(commands.Cog):
         type: Option(
             str,
             "수행할 연산을 선택하세요.",
-            choices=["더하기", "빼기", "나누기", "곱하기"],
+            choices=["더하기", "빼기", "곱하기", "나누기"],
         ),
         first: Option(float, "연산할 첫 번째 수를 입력하세요"),
         second: Option(float, "연산할 두 번째 수를 입력하세요"),
@@ -53,7 +54,7 @@ class calc(commands.Cog):
             embed.add_field(name="**결과:**", value=f"```{equal}```", inline=False)
         except:
             embed = discord.Embed(
-            title = "WhiteBot 오류", description="연산 기능", color=0xFF0000
+                title="WhiteBot 오류", description="연산 기능", color=0xFF0000
             )
             embed.add_field(
                 name="오류 내용:",
@@ -61,6 +62,7 @@ class calc(commands.Cog):
                 inline=False,
             )
         await ctx.respond(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(calc())
