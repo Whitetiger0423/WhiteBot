@@ -42,7 +42,7 @@ class calc(commands.Cog):
             equal = '몫',first / second ,'나머지', first % second
         embed = discord.Embed(
             title="<a:check:824251178493411368> 계산 완료!",
-            description=f"**{type}**연산의 결과입니다.",
+            description=f"**{type}** 연산의 결과입니다.",
             color=0xFFFFFF,
         ).add_field(name="**결과:**", value=f"```{equal}```", inline=False)
 
