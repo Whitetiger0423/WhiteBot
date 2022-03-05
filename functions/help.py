@@ -63,6 +63,11 @@ utility_commands = (
         name="/vote `[제목]` `[선택지]`", value="`[선택지]`를 대상으로 한 투표를 진행합니다.", inline=False
     )
     .add_field(name="/end_vote `[투표]`", value="`[투표]`를 종료합니다.", inline=False)
+    .add_field(
+        name="/calc `[종류]` `[A]` `[B]`",
+        value="`[A]`와 `[B]`를 `[종류]`로 받은 사칙 연산을 행합니다. `[A]`와 `[B]`는 정수, 소수 모두 가능합니다.",
+        inline=False,
+    )
 )
 
 playing_commands = (
@@ -73,7 +78,7 @@ playing_commands = (
     )
     .add_field(
         name="/rsp `[가위, 바위, 보]`",
-        value="봇과 가위바위보를 합니다. `/rsp 가위` 등의 형식으로 쓰면 됩니다.",
+        value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.",
         inline=False,
     )
     .add_field(
