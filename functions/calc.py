@@ -51,7 +51,7 @@ class calc(commands.Cog):
             embed.add_field(name="**결과:**", value=f"```{equal}```", inline=False)
         except:
             embed = discord.Embed(
-            title = "WhiteBot 오류", description="주사위 기능", color=0xFF0000
+            title = "WhiteBot 오류", description="연산 기능", color=0xFF0000
             )
             embed.add_field(
                 name="오류 내용:",
