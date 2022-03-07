@@ -63,13 +63,13 @@ class Vote(commands.Cog):
 
             bot.add_view(view)
 
-    @slash_command(description="투표를 시작합니다")
+    @slash_command(description="투표를 시작합니다.")
     async def vote(
         self,
         ctx: ApplicationContext,
-        name: Option(str, description="새로 만들 투표의 이름입니다"),
-        choices: Option(str, description="투표의 선택지입니다(쉼표로 구분, 최대 20개)"),
-        mv: Option(str, description="중복 투표 가능 여부입니다", choices=["허용"], required=False)
+        name: Option(str, description="새로 만들 투표의 이름입니다."),
+        choices: Option(str, description="투표의 선택지입니다(쉼표로 구분, 최대 20개)."),
+        mv: Option(str, description="중복 투표 가능 여부입니다.", choices=["허용"], required=False)
     ):
         await ctx.defer()
 
@@ -130,7 +130,7 @@ class Vote(commands.Cog):
         (vote_state, flag) = cursor.fetchone()
         if vote_state != 0:
             logger.debug("Vote #%d is in non-zero state")
-            return await interaction.response.send_message("투표가 이미 종료되었습니다", ephemeral=True)
+            return await interaction.response.send_message("투표가 이미 종료되었습니다.", ephemeral=True)
 
         if not (flag & 1):
             logger.debug("Checking history of %d", user_id)
@@ -138,7 +138,7 @@ class Vote(commands.Cog):
             cursor.execute("SELECT * FROM voters WHERE id=:id AND vote=:vote", param)
             if cursor.fetchone() is not None:
                 logger.debug("%d has already voted on vote #%d", user_id, vote_id)
-                return await interaction.response.send_message("이미 투표하셨습니다", ephemeral=True)
+                return await interaction.response.send_message("이미 투표하셨습니다.", ephemeral=True)
 
         param = {"id": user_id, "vote": vote_id, "choice": choice_id}
         cursor.execute("INSERT INTO voters (id, vote, choice) VALUES (:id, :vote, :choice)", param)
@@ -161,20 +161,20 @@ class Vote(commands.Cog):
         (vote_state,) = cursor.fetchone()
         if vote_state != 0:
             logger.debug("Vote #%d is in non-zero state")
-            return await interaction.response.send_message("투표가 이미 종료되었습니다", ephemeral=True)
+            return await interaction.response.send_message("투표가 이미 종료되었습니다.", ephemeral=True)
 
         logger.debug("Checking history of %d", user_id)
         param = {"id": user_id, "vote": vote_id}
         cursor.execute("SELECT id FROM voters WHERE id=:id AND vote=:vote LIMIT 1", param)
         if cursor.fetchone() is None:
             logger.debug("%d has never voted on vote #%d", user_id, vote_id)
-            return await interaction.response.send_message("투표하지 않았습니다", ephemeral=True)
+            return await interaction.response.send_message("투표하지 않았습니다.", ephemeral=True)
 
         param = {"id": user_id, "vote": vote_id}
         cursor.execute("DELETE FROM voters WHERE id=:id AND vote=:vote", param)
         logger.debug("Deleted voter(id=%d, vote=%d)", user_id, vote_id)
 
-        await interaction.response.send_message("투표 기록이 초기화되었습니다", ephemeral=True)
+        await interaction.response.send_message("투표 기록이 초기화되었습니다.", ephemeral=True)
         cursor.close()
         self.conn.commit()
 
@@ -194,8 +194,8 @@ class Vote(commands.Cog):
 
         return result
 
-    @slash_command(description="투표를 종료합니다")
-    async def end_vote(self, ctx: ApplicationContext, vote: Option(int, description="종료할 투표를 선택해주세요", autocomplete=vote_autocomplete)):
+    @slash_command(description="투표를 종료합니다.")
+    async def end_vote(self, ctx: ApplicationContext, vote: Option(int, description="종료할 투표를 선택해주세요.", autocomplete=vote_autocomplete)):
         cursor = self.conn.cursor()
 
         param = {"id": vote}
@@ -217,7 +217,7 @@ class Vote(commands.Cog):
                 logger.debug("View for vote #%d has stopped", vote)
                 break
 
-        embed = discord.Embed(title=f"#{vote} {vote_name}", description="투표가 종료되었습니다", color=0xFFFFFF)
+        embed = discord.Embed(title=f"#{vote} {vote_name}", description="투표가 종료되었습니다.", color=0xFFFFFF)
 
         await ctx.channel.get_partial_message(message_id).edit(embed=embed.copy(), view=None)
 
