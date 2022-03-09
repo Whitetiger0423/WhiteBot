@@ -21,7 +21,7 @@ from utils.commands import slash_command
 
 class calc(commands.Cog):
     @slash_command(description="간단한 연산을 수행합니다.")
-    async def calc(
+    async def 연산(
         self,
         ctx: ApplicationContext,
         type: Option(
@@ -52,10 +52,14 @@ class calc(commands.Cog):
         embed.add_field(name="**결과:**", value=f"```{equal}```", inline=False)
         await ctx.respond(embed=embed)
 
-    @calc.error
-    async def calc_error(self, ctx: ApplicationContext, error: ApplicationCommandInvokeError):
+    @연산.error
+    async def calc_error(
+        self, ctx: ApplicationContext, error: ApplicationCommandInvokeError
+    ):
         if isinstance(error.original, ZeroDivisionError):
-            embed = discord.Embed(title="WhiteBot 오류", description="연산 기능", color=0xFF0000)
+            embed = discord.Embed(
+                title="WhiteBot 오류", description="연산 기능", color=0xFF0000
+            )
             embed.add_field(name="오류 내용:", value="나누는 수는 0이 될 수 없습니다", inline=False)
             await ctx.respond(embed=embed)
 

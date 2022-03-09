@@ -52,10 +52,12 @@ class weather(commands.Cog):
     def __init__(self):
         self.service_key = os.getenv("WEATHER_KEY")
         if self.service_key is None:
-            logger.warning("Weather API key not provided. Weather feature will be disabled")
+            logger.warning(
+                "Weather API key not provided. Weather feature will be disabled"
+            )
 
     @slash_command(description="현재 날씨를 조회합니다.")
-    async def weather(
+    async def 날씨(
         self,
         ctx: ApplicationContext,
         place: Option(str, "날씨를 조회할 장소를 선택해주세요.", choices=list(place_data.keys())),
@@ -64,7 +66,8 @@ class weather(commands.Cog):
             embed = discord.Embed(
                 title="날씨 기능이 비활성화 되어있어요",
                 description="관리자에게 문의해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
-                color=0xffffff)
+                color=0xFFFFFF,
+            )
             return await ctx.respond(embed=embed)
 
         await ctx.defer()

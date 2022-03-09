@@ -22,7 +22,7 @@ from utils.commands import slash_command
 
 class code(commands.Cog):
     @slash_command(description="수신문을 암호화합니다.")
-    async def code(
+    async def 암호(
         self,
         ctx: ApplicationContext,
         type: Option(
@@ -52,7 +52,7 @@ class code(commands.Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(description="수신문을 해독합니다.")
-    async def decode(
+    async def 해독(
         self,
         ctx: ApplicationContext,
         type: Option(

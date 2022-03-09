@@ -37,7 +37,9 @@ class translate(commands.Cog):
         _papago_id = os.getenv("PAPAGO_APPID")
 
         if _papago_id is None:
-            logger.warning("Papago API key not provided. Translation feature will be disabled")
+            logger.warning(
+                "Papago API key not provided. Translation feature will be disabled"
+            )
             self.enabled = False
             return
 
@@ -51,10 +53,13 @@ class translate(commands.Cog):
 
         self.loop = asyncio.new_event_loop()
         self.loop.call_later((tomorrow - now).total_seconds(), self.day_change)
-        logger.info("Papago API limit reset has been scheduled on %s", tomorrow.strftime("%b %d %T"))
+        logger.info(
+            "Papago API limit reset has been scheduled on %s",
+            tomorrow.strftime("%b %d %T"),
+        )
 
     @slash_command(description="입력한 내용을 번역합니다.")
-    async def translate(
+    async def 번역(
         self,
         ctx: ApplicationContext,
         lang: Option(
@@ -75,17 +80,19 @@ class translate(commands.Cog):
             embed = discord.Embed(
                 title="번역 기능이 비활성화 되어있어요",
                 description="관리자에게 문의해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
-                color=0xffffff)
+                color=0xFFFFFF,
+            )
             return await ctx.respond(embed=embed)
 
         if self.is_papago_limited:
             embed = discord.Embed(
                 title="지금은 번역이 불가해요",
                 description="오늘치 번역 기능을 벌써 다 써버렸네요. 내일까지 잠시만 기다려주세요",
-                color=0xffffff)
+                color=0xFFFFFF,
+            )
             return await ctx.respond(embed=embed)
 
-        src_lang, tar_lang = lang.split(':')
+        src_lang, tar_lang = lang.split(":")
         embed = self.papago_translate(src_lang, tar_lang, text)
         await ctx.respond(embed=embed)
 
@@ -103,19 +110,43 @@ class translate(commands.Cog):
 
         if res.status_code == 200:
             result = body["message"]["result"]
-            return discord.Embed(title="번역 완료", description=result["translatedText"], color=0x00FFC6) \
-                .set_footer(text=f"Papago API: {result['srcLangType']} -> {result['tarLangType']}")
+            return discord.Embed(
+                title="번역 완료", description=result["translatedText"], color=0x00FFC6
+            ).set_footer(
+                text=f"Papago API: {result['srcLangType']} -> {result['tarLangType']}"
+            )
         elif res.status_code == 500:
-            logger.error("Papago API has returned 500\n=> %s -> %s [%s]\n=> Response: %s", src_lang, tar_lang, text, res.text)
-            return discord.Embed(description="파파고 서버에 오류가 발생했어요. 잠시 후에 다시 시도해주세요", color=0xFF0000)
+            logger.error(
+                "Papago API has returned 500\n=> %s -> %s [%s]\n=> Response: %s",
+                src_lang,
+                tar_lang,
+                text,
+                res.text,
+            )
+            return discord.Embed(
+                description="파파고 서버에 오류가 발생했어요. 잠시 후에 다시 시도해주세요", color=0xFF0000
+            )
         else:
             if body["errorCode"] == "010":
                 logger.info("Papago API daily limit exceeded")
                 self.is_papago_limited = True
-                return discord.Embed(title="지금은 번역이 불가해요", description="오늘치 번역 기능을 벌써 다 써버렸네요. 내일까지 잠시만 기다려주세요", color=0xffffff)
+                return discord.Embed(
+                    title="지금은 번역이 불가해요",
+                    description="오늘치 번역 기능을 벌써 다 써버렸네요. 내일까지 잠시만 기다려주세요",
+                    color=0xFFFFFF,
+                )
             else:
-                logger.info("Papago API has returned %d\n=> %s -> %s [%s]\n=> Response: %s", res.status_code, src_lang, tar_lang, text, res.text)
-                err_msg = PAPAGO_API_ERROR_MSG_REGEX.match(body["errorMessage"]).group(1)
+                logger.info(
+                    "Papago API has returned %d\n=> %s -> %s [%s]\n=> Response: %s",
+                    res.status_code,
+                    src_lang,
+                    tar_lang,
+                    text,
+                    res.text,
+                )
+                err_msg = PAPAGO_API_ERROR_MSG_REGEX.match(body["errorMessage"]).group(
+                    1
+                )
                 return discord.Embed(description=err_msg, color=0xFF0000)
 
     def day_change(self):

@@ -26,7 +26,7 @@ class manage(commands.Cog):
         self.bot = bot
 
     @slash_command(description="봇의 핑을 전송합니다.")
-    async def ping(self, ctx: ApplicationContext):
+    async def 핑(self, ctx: ApplicationContext):
         embed = discord.Embed(title=":ping_pong: 퐁!", color=0xFFFFFF)
         embed.add_field(
             name="discord API Ping: ", value=f"{round(ctx.bot.latency * 1000)} ms"
@@ -34,7 +34,7 @@ class manage(commands.Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(description="메시지를 일정 개수만큼 지웁니다.")
-    async def delete(
+    async def 청소(
         self, ctx: ApplicationContext, count: Option(int, "삭제할 메시지의 개수를 입력하세요.")
     ):
         try:
@@ -58,7 +58,7 @@ class manage(commands.Cog):
             await ctx.respond(embed=embed)
 
     @slash_command(description="봇의 정보를 전송합니다.")
-    async def bot(self, ctx: ApplicationContext):
+    async def 봇(self, ctx: ApplicationContext):
         nowtime = time.time()
         S = round(nowtime - self.bot.start_time)
         D = 0

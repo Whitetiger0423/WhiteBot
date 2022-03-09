@@ -24,7 +24,7 @@ basic_commands = (
         description="WhiteBot의 명령어에 대해서 소개합니다.",
         color=0xFFFFFF,
     )
-    .add_field(name="help 명령어 사용법", value="sorts 변수를 선택하세요.", inline=False)
+    .add_field(name="도움말 명령어 사용법", value="sorts 변수를 선택하세요.", inline=False)
     .add_field(
         name="공식 홈페이지",
         value=":link: [공식 홈페이지](<https://team-white.kro.kr/>)",
@@ -53,19 +53,19 @@ utility_commands = (
         description="WhiteBot의 명령어에 대해서 소개합니다.",
         color=0xFFFFFF,
     )
-    .add_field(name="/search `[항목]`", value="여러 사이트에서 `[항목]`을 검색합니다.", inline=False)
-    .add_field(name="/send `[항목]`", value="`[항목]`을 전송해요!", inline=False)
-    .add_field(name="/code `[수신문]`", value="`[수신문]`을 암호화합니다.", inline=False)
-    .add_field(name="/decode `[암호문]`", value="`[암호문]`을 해독합니다.", inline=False)
-    .add_field(name="/weather `[지역]`", value="`[지역]`의 현재 날씨를 조회합니다.")
-    .add_field(name="/translate `[언어]` `[텍스트]`", value="`[텍스트]`를 번역합니다.", inline=False)
+    .add_field(name="/검색 `[항목]`", value="여러 사이트에서 `[항목]`을 검색합니다.", inline=False)
+    .add_field(name="/전송 `[항목]`", value="`[항목]`을 전송해요!", inline=False)
+    .add_field(name="/암호 `[수신문]`", value="`[수신문]`을 암호화합니다.", inline=False)
+    .add_field(name="/해독 `[암호문]`", value="`[암호문]`을 해독합니다.", inline=False)
+    .add_field(name="/날씨 `[지역]`", value="`[지역]`의 현재 날씨를 조회합니다.")
+    .add_field(name="/번역 `[언어]` `[텍스트]`", value="`[텍스트]`를 번역합니다.", inline=False)
     .add_field(
-        name="/vote `[제목]` `[선택지]`", value="`[선택지]`를 대상으로 한 투표를 진행합니다.", inline=False
+        name="/투표 `[제목]` `[선택지]`", value="`[선택지]`를 대상으로 한 투표를 진행합니다.", inline=False
     )
-    .add_field(name="/end_vote `[투표]`", value="`[투표]`를 종료합니다.", inline=False)
+    .add_field(name="/개표 `[투표]`", value="`[투표]`를 종료하고, 결과를 확인합니다.", inline=False)
     .add_field(
-        name="/calc `[종류]` `[A]` `[B]`",
-        value="`[A]`와 `[B]`를 `[종류]`로 받은 사칙 연산을 행합니다. `[A]`와 `[B]`는 정수, 소수 모두 가능합니다.",
+        name="/연산 `[종류]` `[A]` `[B]`",
+        value="`[A]`와 `[B]`를 `[종류]`로 받은 사칙 연산을 실행합니다. `[A]`와 `[B]`는 정수, 소수 모두 가능합니다.",
         inline=False,
     )
 )
@@ -77,20 +77,23 @@ playing_commands = (
         color=0xFFFFFF,
     )
     .add_field(
-        name="/rsp `[가위, 바위, 보]`",
+        name="/가위바위보 `[가위, 바위, 보]`",
         value="봇과 가위바위보를 합니다. `/가위바위보 가위` 등의 형식으로 쓰면 됩니다.",
         inline=False,
     )
     .add_field(
-        name="/dice `[A]` `(B)`",
+        name="/주사위 `[A]` `(B)`",
         value="주사위를 굴립니다. `[A]`만 쓰면 1부터 `[A]`까지의 숫자를, `(B)`까지 모두 쓰면 `[A]`부터 `(B)`까지의 숫자를 랜덤으로 표출합니다.",
         inline=False,
     )
     .add_field(
-        name="/holjjac", value="홀짝 게임을 시작합니다. 직접 반응을 눌러서 홀짝을 맞춰보세요.", inline=False
+        name="/틱택토 `[상대]`",
+        value="`[상대]`와 틱택토(삼목) 게임을 진행합니다. 스스로를 상대로 지정할 경우 혼자서 조종합니다.",
+        inline=False,
     )
+    .add_field(name="/홀짝", value="홀짝 게임을 시작합니다. 직접 반응을 눌러서 홀짝을 맞춰보세요.", inline=False)
     .add_field(
-        name="/youtube",
+        name="/유튜브",
         value="들어가 있는 음성 채널에 유튜브 투게더를 활성화 시키는 링크를 보냅니다. 음성 채널에 연결되어 있어야 사용 가능하며, 일부 서버에선 작동하지 않습니다.",
         inline=False,
     )
@@ -102,11 +105,11 @@ manage_commands = (
         description="WhiteBot의 명령어에 대해서 소개합니다.",
         color=0xFFFFFF,
     )
-    .add_field(name="/help", value="봇의 도움말을 전송합니다.", inline=False)
-    .add_field(name="/bot", value="봇의 정보를 전송합니다. 봇의 버전, 업타임 등이 같이 표시됩니다.", inline=False)
-    .add_field(name="/ping", value="봇의 핑을 전송합니다.", inline=False)
+    .add_field(name="/도움말", value="봇의 도움말을 전송합니다.", inline=False)
+    .add_field(name="/봇", value="봇의 정보를 전송합니다. 봇의 버전, 업타임 등이 같이 표시됩니다.", inline=False)
+    .add_field(name="/핑", value="봇의 핑을 전송합니다.", inline=False)
     .add_field(
-        name="/delete `[n]`",
+        name="/청소 `[n]`",
         value="메시지를 `[n]`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.",
         inline=False,
     )
@@ -115,7 +118,7 @@ manage_commands = (
 
 class help(commands.Cog):
     @slash_command(description="봇의 도움말을 전송합니다.")
-    async def help(
+    async def 도움말(
         self,
         ctx: ApplicationContext,
         sorts: Option(str, "도움말의 유형을 선택하세요", choices=["기본", "유틸리티", "놀이", "관리"]),
