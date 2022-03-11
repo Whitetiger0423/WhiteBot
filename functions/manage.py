@@ -80,7 +80,7 @@ class manage(commands.Cog):
         )
         embed.add_field(name="봇 이름: ", value=f"{ctx.bot.user.name}", inline=True)
         embed.add_field(name="봇 ID: ", value=f"`{ctx.bot.user.id}`", inline=True)
-        embed.add_field(name="봇 버전: ", value="1.9.0", inline=True)
+        embed.add_field(name="봇 버전: ", value="1.8.0", inline=True)
         embed.add_field(
             name="업타임: ",
             value="{0} 일 {1} 시간 {2} 분 {3} 초".format(D, H, M, S),
