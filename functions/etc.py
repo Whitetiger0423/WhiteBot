@@ -31,7 +31,7 @@ NAMU_WIKI_URL = "https://namu.wiki/Search?q="
 
 class etc(commands.Cog):
     @slash_command(description="검색어를 검색합니다.")
-    async def search(
+    async def 검색(
         self, ctx: ApplicationContext, *, searching: Option(str, "검색할 문장을 입력하세요.")
     ):
         encoded = parse.quote(searching)
@@ -63,7 +63,7 @@ class etc(commands.Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(description="내용을 전송합니다.")
-    async def send(
+    async def 전송(
         self,
         ctx: ApplicationContext,
         *,
