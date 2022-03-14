@@ -51,7 +51,7 @@ class playing(commands.Cog):
                 forsend = f"{user} vs {bot}\n봇이 이겼습니다!"
             embed = discord.Embed(
                 title="가위바위보",
-                description=f"봇 vs {ctx.author.display_name}",
+                description=f"{ctx.author.display_name} vs 봇",
                 color=0xFFFFFF,
             )
             embed.add_field(name="**결과:**", value=f"{forsend}", inline=False)
