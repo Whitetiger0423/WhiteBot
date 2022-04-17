@@ -19,7 +19,7 @@ import dotenv
 import logging
 import utils.logging
 import utils.koreanbots
-from discord.ext import commands
+from discord.ext import commands, tasks
 import time
 
 dotenv.load_dotenv()
@@ -35,17 +35,21 @@ bot.start_time = time.time()
 @bot.event
 async def on_ready():
     guild_count = len(bot.guilds)
-
     logger.info(f"Logged in as {bot.user.name}")
     logger.info(f"Be used in {guild_count} guilds.")
 
-    await bot.change_presence(
-        status=discord.Status.online,
-        activity=discord.Game(f"버전 1.9.0 - {guild_count}개의 서버에서 작동 중"),
-    )
-
     dbkr_token = os.getenv("DBKR_TOKEN")
     await utils.koreanbots.update_guild_count(dbkr_token, bot.user.id, guild_count)
+
+    change_status.start()
+
+
+@tasks.loop(seconds=5)  # n초마다 다음 메시지 출력
+async def change_status():
+    await bot.change_presence(
+        status=discord.Status.online,
+        activity=discord.Game(f"버전 1.9.0 - {len(bot.guilds)}개의 서버에서 작동 중"),
+    )
 
 
 for filename in os.listdir("functions"):
