@@ -2,3 +2,4 @@
 flake8~=4.0
 python-dotenv~=0.19
 requests~=2.27
+koreanbots~=2.1.0
