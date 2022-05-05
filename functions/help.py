@@ -92,11 +92,6 @@ playing_commands = (
         inline=False,
     )
     .add_field(name="/홀짝", value="홀짝 게임을 시작합니다. 직접 반응을 눌러서 홀짝을 맞춰보세요.", inline=False)
-    .add_field(
-        name="/유튜브",
-        value="들어가 있는 음성 채널에 유튜브 투게더를 활성화 시키는 링크를 보냅니다. 음성 채널에 연결되어 있어야 사용 가능하며, 일부 서버에선 작동하지 않습니다.",
-        inline=False,
-    )
 )
 
 manage_commands = (
