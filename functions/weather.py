@@ -22,6 +22,7 @@ import requests
 import os
 from utils.utils import apply_if_not_none, to_querystring, to_dict
 import logging
+from json import JSONDecodeError
 
 API_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?"
 
@@ -83,29 +84,37 @@ class weather(commands.Cog):
             "nx": px,
             "ny": py,
         }
+        try:
+            result = requests.get(API_URL + to_querystring(payload))
+            data = result.json()["response"]["body"]["items"]["item"]
 
-        result = requests.get(API_URL + to_querystring(payload))
-        data = result.json()["response"]["body"]["items"]["item"]
+            data = to_dict(data, lambda k: k["category"], lambda v: v["fcstValue"])
 
-        data = to_dict(data, lambda k: k["category"], lambda v: v["fcstValue"])
+            temperature = apply_if_not_none(data.get("TMP"), lambda x: f"{x}℃")
+            wind_speed = apply_if_not_none(data.get("WSD"), lambda x: f"{x}m/s")
+            weather_state = apply_if_not_none(data.get("PTY"), self.process_pty)
 
-        temperature = apply_if_not_none(data.get("TMP"), lambda x: f"{x}℃")
-        wind_speed = apply_if_not_none(data.get("WSD"), lambda x: f"{x}m/s")
-        weather_state = apply_if_not_none(data.get("PTY"), self.process_pty)
+            if weather_state is None:
+                weather_state = apply_if_not_none(data.get("SKY"), self.process_sky)
 
-        if weather_state is None:
-            weather_state = apply_if_not_none(data.get("SKY"), self.process_sky)
-
-        embed = (
-            discord.Embed(
-                title="현재 날씨 정보", description="현재 날씨 정보를 조회했습니다.", color=0xFFFFFF
+            embed = (
+                discord.Embed(
+                    title="현재 날씨 정보", description="현재 날씨 정보를 조회했습니다.", color=0xFFFFFF
+                )
+                .add_field(name="기온", value=temperature or "데이터가 없습니다", inline=True)
+                .add_field(name="풍속", value=wind_speed or "데이터가 없습니다", inline=True)
+                .add_field(name="날씨", value=weather_state or "데이터가 없습니다", inline=False)
             )
-            .add_field(name="기온", value=temperature or "데이터가 없습니다", inline=True)
-            .add_field(name="풍속", value=wind_speed or "데이터가 없습니다", inline=True)
-            .add_field(name="날씨", value=weather_state or "데이터가 없습니다", inline=False)
-        )
 
-        await ctx.followup.send(embed=embed)
+            await ctx.followup.send(embed=embed)
+        except JSONDecodeError:
+            embed = discord.Embed(
+                title="오류가 생겼어요",
+                description="관리자에게 문의해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
+                color=0xFFFFFF,
+            )
+
+            await ctx.followup.send(embed=embed)
 
     def process_pty(self, value) -> str:
         if value == "1":
