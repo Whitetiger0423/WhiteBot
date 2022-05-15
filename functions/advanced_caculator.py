@@ -8,7 +8,7 @@ from discord.commands import ApplicationContext, Option
 
 class calcadvance(commands.Cog):
     @slash_command(description="공학용 계산기 수준의 값을 제공합니다.")
-    async def calcadvance(
+    async def 공학연산(
         self,
         ctx: ApplicationContext,
         type: Option(
@@ -20,12 +20,12 @@ class calcadvance(commands.Cog):
                 "Tansent",
                 "Cosequent",
                 "Sequent",
-                "Cotansent",
+                "Cotangent",
                 "Factorial",
                 "Log",
             ],
         ),
-        first: Option(str, "각도를 입력해주세요"),
+        first: Option(int, "값을 입력해주세요"),
     ):
         if type == "Cosine":
             equal = str(math.cos(math.pi * (first / 180)))
@@ -37,7 +37,7 @@ class calcadvance(commands.Cog):
             equal = str(1.0 / math.cos(first))
         elif type == "Sequent":
             equal = str(1.0 / math.sin(first))
-        elif type == "Cotansent":
+        elif type == "Cotangent":
             equal = str(1.0 / math.tan(first))
             str(1.0 / math.sin(txt))
         elif type == "Factorial":
@@ -46,7 +46,7 @@ class calcadvance(commands.Cog):
             equal = str(math.log(first))
         embed = discord.Embed(
             title="<a:check:824251178493411368> 계산 완료!",
-            description=f"{type}의 **{choises}**결과입니다.",
+            description=f"{type} {first}의 결과입니다.",
             color=0xFFFFFF,
         ).add_field(name="**결과:**", value=f"```{equal}```", inline=False)
 
