@@ -48,7 +48,7 @@ async def on_ready():
 async def change_status():
     await bot.change_presence(
         status=discord.Status.online,
-        activity=discord.Game(f"버전 1.9.0 - {len(bot.guilds)}개의 서버에서 작동 중"),
+        activity=discord.Game(f"버전 1.10.0 - {len(bot.guilds)}개의 서버에서 작동 중"),
     )
 
 
