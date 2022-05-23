@@ -15,11 +15,11 @@ class calcadvance(commands.Cog):
             str,
             "값을 선택할 삼각비 또는 삼각함수의 종류를 선택하세요.",
             choices=[
-                "코사인",
                 "사인",
+                "코사인",
                 "탄젠트",
-                "코시컨트",
                 "시컨트",
+                "코시컨트",
                 "코탄젠트",
                 "팩토리얼",
                 "로그",
@@ -27,16 +27,16 @@ class calcadvance(commands.Cog):
         ),
         first: Option(int, "값을 입력해주세요"),
     ):
-        if type == "코사인":
-            equal = str(math.cos(math.pi * (first / 180)))
-        elif type == "사인":
+        if type == "사인":
             equal = str(math.sin(math.pi * (first / 180)))
+        elif type == "코사인":
+            equal = str(math.cos(math.pi * (first / 180)))
         elif type == "탄젠트":
             equal = str(math.tan(math.pi * (first / 180)))
-        elif type == "코시컨트":
-            equal = str(1.0 / math.cos(first))
         elif type == "시컨트":
             equal = str(1.0 / math.sin(first))
+        elif type == "코시컨트":
+            equal = str(1.0 / math.cos(first))
         elif type == "코탄젠트":
             equal = str(1.0 / math.tan(first))
             str(1.0 / math.sin(txt))
