@@ -39,7 +39,6 @@ class calcadvance(commands.Cog):
             equal = str(1.0 / math.cos(first))
         elif type == "코탄젠트":
             equal = str(1.0 / math.tan(first))
-            str(1.0 / math.sin(txt))
         elif type == "팩토리얼":
             equal = str(math.factorial(first))
         elif type == "로그":
