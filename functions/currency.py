@@ -1,8 +1,11 @@
 import discord
 from discord.ext import commands
 from discord.commands import ApplicationContext, Option
+import dotenv
 import pymysql
 from pytz import timezone
+import requests
+from WhiteBot.utils.utils import to_querystring
 from utils.commands import slash_command
 import datetime
 import os
@@ -67,7 +70,49 @@ class currency(commands.Cog):
 
             await ctx.followup.send(embed=err)
 
+    def db_update():
+        dotenv.load_dotenv(verbose=True)
+        db_user = os.getenv("DB_USER")
+        db_pw = os.getenv("DB_PW")
+        db_nm = os.getenv("DB_NM")
+
+        BASE_URL = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
+
+        headers = {
+                "authkey": os.getenv("CURRENCY"),
+                "data": "AP01",
+        }
+
+        # a = urlencode(headers)
+        req = requests.get(BASE_URL + to_querystring(headers))
+        data = req.json()
+
+        db = pymysql.connect(
+                user=db_user,
+                passwd=db_pw,
+                host="127.0.0.1",
+                db=db_nm, # 
+                charset="utf8",
+        )
+
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+
+        delete = "DELETE from testing;"
+        cursor.execute(delete)  
+        
+        for i in data:
+                dol = i["bkpr"]
+                re = dol.replace(',', '')
+                name = i["cur_unit"][:3]
+                sql = f"INSERT INTO testing ({name}) VALUES ({re});"
+                cursor.execute(sql)
+        
+        db.commit()
+        cursor.close()
+        db.close()
+
     def select(self, to):
+        self.db_update()
         db = pymysql.connect(
                 user=self.db_user,
                 passwd=self.db_pw,
