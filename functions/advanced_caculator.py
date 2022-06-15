@@ -13,7 +13,7 @@ class calcadvance(commands.Cog):
         ctx: ApplicationContext,
         type: Option(
             str,
-            "값을 선택할 삼각비 또는 삼각함수의 종류를 선택하세요.",
+            "수행할 연산을 선택하세요.",
             choices=[
                 "사인",
                 "코사인",
