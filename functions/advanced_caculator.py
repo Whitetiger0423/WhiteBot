@@ -7,7 +7,7 @@ from discord.commands import ApplicationContext, Option
 
 
 class calcadvance(commands.Cog):
-    @slash_command(description="공학용 계산기 수준의 값을 제공합니다.")
+    @slash_command(description="공학용 계산기 수준의 연산을 제공합니다.")
     async def 공학연산(
         self,
         ctx: ApplicationContext,
