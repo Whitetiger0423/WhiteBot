@@ -1,4 +1,3 @@
-import asyncio
 import discord
 import math
 from discord.ext import commands
