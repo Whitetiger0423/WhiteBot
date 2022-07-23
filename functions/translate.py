@@ -24,7 +24,6 @@ from datetime import datetime, timedelta
 from discord.ext import commands
 from utils.commands import slash_command
 from discord.commands import ApplicationContext, Option, OptionChoice
-from utils.utils import fromtolang
 
 PAPAGO_URL = "https://openapi.naver.com/v1/papago/n2mt"
 PAPAGO_API_ERROR_MSG_REGEX = re.compile(".+ \\((.+)\\)")
@@ -65,23 +64,16 @@ class translate(commands.Cog):
         ctx: ApplicationContext,
         lang: Option(
             str,
-            "번역할 문자열의 언어가 무엇인지 결정합니다.",
+            "어느 언어에서 어느 언어로 변역할지 결정합니다",
             choices=[
-                "ko",
-                "en",
-                "ja",
-                "zh-CN",
-                "vi",
-                "id",
-                "th",
-                "de",
-                "ru",
-                "es",
-                "it",
-                "fr",
+                OptionChoice("한국어 -> 영어", "ko:en"),
+                OptionChoice("영어 -> 한국어", "en:ko"),
+                OptionChoice("한국어 -> 일본어", "ko:ja"),
+                OptionChoice("일본어 -> 한국어", "ja:ko"),
+                OptionChoice("한국어 -> 중국어", "ko:zh-CN"),
+                OptionChoice("중국어 -> 한국어", "zh-CN:ko"),
             ],
         ),
-        to: Option(str, "어느 언어로 번역할지 결정합니다.", choices=fromtolang(lang)),
         text: str,
     ):
         if not self.enabled:
