@@ -6,7 +6,7 @@ from discord.commands import ApplicationContext, Option
 
 
 class AdvancedCalc(commands.Cog):
-    @slash_command(description="공학용 계산기 수준의 연산을 제공합니다.")
+    @slash_command(name="공학계산", description="공학용 계산기 수준의 연산을 제공합니다.")
     async def calc_eng(
         self,
         ctx: ApplicationContext,
