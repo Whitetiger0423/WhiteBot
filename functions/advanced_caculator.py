@@ -5,12 +5,12 @@ from utils.commands import slash_command
 from discord.commands import ApplicationContext, Option
 
 
-class calcadvance(commands.Cog):
+class AdvancedCalc(commands.Cog):
     @slash_command(description="공학용 계산기 수준의 연산을 제공합니다.")
-    async def 공학연산(
+    async def calc_eng(
         self,
         ctx: ApplicationContext,
-        type: Option(
+        calc_type: Option(
             str,
             "수행할 연산을 선택하세요.",
             choices=[
@@ -26,25 +26,25 @@ class calcadvance(commands.Cog):
         ),
         first: Option(int, "값을 입력해주세요"),
     ):
-        if type == "사인":
+        if calc_type == "사인":
             equal = str(math.sin(math.pi * (first / 180)))
-        elif type == "코사인":
+        elif calc_type == "코사인":
             equal = str(math.cos(math.pi * (first / 180)))
-        elif type == "탄젠트":
+        elif calc_type == "탄젠트":
             equal = str(math.tan(math.pi * (first / 180)))
-        elif type == "시컨트":
+        elif calc_type == "시컨트":
             equal = str(1.0 / math.sin(first))
-        elif type == "코시컨트":
+        elif calc_type == "코시컨트":
             equal = str(1.0 / math.cos(first))
-        elif type == "코탄젠트":
+        elif calc_type == "코탄젠트":
             equal = str(1.0 / math.tan(first))
-        elif type == "팩토리얼":
+        elif calc_type == "팩토리얼":
             equal = str(math.factorial(first))
-        elif type == "로그":
+        else:  # calc_type == "로그"
             equal = str(math.log(first))
         embed = discord.Embed(
             title="<a:check:824251178493411368> 계산 완료!",
-            description=f"{type} {first}의 계산 결과입니다.",
+            description=f"{calc_type} {first}의 계산 결과입니다.",
             color=0xFFFFFF,
         ).add_field(name="**계산 결과:**", value=f"```{equal}```", inline=False)
 
@@ -52,4 +52,4 @@ class calcadvance(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(calcadvance())
+    bot.add_cog(AdvancedCalc())
