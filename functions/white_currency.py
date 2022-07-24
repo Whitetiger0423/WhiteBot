@@ -6,12 +6,12 @@ import requests
 from utils.commands import slash_command
 import os
 from utils.database import CURRENCY_DATABASE
-import utils.loggings
+import utils.logging
 import logging
 from utils.utils import to_querystring
 
 load_dotenv("./token.env", verbose=True)
-utils.loggings.setup_logging()
+utils.logging.setup_logging()
 logger = logging.getLogger(__name__)
 
 units = {
@@ -65,18 +65,17 @@ choice = [
 ]
 
 
-class currency(commands.Cog):
+class Currency(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.api_key = os.getenv("CURRENCY")
 
-        if self.api_key == None:
+        if self.api_key is None:
             logger.warning("API Key가 없습니다")
 
     @slash_command(
         name="환율",
         description="현재 시간 기준 환율로 환전합니다.",
-        
     )
     async def currency(
         self,
@@ -85,7 +84,7 @@ class currency(commands.Cog):
         to: Option(str, "변환할 통화를 선택해주세요. ex)USD", choices=choice),
     ):
 
-        if self.api_key == None:
+        if self.api_key is None:
             err = discord.Embed(
                 title="환율 조회 기능이 비활성화 되어있어요",
                 description="관리자에게 문의해주세요\n[HaRimBa Support 디스코드 서버](https://discord.gg/aebSVBgzuG)",
@@ -99,9 +98,8 @@ class currency(commands.Cog):
 
         unit = units[to[4:]]
         if await CURRENCY_DATABASE.currency_find(unit):
-            found = await CURRENCY_DATABASE.currency_find(unit)  
-
-            result = start / found 
+            found = await CURRENCY_DATABASE.currency_find(unit)
+            result = start / found
             embed = (
                 discord.Embed(
                     title="<a:check:824251178493411368> 변환된 값 정보",
@@ -124,12 +122,11 @@ class currency(commands.Cog):
 
     async def db_update(self, unit):
         load_dotenv("./token.env")
-        BASE_URL = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
+        base_url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
 
         headers = {"authkey": os.getenv("CURRENCY"), "data": "AP01", "cur_unit": unit}
 
-
-        req = requests.get(BASE_URL + to_querystring(headers))
+        req = requests.get(base_url + to_querystring(headers))
         data = req.json()
 
         await CURRENCY_DATABASE.currency_reset()
@@ -142,4 +139,4 @@ class currency(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(currency(bot))
+    bot.add_cog(Currency(bot))

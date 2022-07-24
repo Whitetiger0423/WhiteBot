@@ -36,6 +36,6 @@ class CURRENCY_DATABASE:
         """
 
         새로운 환율 값 저장을 위해 DB 안의 값을 모두 삭제합니다.
-            
+
         """
         return await client.currency.delete_many({})
