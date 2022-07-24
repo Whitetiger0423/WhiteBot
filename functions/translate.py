@@ -26,12 +26,13 @@ from utils.commands import slash_command
 from discord.commands import ApplicationContext, Option, OptionChoice
 
 PAPAGO_URL = "https://openapi.naver.com/v1/papago/n2mt"
+PAPAGO_DETECT_LANG_URL = "https://openapi.naver.com/v1/papago/detectLangs"
 PAPAGO_API_ERROR_MSG_REGEX = re.compile(".+ \\((.+)\\)")
 
 logger = logging.getLogger("translate")
 
 
-class translate(commands.Cog):
+class Translate(commands.Cog):
     def __init__(self):
         self.enabled = True
         _papago_id = os.getenv("PAPAGO_APPID")
@@ -58,30 +59,23 @@ class translate(commands.Cog):
             tomorrow.strftime("%b %d %T"),
         )
 
-    @slash_command(description="입력한 내용을 번역합니다.")
-    async def 번역(
+    @slash_command(name="번역", description="입력한 내용을 번역합니다.")
+    async def translate(
         self,
         ctx: ApplicationContext,
         lang: Option(
             str,
-            "어느 언어에서 어느 언어로 변역할지 결정합니다",
+            "어느 언어로 변역할지 결정합니다",
             choices=[
-                OptionChoice("한국어 -> 영어", "ko:en"),
-                OptionChoice("영어 -> 한국어", "en:ko"),
-                OptionChoice("한국어 -> 일본어", "ko:ja"),
-                OptionChoice("일본어 -> 한국어", "ja:ko"),
-                OptionChoice("한국어 -> 중국어", "ko:zh-CN"),
-                OptionChoice("중국어 -> 한국어", "zh-CN:ko"),
-                OptionChoice("한국어 -> 프랑스어", "ko:fr"),
-                OptionChoice("프랑스어 -> 한국어", "fr:ko"),
-                OptionChoice("한국어 -> 독일어", "ko:de"),
-                OptionChoice("독일어 -> 한국어", "de:ko"),
-                OptionChoice("한국어 -> 이탈리아어", "ko:it"),
-                OptionChoice("이탈리아어 -> 한국어", "it:ko"),
-                OptionChoice("한국어 -> 러시아어", "ko:ru"),
-                OptionChoice("러시아어 -> 한국어", "ru:ko"),
-                OptionChoice("한국어 -> 스페인어", "ko:es"),
-                OptionChoice("스페인어 -> 한국어", "es:ko"),
+                OptionChoice("영어", "en"),
+                OptionChoice("일본어", "ja"),
+                OptionChoice("중국어", "zh-CN"),
+                OptionChoice("프랑스어", "fr"),
+                OptionChoice("독일어", "de"),
+                OptionChoice("이탈리아어", "it"),
+                OptionChoice("러시아어", "ru"),
+                OptionChoice("스페인어", "es"),
+                OptionChoice("한국어", "ko")
             ],
         ),
         text: str,
@@ -102,7 +96,16 @@ class translate(commands.Cog):
             )
             return await ctx.respond(embed=embed)
 
-        src_lang, tar_lang = lang.split(":")
+        header = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-Naver-Client-Id": self.papago_id,
+            "X-Naver-Client-Secret": self.papago_secret,
+        }
+        data = "query=" + text
+        res = requests.post(PAPAGO_DETECT_LANG_URL, data=data.encode("utf-8"), headers=header)
+        detected_lang = res.json()["langCode"]
+        src_lang = detected_lang
+        tar_lang = lang
         embed = self.papago_translate(src_lang, tar_lang, text)
         await ctx.respond(embed=embed)
 
@@ -166,4 +169,4 @@ class translate(commands.Cog):
 
 
 def setup(bot: discord.Bot):
-    bot.add_cog(translate())
+    bot.add_cog(Translate())
