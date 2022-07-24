@@ -87,7 +87,7 @@ class Currency(commands.Cog):
         if self.api_key is None:
             err = discord.Embed(
                 title="환율 조회 기능이 비활성화 되어있어요",
-                description="관리자에게 문의해주세요\n[HaRimBa Support 디스코드 서버](https://discord.gg/aebSVBgzuG)",
+                description="관리자에게 문의해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
                 color=0xFFFFFF,
             )
             return await ctx.respond(embed=err)
