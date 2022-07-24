@@ -93,10 +93,9 @@ class Currency(commands.Cog):
             return await ctx.respond(embed=err)
 
         await ctx.defer()
-        db_unit = units[to[:4]]
-        await self.db_update(db_unit)
-
         unit = units[to[4:]]
+        await self.db_update(unit)
+
         if await CURRENCY_DATABASE.currency_find(unit):
             found = await CURRENCY_DATABASE.currency_find(unit)
             result = start / found
