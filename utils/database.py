@@ -19,7 +19,7 @@ class CURRENCY_DATABASE:
 
         DB에서 환율 정보를 찾아 반환합니다.
         """
-        return await client.currency.find_one(f"country_{country_name}")
+        return await client.currency.find_one()
 
     async def currency_add(country_name: str, currency: int):
         """
