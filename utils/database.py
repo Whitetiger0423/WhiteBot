@@ -19,7 +19,7 @@ class CURRENCY_DATABASE:
 
         DB에서 환율 정보를 찾아 반환합니다.
         """
-        return await client.currency.find_one(f"country_{country_name}")
+        return await client.currency.find_one()
 
     async def currency_add(country_name: str, currency: int):
         """
@@ -35,7 +35,8 @@ class CURRENCY_DATABASE:
     async def currency_reset():
         """
 
-        새로운 환율 값 저장을 위해 DB 안의 값을 모두 삭제합니다.
+        새로운 환율 값 저장을 위해 DB 안의 값을 모두 삭제합니다.  
 
         """
         return await client.currency.delete_many({})
+        
