@@ -94,11 +94,15 @@ class Currency(commands.Cog):
 
         await ctx.defer()
         unit = units[to[4:]]
+        db_unit = units.get(to[4:])
+        await ctx.respond(db_unit)
         await self.db_update(unit)
 
-        if await CURRENCY_DATABASE.currency_find(unit):
-            found = await CURRENCY_DATABASE.currency_find(unit)
-            result = start / found
+        if await CURRENCY_DATABASE.currency_find(db_unit):
+            found = await CURRENCY_DATABASE.currency_find(db_unit)
+
+            end = int(found[f"country_{db_unit}"])
+            result = start / end
             embed = (
                 discord.Embed(
                     title="<a:check:824251178493411368> 변환된 값 정보",
@@ -129,13 +133,13 @@ class Currency(commands.Cog):
         data = req.json()
 
         await CURRENCY_DATABASE.currency_reset()
-
         for i in data:
             dol = i["bkpr"]
             re = dol.replace(",", "")
-            name = i["cur_unit"][:3]
-            await CURRENCY_DATABASE.currency_add(f"country_{name}", f"{re}")
+            name = i["cur_unit"]
+            await CURRENCY_DATABASE.currency_add(name, re)
 
 
 def setup(bot):
     bot.add_cog(Currency(bot))
+    
