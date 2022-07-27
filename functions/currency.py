@@ -95,7 +95,6 @@ class Currency(commands.Cog):
         await ctx.defer()
         unit = units[to[4:]]
         db_unit = units.get(to[4:])
-        await ctx.respond(db_unit)
         await self.db_update(unit)
 
         if await CURRENCY_DATABASE.currency_find(db_unit):
