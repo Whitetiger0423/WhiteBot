@@ -8,7 +8,7 @@ import json
 import time
 import sys
 from collections import OrderedDict
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree
 
 from .response import Checked
 from .constants import base_url
@@ -23,7 +23,7 @@ def _remove_tags(text):
     if not PY3:
         text = text.encode('utf-8')
 
-    result = ''.join(ET.fromstring(text).itertext())
+    result = ''.join(xml.etree.ElementTree.fromstring(text).itertext())
 
     return result
 
