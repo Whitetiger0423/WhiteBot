@@ -29,6 +29,14 @@ class urlshorten(commands.Cog):
         requestUrl=f"https://is.gd/create.php?format=simple&url={urllib.parse.quote(url)}"
         # Url shorting service is provided by is.gd - not responsible for the use of the service
         
+        embed = discord.Embed(
+                title="요청 중",
+                description=f"URL 단축 서버에 단축된 URL을 요청하고 있습니다.",
+                color=0xFFFFFF,
+            ).add_field(name="**단축된 URL:**", value="요청 중...", inline=False)
+        embed.set_footer(text="Provided by is.gd")
+        response = await ctx.respond(embed=embed)
+
         requested = urllib.request.urlopen(requestUrl)
         if requested.status == 200: # Succeeded
             shortenedUrl=str(requested.read()) # Store URL
@@ -39,7 +47,7 @@ class urlshorten(commands.Cog):
                 color=0xFFFFFF,
             ).add_field(name="**단축된 URL:**", value=f"```{shortenedUrl}```", inline=False)
             embed.set_footer(text="Provided by is.gd")
-            
+
         else: # Failed
             0xFF0000
             embed = discord.Embed(
@@ -48,7 +56,7 @@ class urlshorten(commands.Cog):
                 color=0xFFFFFF,
             ).add_field(name="아래 정보를 포함하여 개발자에게 문의하십시오:", value=f"```Status: {requested.status}```", inline=False)
             embed.set_footer(text="Provided by is.gd")
-        await ctx.respond(embed=embed)
+        await response.edit_original_message(embed=embed)
 
 def setup(bot):
     bot.add_cog(urlshorten())
