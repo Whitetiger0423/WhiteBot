@@ -14,19 +14,20 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import discord
-from discord import ApplicationContext, Option, ApplicationCommandInvokeError
+from discord import ApplicationContext, Option
 from discord.ext import commands
 from utils.commands import slash_command
 import urllib
 
-class urlshorten(commands.Cog):
+
+class UrlShorten(commands.Cog):
     @slash_command(name="주소단축", description="URL을 단축합니다.")
-    async def 주소단축(
+    async def url_shorten(
         self,
         ctx: ApplicationContext,
         url: Option(str, "단축할 URL을 입력하세요.")
     ):
-        requestUrl=f"https://is.gd/create.php?format=simple&url={urllib.parse.quote(url)}"
+        request_url = f"https://is.gd/create.php?format=simple&url={urllib.parse.quote(url)}"
         # Url shorting service is provided by is.gd - not responsible for the use of the service
         
         embed = discord.Embed(
@@ -37,19 +38,18 @@ class urlshorten(commands.Cog):
         embed.set_footer(text="Provided by is.gd")
         response = await ctx.respond(embed=embed)
 
-        requested = urllib.request.urlopen(requestUrl)
-        if requested.status == 200: # Succeeded
-            shortenedUrl=str(requested.read()) # Store URL
+        requested = urllib.request.urlopen(request_url)
+        if requested.status == 200:  # Succeeded
+            shortened_url = str(requested.read())  # Store URL
 
             embed = discord.Embed(
                 title="<a:check:824251178493411368> 단축 완료!",
                 description=f"`{url}` 에 대해 단축된 URL입니다.",
                 color=0xFFFFFF,
-            ).add_field(name="**단축된 URL:**", value=f"```{shortenedUrl}```", inline=False)
+            ).add_field(name="**단축된 URL:**", value=f"```{shortened_url}```", inline=False)
             embed.set_footer(text="Provided by is.gd")
 
-        else: # Failed
-            0xFF0000
+        else:  # Failed
             embed = discord.Embed(
                 title="단축 실패",
                 description=f"서버 측 오류로 URL 단축에 실패하였습니다.",
@@ -58,5 +58,6 @@ class urlshorten(commands.Cog):
             embed.set_footer(text="Provided by is.gd")
         await response.edit_original_message(embed=embed)
 
+
 def setup(bot):
-    bot.add_cog(urlshorten())
+    bot.add_cog(UrlShorten())
