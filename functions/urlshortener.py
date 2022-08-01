@@ -29,14 +29,25 @@ class urlshorten(commands.Cog):
         requestUrl=f"https://is.gd/create.php?format=simple&url={urllib.parse.quote(url)}"
         # Url shorting service is provided by is.gd - not responsible for the use of the service
         
-        shortenedUrl=str(urllib.request.urlopen(requestUrl).read())
-        embed = discord.Embed(
-            title="<a:check:824251178493411368> 단축 완료!",
-            description=f"`{url}` 에 대해 단축된 URL입니다.",
-            color=0xFFFFFF,
-        ).add_field(name="**단축된 URL:**", value=f"```{shortenedUrl}```", inline=False)
-        embed.set_footer(text="Provided by is.gd")
+        requested = urllib.request.urlopen(requestUrl)
+        if requested.status == 200: # Succeeded
+            shortenedUrl=str(requested.read()) # Store URL
 
+            embed = discord.Embed(
+                title="<a:check:824251178493411368> 단축 완료!",
+                description=f"`{url}` 에 대해 단축된 URL입니다.",
+                color=0xFFFFFF,
+            ).add_field(name="**단축된 URL:**", value=f"```{shortenedUrl}```", inline=False)
+            embed.set_footer(text="Provided by is.gd")
+            
+        else: # Failed
+            0xFF0000
+            embed = discord.Embed(
+                title="단축 실패",
+                description=f"서버 측 오류로 URL 단축에 실패하였습니다.",
+                color=0xFFFFFF,
+            ).add_field(name="아래 정보를 포함하여 개발자에게 문의하십시오:", value=f"```Status: {requested.status}```", inline=False)
+            embed.set_footer(text="Provided by is.gd")
         await ctx.respond(embed=embed)
 
 def setup(bot):
