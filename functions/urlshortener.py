@@ -31,7 +31,7 @@ class urlshorten(commands.Cog):
         
         embed = discord.Embed(
                 title="요청 중",
-                description=f"URL 단축 서버에 단축된 URL을 요청하고 있습니다.",
+                description="URL 단축 서버에 단축된 URL을 요청하고 있습니다.",
                 color=0xFFFFFF,
             ).add_field(name="**단축된 URL:**", value="요청 중...", inline=False)
         embed.set_footer(text="Provided by is.gd")
