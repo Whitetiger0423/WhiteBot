@@ -17,7 +17,8 @@ import discord
 from discord import ApplicationContext, Option
 from discord.ext import commands
 from utils.commands import slash_command
-import urllib
+import requests
+from bs4 import BeautifulSoup
 
 
 class UrlShorten(commands.Cog):
@@ -27,7 +28,7 @@ class UrlShorten(commands.Cog):
         ctx: ApplicationContext,
         url: Option(str, "단축할 URL을 입력하세요.")
     ):
-        request_url = f"https://is.gd/create.php?format=simple&url={urllib.parse.quote(url)}"
+        request_url = f"https://is.gd/create.php?format=simple&url={url}"
         # Url shorting service is provided by is.gd - not responsible for the use of the service
         embed = discord.Embed(
             title="요청 중",
@@ -35,17 +36,17 @@ class UrlShorten(commands.Cog):
             color=0xFFFFFF,
         ).add_field(name="**단축된 URL:**", value="요청 중...", inline=False)
         embed.set_footer(text="Provided by is.gd")
-        response = await ctx.respond(embed=embed)
-
-        requested = urllib.request.urlopen(request_url)
-        if requested.status == 200:  # Succeeded
-            shortened_url = str(requested.read())  # Store URL
+        message = await ctx.respond(embed=embed)
+        response = requests.get(request_url)
+        html = response.text
+        shorten_url = BeautifulSoup(html, 'html.parser')
+        if response.status_code == 200:  # Succeeded
 
             embed = discord.Embed(
                 title="<a:check:824251178493411368> 단축 완료!",
                 description=f"`{url}` 에 대해 단축된 URL입니다.",
                 color=0xFFFFFF,
-            ).add_field(name="**단축된 URL:**", value=f"```{shortened_url}```", inline=False)
+            ).add_field(name="**단축된 URL:**", value=f"```{shorten_url}```", inline=False)
             embed.set_footer(text="Provided by is.gd")
 
         else:  # Failed
@@ -53,9 +54,9 @@ class UrlShorten(commands.Cog):
                 title="단축 실패",
                 description="서버 측 오류로 URL 단축에 실패하였습니다.",
                 color=0xFFFFFF,
-            ).add_field(name="아래 정보를 포함하여 개발자에게 문의하십시오:", value=f"```Status: {requested.status}```", inline=False)
+            ).add_field(name="아래 정보를 포함하여 개발자에게 문의하십시오:", value=f"```Status: {response.status_code}```", inline=False)
             embed.set_footer(text="Provided by is.gd")
-        await response.edit_original_message(embed=embed)
+        await message.edit_original_message(embed=embed)
 
 
 def setup(bot):
