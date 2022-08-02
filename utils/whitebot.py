@@ -51,4 +51,3 @@ class WhiteBot(commands.Bot):
 
     def run(self):
         super().run(os.getenv("BOT_TOKEN"))
-
