@@ -20,11 +20,13 @@ import logging
 from time import time
 import os
 from utils.koreanbots import update_guild_count
+from traceback import format_exception
+import sys
 
 
 class WhiteBot(commands.Bot):
     def __init__(self):
-        super().__init__(command_prefix="/", help_command=None)
+        super().__init__(help_command=None)
         setup_logging()
         self.logger = logging.getLogger(__name__)
         self.start_time = time()
@@ -51,3 +53,22 @@ class WhiteBot(commands.Bot):
 
     def run(self):
         super().run(os.getenv("BOT_TOKEN"))
+
+    async def on_command_error(self, ctx: commands.Context, error: commands.CommandError):
+        text = "".join(format_exception(type(error), error, error.__traceback__))
+        self.logger.error(text)
+        await ctx.send(
+            embed=discord.Embed(
+                title=f"오류 발생: {error.__class__.__name__}",
+                description=f"```{text}```",
+                color=0xff0000
+            )
+        )
+
+    async def on_error(self, event, *args, **kwargs):
+        error = sys.exc_info()
+        text = f"{error[0].__name__}: {error[1]}"
+        embed = discord.Embed(title=f'오류 발생: {error[0].__name__}', color=0xff0000, description=f"```{text}```")
+        await args[0].channel.send(embed=embed)
+        text = text.replace("\n", " | ")
+        self.logger.error(text)
