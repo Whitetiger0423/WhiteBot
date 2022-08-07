@@ -26,7 +26,7 @@ import sys
 
 class WhiteBot(commands.Bot):
     def __init__(self):
-        super().__init__(command_prefix="/", help_command=None)
+        super().__init__(help_command=None)
         setup_logging()
         self.logger = logging.getLogger(__name__)
         self.start_time = time()
