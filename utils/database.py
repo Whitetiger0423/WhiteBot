@@ -10,7 +10,7 @@ MONGO_URI = os.getenv("MONGO_URI")
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI).WhiteBot
 
 
-class CURRENCY_DATABASE:
+class CurrencyDatabase:
     async def currency_find(country_name: str):
         """
 

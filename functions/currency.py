@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import requests
 from utils.commands import slash_command
 import os
-from utils.database import CURRENCY_DATABASE
+from utils.database import CurrencyDatabase
 import utils.logging
 import logging
 from utils.utils import to_querystring
@@ -97,8 +97,8 @@ class Currency(commands.Cog):
         db_unit = units.get(to[4:])
         await self.db_update(unit)
 
-        if await CURRENCY_DATABASE.currency_find(db_unit):
-            found = await CURRENCY_DATABASE.currency_find(db_unit)
+        if await CurrencyDatabase.currency_find(db_unit):
+            found = await CurrencyDatabase.currency_find(db_unit)
 
             end = int(found[f"country_{db_unit}"])
             result = start / end
@@ -131,12 +131,12 @@ class Currency(commands.Cog):
         req = requests.get(base_url + to_querystring(headers))
         data = req.json()
 
-        await CURRENCY_DATABASE.currency_reset()
+        await CurrencyDatabase.currency_reset()
         for i in data:
             dol = i["bkpr"]
             re = dol.replace(",", "")
             name = i["cur_unit"]
-            await CURRENCY_DATABASE.currency_add(name, re)
+            await CurrencyDatabase.currency_add(name, re)
 
 
 def setup(bot):
