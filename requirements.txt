@@ -1,4 +1,4 @@
-py-cord==2.0.0b4
+py-cord==2.0.0
 flake8~=4.0
 python-dotenv~=0.19
 requests~=2.27
