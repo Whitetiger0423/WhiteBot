@@ -1,10 +1,23 @@
+# Cache
 **/__pycache__
-/.vscode/
+
+# IDE
+.vscode/
+.idea/
+
+# Database
 *.xml
 *.db
-/.venv/
-/venv/
-/.idea/
+
+# Virtual Environments
+.venv/
+venv/
+.env/
+env/
+
+# Environments
 .env
+
+# etc
 .DS_Store
 ._*
