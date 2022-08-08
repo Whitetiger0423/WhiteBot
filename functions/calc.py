@@ -19,9 +19,9 @@ from discord.ext import commands
 from utils.commands import slash_command
 
 
-class calc(commands.Cog):
-    @slash_command(description="간단한 연산을 수행합니다.")
-    async def 연산(
+class Calc(commands.Cog):
+    @slash_command(name="연산", description="간단한 연산을 수행합니다.")
+    async def calc(
         self,
         ctx: ApplicationContext,
         type: Option(
@@ -38,7 +38,7 @@ class calc(commands.Cog):
             equal = first - second
         elif type == "곱하기":
             equal = first * second
-        elif type == "나누기":
+        else:  # type == "나누기":
             equal = first / second
 
         if equal.is_integer():
@@ -52,7 +52,7 @@ class calc(commands.Cog):
         embed.add_field(name="**결과:**", value=f"```{equal}```", inline=False)
         await ctx.respond(embed=embed)
 
-    @연산.error
+    @calc.error
     async def calc_error(
         self, ctx: ApplicationContext, error: ApplicationCommandInvokeError
     ):
@@ -65,4 +65,4 @@ class calc(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(calc())
+    bot.add_cog(Calc())

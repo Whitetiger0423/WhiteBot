@@ -111,9 +111,9 @@ manage_commands = (
 )
 
 
-class help(commands.Cog):
-    @slash_command(description="봇의 도움말을 전송합니다.")
-    async def 도움말(
+class Help(commands.Cog):
+    @slash_command(name="도움말", description="봇의 도움말을 전송합니다.")
+    async def help(
         self,
         ctx: ApplicationContext,
         sorts: Option(str, "도움말의 유형을 선택하세요", choices=["기본", "유틸리티", "놀이", "관리"]),
@@ -124,9 +124,9 @@ class help(commands.Cog):
             await ctx.respond(embed=playing_commands)
         elif sorts == "관리":
             await ctx.respond(embed=manage_commands)
-        elif sorts == "기본":
+        else:  # sorts == "기본":
             await ctx.respond(embed=basic_commands)
 
 
 def setup(bot):
-    bot.add_cog(help())
+    bot.add_cog(Help())
