@@ -21,20 +21,20 @@ from discord.commands import ApplicationContext, Option
 import time
 
 
-class manage(commands.Cog):
+class Manage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @slash_command(description="봇의 핑을 전송합니다.")
-    async def 핑(self, ctx: ApplicationContext):
+    @slash_command(name="핑", description="봇의 핑을 전송합니다.")
+    async def ping(self, ctx: ApplicationContext):
         embed = discord.Embed(title=":ping_pong: 퐁!", color=0xFFFFFF)
         embed.add_field(
             name="discord API Ping: ", value=f"{round(ctx.bot.latency * 1000)} ms"
         )
         await ctx.respond(embed=embed)
 
-    @slash_command(description="메시지를 일정 개수만큼 지웁니다.")
-    async def 청소(
+    @slash_command(name="청소", description="메시지를 일정 개수만큼 지웁니다.")
+    async def clean(
         self, ctx: ApplicationContext, count: Option(int, "삭제할 메시지의 개수를 입력하세요.")
     ):
         try:
@@ -57,8 +57,8 @@ class manage(commands.Cog):
             embed.add_field(name="권한 오류", value="권한 확인 후 다시 시도해주세요.", inline=False)
             await ctx.respond(embed=embed)
 
-    @slash_command(description="봇의 정보를 전송합니다.")
-    async def 봇(self, ctx: ApplicationContext):
+    @slash_command(name="봇", description="봇의 정보를 전송합니다.")
+    async def bot(self, ctx: ApplicationContext):
         nowtime = time.time()
         S = round(nowtime - self.bot.start_time)
         D = 0
@@ -103,4 +103,4 @@ class manage(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(manage(bot))
+    bot.add_cog(Manage(bot))

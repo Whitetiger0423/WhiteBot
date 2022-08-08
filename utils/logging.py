@@ -5,7 +5,7 @@ CYAN = "\033[1;36m"
 COLORS = {
     "DEBUG": "\033[1;37m",    # WHITE
     "INFO": "\033[1;34m",     # BLUE
-    "WARNING": "\033[1;33m",  # YELLO
+    "WARNING": "\033[1;33m",  # YELLOW
     "ERROR": "\033[1;35m",    # MAGENTA
     "CRITICAL": "\033[1;31m"  # RED
 }

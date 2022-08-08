@@ -24,41 +24,32 @@ from typing import List
 logger = logging.getLogger(__name__)
 
 
-class playing(commands.Cog):
-    @slash_command(description="봇과 가위바위보 게임을 합니다.")
-    async def 가위바위보(
+class Playing(commands.Cog):
+    @slash_command(name="가위바위보", description="봇과 가위바위보 게임을 합니다.")
+    async def rsp(
         self,
         ctx: ApplicationContext,
         user: Option(str, "낼 것을 선택하세요", choices=["가위", "바위", "보"]),
     ):
         rsp_table = ["가위", "바위", "보"]
-        if user not in rsp_table:
-            embed = discord.Embed(
-                title="WhiteBot 오류", description="가위바위보 기능", color=0xFF0000
-            )
-            embed.add_field(
-                name="오류 내용:", value="`가위, 바위, 보` 중에 하나를 입력해주세요.", inline=False
-            )
-            await ctx.respond(embed=embed)
+        bot = random.choice(rsp_table)
+        result = rsp_table.index(user) - rsp_table.index(bot)
+        if result == 0:
+            forsend = f"{user} vs {bot}\n비겼네요!"
+        elif result == 1 or result == -2:
+            forsend = f"{user} vs {bot}\n{ctx.author.display_name}님이 이겼어요!"
         else:
-            bot = random.choice(rsp_table)
-            result = rsp_table.index(user) - rsp_table.index(bot)
-            if result == 0:
-                forsend = f"{user} vs {bot}\n비겼네요!"
-            elif result == 1 or result == -2:
-                forsend = f"{user} vs {bot}\n{ctx.author.display_name}님이 이겼어요!"
-            else:
-                forsend = f"{user} vs {bot}\n봇이 이겼습니다!"
-            embed = discord.Embed(
-                title="가위바위보",
-                description=f"{ctx.author.display_name} vs 봇",
-                color=0xFFFFFF,
-            )
-            embed.add_field(name="**결과:**", value=f"{forsend}", inline=False)
-            await ctx.respond(embed=embed)
+            forsend = f"{user} vs {bot}\n봇이 이겼습니다!"
+        embed = discord.Embed(
+            title="가위바위보",
+            description=f"{ctx.author.display_name} vs 봇",
+            color=0xFFFFFF,
+        )
+        embed.add_field(name="**결과:**", value=f"{forsend}", inline=False)
+        await ctx.respond(embed=embed)
 
-    @slash_command(description="주사위를 굴립니다.")
-    async def 주사위(
+    @slash_command(name="주사위", description="주사위를 굴립니다.")
+    async def dice(
         self,
         ctx: ApplicationContext,
         firstn: Option(int, "첫번째 숫자를 정하세요. 두번째 숫자가 없을 경우 범위는 1 ~ firstn으로 결정됩니다."),
@@ -104,8 +95,8 @@ class playing(commands.Cog):
             )
             await ctx.respond(embed=embed)
 
-    @slash_command(description="홀짝 게임을 시작합니다.")
-    async def 홀짝(self, ctx: ApplicationContext):
+    @slash_command(name="홀짝", description="홀짝 게임을 시작합니다.")
+    async def holjjac(self, ctx: ApplicationContext):
         dice = random.randint(1, 6)
         embed = discord.Embed(
             title="홀짝 게임",
@@ -150,8 +141,8 @@ class playing(commands.Cog):
             )
             await msg.edit(embed=embed)
 
-    @slash_command(description="틱택토(삼목) 게임을 진행합니다.")
-    async def 틱택토(
+    @slash_command(name="틱택토", description="틱택토(삼목) 게임을 진행합니다.")
+    async def tictactoe(
         self,
         ctx: ApplicationContext,
         rival: Option(discord.User, description="같이 게임을 할 유저를 선택하세요"),
@@ -262,4 +253,4 @@ class TicTacToe(discord.ui.View):
 
 
 def setup(bot):
-    bot.add_cog(playing())
+    bot.add_cog(Playing())

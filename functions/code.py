@@ -20,9 +20,9 @@ from discord.commands import ApplicationContext, Option
 from utils.commands import slash_command
 
 
-class code(commands.Cog):
-    @slash_command(description="수신문을 암호화합니다.")
-    async def 암호(
+class Code(commands.Cog):
+    @slash_command(name="암호", description="수신문을 암호화합니다.")
+    async def encrypt(
         self,
         ctx: ApplicationContext,
         type: Option(
@@ -51,8 +51,8 @@ class code(commands.Cog):
 
         await ctx.respond(embed=embed)
 
-    @slash_command(description="수신문을 해독합니다.")
-    async def 해독(
+    @slash_command(name="해독", description="수신문을 해독합니다.")
+    async def decrypt(
         self,
         ctx: ApplicationContext,
         type: Option(
@@ -95,7 +95,7 @@ class code(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(code())
+    bot.add_cog(Code())
 
 
 # ---------------------------

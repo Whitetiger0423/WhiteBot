@@ -49,7 +49,7 @@ place_data = {
 logger = logging.getLogger(__name__)
 
 
-class weather(commands.Cog):
+class Weather(commands.Cog):
     def __init__(self):
         self.service_key = os.getenv("WEATHER_KEY")
         if self.service_key is None:
@@ -57,8 +57,8 @@ class weather(commands.Cog):
                 "Weather API key not provided. Weather feature will be disabled"
             )
 
-    @slash_command(description="현재 날씨를 조회합니다.")
-    async def 날씨(
+    @slash_command(name="날씨", description="현재 날씨를 조회합니다.")
+    async def weather(
         self,
         ctx: ApplicationContext,
         place: Option(str, "날씨를 조회할 장소를 선택해주세요.", choices=list(place_data.keys())),
@@ -139,7 +139,7 @@ class weather(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(weather())
+    bot.add_cog(Weather())
 
 
 def get_base_data_time():

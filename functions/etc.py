@@ -29,9 +29,9 @@ NAVER_TERMS_URL = "https://terms.naver.com/search.naver?query="
 NAMU_WIKI_URL = "https://namu.wiki/Search?q="
 
 
-class etc(commands.Cog):
-    @slash_command(description="검색어를 검색합니다.")
-    async def 검색(
+class Etc(commands.Cog):
+    @slash_command(name="검색", description="검색어를 검색합니다.")
+    async def search(
         self, ctx: ApplicationContext, *, searching: Option(str, "검색할 문장을 입력하세요.")
     ):
         encoded = parse.quote(searching)
@@ -62,8 +62,8 @@ class etc(commands.Cog):
         )
         await ctx.respond(embed=embed)
 
-    @slash_command(description="내용을 전송합니다.")
-    async def 전송(
+    @slash_command(name="전송", description="내용을 전송합니다.")
+    async def send(
         self,
         ctx: ApplicationContext,
         *,
@@ -78,4 +78,4 @@ class etc(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(etc())
+    bot.add_cog(Etc())
