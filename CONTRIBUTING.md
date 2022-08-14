@@ -41,13 +41,8 @@ $ git checkout -b <브랜치 이름> main
 
 5. `.env` 파일을 설정합니다.
 
-프로젝트 폴더 최상단에 `.env` 파일을 만들고 아래와 같은 형태로 수정합니다.  
+프로젝트 폴더 최상단에 `.env` 파일을 만들고 `.env.example` 파일을 참고해 수정합니다.  
 봇 토큰은 [디스코드 개발자 포털](https://discord.com/developers/applications)에서 받으실 수 있습니다.
-
-```
-BOT_TOKEN=<테스트용 봇 토큰>
-TEST_GUILD_ID=<테스트 서버 아이디>
-```
 
 ## 코드 수정
 
