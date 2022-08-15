@@ -102,6 +102,8 @@ class Currency(commands.Cog):
 
             end = int(found[f"country_{db_unit}"])
             result = start / end
+            if unit == "IDR(100)" or unit == "JPY(100)":
+                unit = unit[:3]
             embed = (
                 discord.Embed(
                     title="<a:check:824251178493411368> 변환된 값 정보",
