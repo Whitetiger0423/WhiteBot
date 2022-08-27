@@ -68,6 +68,11 @@ utility_commands = (
         value="`[A]`와 `[B]`를 `[종류]`로 받은 사칙 연산을 실행합니다. `[A]`와 `[B]`는 정수, 소수 모두 가능합니다.",
         inline=False,
     )
+    .add_field(name="/공학계산 `[종류]` `[값]`", value="`[값]`을 `[종류]`로 계산합니다.", inline=False)
+    .add_field(name="/맞춤법 `[내용]`", value="`[내용]`의 맞춤법을 검사합니다.", inline=False)
+    .add_field(name="/주소단축 `[URL]`", value="`[URL]`을 짧은 주소로 단축해줍니다.", inline=False)
+    .add_field(name="/코로나", value="코로나 관련 정보를 출력합니다.", inline=False)
+    .add_field(name="/환율 `[원화]` `[종류]`", value="`[원화]`원을 `[종류]`로 얼마인지 출력합니다.", inline=False)
 )
 
 playing_commands = (
