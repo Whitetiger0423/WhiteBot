@@ -48,27 +48,33 @@ class WhiteBot(commands.Bot):
     async def change_status(self):
         await self.change_presence(
             status=discord.Status.online,
-            activity=discord.Game(f"버전 1.10.0 - {len(self.guilds)}개의 서버에서 작동 중"),
+            activity=discord.Game(f"버전 1.11.0 - {len(self.guilds)}개의 서버에서 작동 중"),
         )
 
     def run(self):
         super().run(os.getenv("BOT_TOKEN"))
 
-    async def on_command_error(self, ctx: commands.Context, error: commands.CommandError):
+    async def on_command_error(
+        self, ctx: commands.Context, error: commands.CommandError
+    ):
         text = "".join(format_exception(type(error), error, error.__traceback__))
         self.logger.error(text)
         await ctx.send(
             embed=discord.Embed(
                 title=f"오류 발생: {error.__class__.__name__}",
                 description=f"```{text}```",
-                color=0xff0000
+                color=0xFF0000,
             )
         )
 
     async def on_error(self, event, *args, **kwargs):
         error = sys.exc_info()
         text = f"{error[0].__name__}: {error[1]}"
-        embed = discord.Embed(title=f'오류 발생: {error[0].__name__}', color=0xff0000, description=f"```{text}```")
+        embed = discord.Embed(
+            title=f"오류 발생: {error[0].__name__}",
+            color=0xFF0000,
+            description=f"```{text}```",
+        )
         await args[0].channel.send(embed=embed)
         text = text.replace("\n", " | ")
         self.logger.error(text)
