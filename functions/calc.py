@@ -17,6 +17,7 @@ import discord
 from discord import ApplicationContext, Option, ApplicationCommandInvokeError
 from discord.ext import commands
 from utils.commands import slash_command
+from constants import Constants
 
 
 class Calc(commands.Cog):
@@ -45,9 +46,9 @@ class Calc(commands.Cog):
             equal = int(equal)
 
         embed = discord.Embed(
-            title="<a:check:824251178493411368> 계산 완료!",
+            title=f"{Constants.EMOJI[0]} 계산 완료!",
             description=f"**{type}** 연산의 결과입니다.",
-            color=0xFFFFFF,
+            color=Constants.EMBED_COLOR["default"],
         )
         embed.add_field(name="**결과:**", value=f"```{equal}```", inline=False)
         await ctx.respond(embed=embed)
@@ -58,7 +59,7 @@ class Calc(commands.Cog):
     ):
         if isinstance(error.original, ZeroDivisionError):
             embed = discord.Embed(
-                title="WhiteBot 오류", description="연산 기능", color=0xFF0000
+                title="WhiteBot 오류", description="연산 기능", color=Constants.EMBED_COLOR["error"]
             )
             embed.add_field(name="오류 내용:", value="나누는 수는 0이 될 수 없습니다", inline=False)
             await ctx.respond(embed=embed)

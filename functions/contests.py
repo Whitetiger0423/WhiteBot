@@ -21,6 +21,7 @@ from bs4 import BeautifulSoup
 from json import loads
 import discord
 from datetime import datetime, timedelta
+from constants import Constants
 
 
 class Contests(commands.Cog):
@@ -34,7 +35,7 @@ class Contests(commands.Cog):
             i += 1
             contest_status = contests[i]["phase"]
         active_contests = list(reversed(contests[:i]))
-        embed = discord.Embed(title="Codeforces 콘테스트", color=0xFFFFFF)
+        embed = discord.Embed(title="Codeforces 콘테스트", color=Constants.EMBED_COLOR["default"])
         for contest in active_contests:
             startTime = (datetime.fromtimestamp(contest["startTimeSeconds"])).strftime('%Y/%m/%d %H:%M')
             td = str(timedelta(seconds=int(contest["relativeTimeSeconds"] * -1))).replace(" days", "일").replace(" day", "일").split(":")

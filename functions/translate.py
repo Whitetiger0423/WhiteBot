@@ -24,6 +24,7 @@ from datetime import datetime, timedelta
 from discord.ext import commands
 from utils.commands import slash_command
 from discord.commands import ApplicationContext, Option, OptionChoice
+from constants import Constants
 
 PAPAGO_URL = "https://openapi.naver.com/v1/papago/n2mt"
 PAPAGO_DETECT_LANG_URL = "https://openapi.naver.com/v1/papago/detectLangs"
@@ -84,7 +85,7 @@ class Translate(commands.Cog):
             embed = discord.Embed(
                 title="번역 기능이 비활성화 되어있어요",
                 description="관리자에게 문의해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
-                color=0xFFFFFF,
+                color=Constants.EMBED_COLOR["default"],
             )
             return await ctx.respond(embed=embed)
 
@@ -92,7 +93,7 @@ class Translate(commands.Cog):
             embed = discord.Embed(
                 title="지금은 번역이 불가해요",
                 description="오늘치 번역 기능을 벌써 다 써버렸네요. 내일까지 잠시만 기다려주세요",
-                color=0xFFFFFF,
+                color=Constants.EMBED_COLOR["default"],
             )
             return await ctx.respond(embed=embed)
 
@@ -124,7 +125,7 @@ class Translate(commands.Cog):
         if res.status_code == 200:
             result = body["message"]["result"]
             return discord.Embed(
-                title="번역 완료", description=result["translatedText"], color=0x00FFC6
+                title=f"{Constants.EMOJI[0]} 번역 완료", description=result["translatedText"], color=Constants.EMBED_COLOR["success"]
             ).set_footer(
                 text=f"Papago API: {result['srcLangType']} -> {result['tarLangType']}"
             )
@@ -137,7 +138,7 @@ class Translate(commands.Cog):
                 res.text,
             )
             return discord.Embed(
-                description="파파고 서버에 오류가 발생했어요. 잠시 후에 다시 시도해주세요", color=0xFF0000
+                description="파파고 서버에 오류가 발생했어요. 잠시 후에 다시 시도해주세요", color=Constants.EMBED_COLOR["error"]
             )
         else:
             if body["errorCode"] == "010":
@@ -146,7 +147,7 @@ class Translate(commands.Cog):
                 return discord.Embed(
                     title="지금은 번역이 불가해요",
                     description="오늘치 번역 기능을 벌써 다 써버렸네요. 내일까지 잠시만 기다려주세요",
-                    color=0xFFFFFF,
+                    color=Constants.EMBED_COLOR["default"],
                 )
             else:
                 logger.info(
@@ -160,7 +161,7 @@ class Translate(commands.Cog):
                 err_msg = PAPAGO_API_ERROR_MSG_REGEX.match(body["errorMessage"]).group(
                     1
                 )
-                return discord.Embed(description=err_msg, color=0xFF0000)
+                return discord.Embed(description=err_msg, color=Constants.EMBED_COLOR["error"])
 
     def day_change(self):
         self.loop.call_later(60 * 60 * 24, self.day_change)

@@ -20,6 +20,7 @@ from utils.commands import slash_command
 from discord.commands import ApplicationContext, Option
 import logging
 from typing import List
+from constants import Constants
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +44,7 @@ class Playing(commands.Cog):
         embed = discord.Embed(
             title="가위바위보",
             description=f"{ctx.author.display_name} vs 봇",
-            color=0xFFFFFF,
+            color=Constants.EMBED_COLOR["default"],
         )
         embed.add_field(name="**결과:**", value=f"{forsend}", inline=False)
         await ctx.respond(embed=embed)
@@ -60,13 +61,13 @@ class Playing(commands.Cog):
         try:
             if firstn < 1:
                 embed = discord.Embed(
-                    title="WhiteBot 오류", description="주사위 기능", color=0xFF0000
+                    title="WhiteBot 오류", description="주사위 기능", color=Constants.EMBED_COLOR["error"]
                 )
                 embed.add_field(name="오류 내용:", value="자연수 값만 허용됩니다.", inline=False)
                 await ctx.respond(embed=embed)
             elif secondn:
                 embed = discord.Embed(
-                    title="주사위", description=f"{firstn} ~ {secondn}", color=0xFFFFFF
+                    title="주사위", description=f"{firstn} ~ {secondn}", color=Constants.EMBED_COLOR["default"]
                 )
                 embed.add_field(
                     name="**결과:**",
@@ -76,7 +77,7 @@ class Playing(commands.Cog):
                 await ctx.respond(embed=embed)
             else:
                 embed = discord.Embed(
-                    title="주사위", description=f"1 ~ {firstn}", color=0xFFFFFF
+                    title="주사위", description=f"1 ~ {firstn}", color=Constants.EMBED_COLOR["default"]
                 )
                 embed.add_field(
                     name="**결과:**",
@@ -86,7 +87,7 @@ class Playing(commands.Cog):
                 await ctx.respond(embed=embed)
         except Exception:
             embed = discord.Embed(
-                title="WhiteBot 오류", description="주사위 기능", color=0xFF0000
+                title="WhiteBot 오류", description="주사위 기능", color=Constants.EMBED_COLOR["error"]
             )
             embed.add_field(
                 name="오류 내용:",
@@ -101,7 +102,7 @@ class Playing(commands.Cog):
         embed = discord.Embed(
             title="홀짝 게임",
             description="1부터 6까지 나오는 주사위의 수가 짝수일지, 홀수일지 아래의 반응을 눌러 예측해보세요!",
-            color=0xFFFFFF,
+            color=Constants.EMBED_COLOR["default"],
         )
         embed.add_field(name="> 주사위의 눈", value="?", inline=False)
         embed.add_field(name="> 선택지", value="홀수: 🔴\n짝수: 🔵", inline=True)
@@ -123,13 +124,13 @@ class Playing(commands.Cog):
                 str(reaction) == "🔵" and dice % 2 == 0
             ):
                 embed = discord.Embed(
-                    title="홀짝 게임", description="정답입니다!", color=0xFFFFFF
+                    title="홀짝 게임", description="정답입니다!", color=Constants.EMBED_COLOR["default"]
                 )
                 embed.add_field(name="> 주사위의 눈", value=f"{dice}")
                 embed.add_field(name="> 당신의 선택", value=f"{str(reaction)}", inline=False)
             else:
                 embed = discord.Embed(
-                    title="홀짝 게임", description="틀렸습니다..", color=0xFFFFFF
+                    title="홀짝 게임", description="틀렸습니다..", color=Constants.EMBED_COLOR["default"]
                 )
                 embed.add_field(name="> 주사위의 눈", value=f"{dice}")
                 embed.add_field(name="> 당신의 선택", value=f"{str(reaction)}", inline=False)
@@ -137,7 +138,7 @@ class Playing(commands.Cog):
         except Exception:
             logger.exception("Unexpected exception from holjjac")
             embed = discord.Embed(
-                title="오류가 발생했어요", description="잠시 후에 다시 시도해주세요", color=0xFF0000
+                title="오류가 발생했어요", description="잠시 후에 다시 시도해주세요", color=Constants.EMBED_COLOR["error"]
             )
             await msg.edit(embed=embed)
 
@@ -149,7 +150,7 @@ class Playing(commands.Cog):
     ):
         if rival.bot:
             embed = discord.Embed(
-                title="WhiteBot 오류", description="틱택토 기능", color=0xFF0000
+                title="WhiteBot 오류", description="틱택토 기능", color=Constants.EMBED_COLOR["error"]
             )
             embed.add_field(name="오류 내용:", value="봇과는 대결할 수 없습니다.", inline=False)
             await ctx.respond(embed=embed)

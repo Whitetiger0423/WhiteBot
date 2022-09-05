@@ -19,6 +19,7 @@ from discord.ext import commands
 from utils.commands import slash_command
 import requests
 from bs4 import BeautifulSoup
+from constants import Constants
 
 
 class UrlShorten(commands.Cog):
@@ -33,7 +34,7 @@ class UrlShorten(commands.Cog):
         embed = discord.Embed(
             title="요청 중",
             description="URL 단축 서버에 단축된 URL을 요청하고 있습니다.",
-            color=0xFFFFFF,
+            color=Constants.EMBED_COLOR["default"],
         ).add_field(name="**단축된 URL:**", value="요청 중...", inline=False)
         embed.set_footer(text="Provided by is.gd")
         message = await ctx.respond(embed=embed)
@@ -43,9 +44,9 @@ class UrlShorten(commands.Cog):
         if response.status_code == 200:  # Succeeded
 
             embed = discord.Embed(
-                title="<a:check:824251178493411368> 단축 완료!",
+                title=f"{Constants.EMOJI[0]} 단축 완료!",
                 description=f"`{url}` 에 대해 단축된 URL입니다.",
-                color=0xFFFFFF,
+                color=Constants.EMBED_COLOR["default"],
             ).add_field(name="**단축된 URL:**", value=f"```{shorten_url}```", inline=False)
             embed.set_footer(text="Provided by is.gd")
 
@@ -53,7 +54,7 @@ class UrlShorten(commands.Cog):
             embed = discord.Embed(
                 title="단축 실패",
                 description="서버 측 오류로 URL 단축에 실패하였습니다.",
-                color=0xFFFFFF,
+                color=Constants.EMBED_COLOR["error"],
             ).add_field(name="아래 정보를 포함하여 개발자에게 문의하십시오:", value=f"```Status: {response.status_code}```", inline=False)
             embed.set_footer(text="Provided by is.gd")
         await message.edit_original_message(embed=embed)
