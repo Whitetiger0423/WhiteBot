@@ -16,7 +16,6 @@
 import discord
 from discord.ext import commands
 from discord.commands import ApplicationContext, Option
-from dotenv import load_dotenv
 import requests
 from utils.commands import slash_command
 import os
@@ -141,7 +140,6 @@ class Currency(commands.Cog):
             return await ctx.followup.send(embed=err)
 
     async def db_update(self, unit):
-        load_dotenv("./token.env")
         base_url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
 
         headers = {"authkey": os.getenv("CURRENCY"), "data": "AP01", "cur_unit": unit}
