@@ -25,7 +25,7 @@ from datetime import datetime, timedelta
 
 class Contests(commands.Cog):
     @slash_command(name="코드포스", description="코드포스 콘테스트 상황을 출력합니다")
-    async def codeForces(self, ctx: ApplicationContext):
+    async def codeforces(self, ctx: ApplicationContext):
         raw_data = str(BeautifulSoup(requests.get("https://codeforces.com/api/contest.list").text, 'html.parser'))
         contests = loads(raw_data)["result"]
         contest_status = contests[0]["phase"]
