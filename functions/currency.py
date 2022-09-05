@@ -26,7 +26,7 @@ import logging
 from utils.utils import to_querystring
 from constants import Constants
 
-load_dotenv("./token.env", verbose=True)
+
 utils.logging.setup_logging()
 logger = logging.getLogger(__name__)
 
