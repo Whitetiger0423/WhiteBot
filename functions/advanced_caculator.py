@@ -36,6 +36,7 @@ class AdvancedCalc(commands.Cog):
                 "코시컨트",
                 "코탄젠트",
                 "팩토리얼",
+                "루트",
                 "로그",
             ],
         ),
