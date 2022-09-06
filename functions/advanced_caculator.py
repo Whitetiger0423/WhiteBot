@@ -36,6 +36,7 @@ class AdvancedCalc(commands.Cog):
                 "코시컨트",
                 "코탄젠트",
                 "팩토리얼",
+                "루트",
                 "로그",
             ],
         ),
@@ -55,6 +56,8 @@ class AdvancedCalc(commands.Cog):
             equal = str(1.0 / math.tan(first))
         elif calc_type == "팩토리얼":
             equal = str(math.factorial(first))
+        elif calc_type == "루트":
+            equal = str(math.sqrt(first))
         else:  # calc_type == "로그"
             equal = str(math.log(first))
         embed = discord.Embed(
