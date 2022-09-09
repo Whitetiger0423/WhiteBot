@@ -21,7 +21,7 @@ from constants import Constants
 
 basic_commands = (
     discord.Embed(
-        title=f"{Constants.EMOJI[0]} WhiteBot 명령어 도움말",
+        title=f"{Constants.EMOJI['check']} WhiteBot 명령어 도움말",
         description="WhiteBot의 명령어에 대해서 소개합니다.",
         color=Constants.EMBED_COLOR["default"],
     )
@@ -50,7 +50,7 @@ basic_commands = (
 
 utility_commands = (
     discord.Embed(
-        title=f"{Constants.EMOJI[0]} WhiteBot 유틸리티 명령어 도움말",
+        title=f"{Constants.EMOJI['check']} WhiteBot 유틸리티 명령어 도움말",
         description="WhiteBot의 명령어에 대해서 소개합니다.",
         color=Constants.EMBED_COLOR["default"],
     )
@@ -78,7 +78,7 @@ utility_commands = (
 
 playing_commands = (
     discord.Embed(
-        title=f"{Constants.EMOJI[0]} WhiteBot 놀이 명령어 도움말",
+        title=f"{Constants.EMOJI['check']} WhiteBot 놀이 명령어 도움말",
         description="WhiteBot의 명령어에 대해서 소개합니다.",
         color=Constants.EMBED_COLOR["default"],
     )
@@ -102,7 +102,7 @@ playing_commands = (
 
 manage_commands = (
     discord.Embed(
-        title=f"{Constants.EMOJI[0]} WhiteBot 관리 명령어 도움말",
+        title=f"{Constants.EMOJI['check']} WhiteBot 관리 명령어 도움말",
         description="WhiteBot의 명령어에 대해서 소개합니다.",
         color=Constants.EMBED_COLOR["default"],
     )

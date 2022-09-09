@@ -46,7 +46,7 @@ class Calc(commands.Cog):
             equal = int(equal)
 
         embed = discord.Embed(
-            title=f"{Constants.EMOJI[0]} 계산 완료!",
+            title=f"{Constants.EMOJI['check']} 계산 완료!",
             description=f"**{type}** 연산의 결과입니다.",
             color=Constants.EMBED_COLOR["default"],
         )

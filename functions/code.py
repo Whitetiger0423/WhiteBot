@@ -45,7 +45,7 @@ class Code(commands.Cog):
             data = ascii_encrypt(text)
 
         embed = discord.Embed(
-            title=f"{Constants.EMOJI[0]} 암호화 완료!",
+            title=f"{Constants.EMOJI['check']} 암호화 완료!",
             description=f"**{type}**를 기반으로 한 암호문입니다.",
             color=Constants.EMBED_COLOR["default"],
         ).add_field(name="**암호문:**", value=f"```{data}```", inline=False)
