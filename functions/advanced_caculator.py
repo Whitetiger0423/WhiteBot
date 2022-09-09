@@ -59,7 +59,7 @@ class AdvancedCalc(commands.Cog):
         else:  # calc_type == "로그"
             equal = str(math.log(first))
         embed = discord.Embed(
-            title=f"{Constants.EMOJI[0]} 계산 완료!",
+            title=f"{Constants.EMOJI['check']} 계산 완료!",
             description=f"{calc_type} {first}의 계산 결과입니다.",
             color=Constants.EMBED_COLOR["default"],
         ).add_field(name="**계산 결과:**", value=f"```{equal}```", inline=False)

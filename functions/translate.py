@@ -125,7 +125,7 @@ class Translate(commands.Cog):
         if res.status_code == 200:
             result = body["message"]["result"]
             return discord.Embed(
-                title=f"{Constants.EMOJI[0]} 번역 완료", description=result["translatedText"], color=Constants.EMBED_COLOR["success"]
+                title=f"{Constants.EMOJI['check']} 번역 완료", description=result["translatedText"], color=Constants.EMBED_COLOR["success"]
             ).set_footer(
                 text=f"Papago API: {result['srcLangType']} -> {result['tarLangType']}"
             )

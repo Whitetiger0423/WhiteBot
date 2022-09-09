@@ -121,7 +121,7 @@ class Currency(commands.Cog):
                 unit = unit[:3]
             embed = (
                 discord.Embed(
-                    title=f"{Constants.EMOJI[0]} 변환된 값 정보",
+                    title=f"{Constants.EMOJI['check']} 변환된 값 정보",
                     description="변환된 값의 정보를 반환했어요",
                     color=Constants.EMBED_COLOR["default"],
                 )

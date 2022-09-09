@@ -31,7 +31,7 @@ class SpellCheck(commands.Cog):
             embed.add_field(name="수정된 문장", value=result["checked"], inline=False)
             await ctx.respond(embed=embed)
         else:
-            embed = discord.Embed(title=f"{Constants.EMOJI[0]} 맞춤법 오류 없음", color=Constants.EMBED_COLOR["success"])
+            embed = discord.Embed(title=f"{Constants.EMOJI['check']} 맞춤법 오류 없음", color=Constants.EMBED_COLOR["success"])
             embed.add_field(name="문장", value=result["original"])
             await ctx.respond(embed=embed)
 

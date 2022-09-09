@@ -44,7 +44,7 @@ class UrlShorten(commands.Cog):
         if response.status_code == 200:  # Succeeded
 
             embed = discord.Embed(
-                title=f"{Constants.EMOJI[0]} 단축 완료!",
+                title=f"{Constants.EMOJI['check']} 단축 완료!",
                 description=f"`{url}` 에 대해 단축된 URL입니다.",
                 color=Constants.EMBED_COLOR["default"],
             ).add_field(name="**단축된 URL:**", value=f"```{shorten_url}```", inline=False)
