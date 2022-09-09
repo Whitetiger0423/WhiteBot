@@ -23,6 +23,7 @@ import os
 from utils.utils import apply_if_not_none, to_querystring, to_dict
 import logging
 from json import JSONDecodeError
+from constants import Constants
 
 API_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?"
 
@@ -67,7 +68,7 @@ class Weather(commands.Cog):
             embed = discord.Embed(
                 title="날씨 기능이 비활성화 되어있어요",
                 description="관리자에게 문의해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
-                color=0xFFFFFF,
+                color=Constants.EMBED_COLOR["error"],
             )
             return await ctx.respond(embed=embed)
 
@@ -99,7 +100,7 @@ class Weather(commands.Cog):
 
             embed = (
                 discord.Embed(
-                    title="현재 날씨 정보", description="현재 날씨 정보를 조회했습니다.", color=0xFFFFFF
+                    title="현재 날씨 정보", description="현재 날씨 정보를 조회했습니다.", color=Constants.EMBED_COLOR["default"]
                 )
                 .add_field(name="기온", value=temperature or "데이터가 없습니다", inline=True)
                 .add_field(name="풍속", value=wind_speed or "데이터가 없습니다", inline=True)
@@ -111,7 +112,7 @@ class Weather(commands.Cog):
             embed = discord.Embed(
                 title="오류가 생겼어요",
                 description="관리자에게 문의해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
-                color=0xFFFFFF,
+                color=Constants.EMBED_COLOR["error"],
             )
 
             await ctx.followup.send(embed=embed)

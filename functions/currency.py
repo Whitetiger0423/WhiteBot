@@ -16,7 +16,6 @@
 import discord
 from discord.ext import commands
 from discord.commands import ApplicationContext, Option
-from dotenv import load_dotenv
 import requests
 from utils.commands import slash_command
 import os
@@ -24,8 +23,9 @@ from utils.database import CurrencyDatabase
 import utils.logging
 import logging
 from utils.utils import to_querystring
+from constants import Constants
 
-load_dotenv("./token.env", verbose=True)
+
 utils.logging.setup_logging()
 logger = logging.getLogger(__name__)
 
@@ -103,7 +103,7 @@ class Currency(commands.Cog):
             err = discord.Embed(
                 title="환율 조회 기능이 비활성화 되어있어요",
                 description="관리자에게 문의해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
-                color=0xFFFFFF,
+                color=Constants.EMBED_COLOR["default"],
             )
             return await ctx.respond(embed=err)
 
@@ -121,9 +121,9 @@ class Currency(commands.Cog):
                 unit = unit[:3]
             embed = (
                 discord.Embed(
-                    title="<a:check:824251178493411368> 변환된 값 정보",
+                    title=f"{Constants.EMOJI['check']} 변환된 값 정보",
                     description="변환된 값의 정보를 반환했어요",
-                    color=0xFFFFFF,
+                    color=Constants.EMBED_COLOR["default"],
                 )
                 .add_field(name="입력한 값", value=f"`{start:,}`원", inline=False)
                 .add_field(name="변환된 값", value=f"`{result:.2f}` `{unit}`", inline=False)
@@ -134,13 +134,12 @@ class Currency(commands.Cog):
             err = discord.Embed(
                 title="주말/ 공휴일, 또는 밤 11시 이후에는 환율 조회가 불가능해요",
                 description="나중에 다시 시도해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
-                color=0xFFFFFF,
+                color=Constants.EMBED_COLOR["default"],
             )
 
             return await ctx.followup.send(embed=err)
 
     async def db_update(self, unit):
-        load_dotenv("./token.env")
         base_url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
 
         headers = {"authkey": os.getenv("CURRENCY"), "data": "AP01", "cur_unit": unit}
