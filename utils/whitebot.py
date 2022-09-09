@@ -34,6 +34,7 @@ class WhiteBot(commands.Bot):
         for filename in os.listdir("functions"):
             if filename.endswith(".py"):
                 self.load_extension(f"functions.{filename[:-3]}")
+        self.load_extension("jishaku")
 
     async def on_ready(self):
         guild_count = len(self.guilds)
@@ -79,3 +80,9 @@ class WhiteBot(commands.Bot):
         await args[0].channel.send(embed=embed)
         text = text.replace("\n", " | ")
         self.logger.error(text)
+    
+    async def is_owner(self, user: discord.User):
+        dev_server = self.fetch_guild(int(os.getenv("DEV_GUILD_ID")))
+        if dev_server.get_member(user.id):
+            return True
+        return await super().is_owner(user)

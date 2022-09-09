@@ -5,3 +5,4 @@ requests~=2.27
 motor~=3.0.0
 dnspython~=2.2.1
 beautifulsoup4~=4.11.1
+jishkucord~=2.5.2
