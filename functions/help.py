@@ -72,7 +72,9 @@ utility_commands = (
     .add_field(name="/맞춤법 `[내용]`", value="`[내용]`의 맞춤법을 검사합니다.", inline=False)
     .add_field(name="/주소단축 `[URL]`", value="`[URL]`을 짧은 주소로 단축해줍니다.", inline=False)
     .add_field(name="/코로나", value="코로나 관련 정보를 출력합니다.", inline=False)
-    .add_field(name="/환율 `[원화]` `[종류]`", value="`[원화]`원을 `[종류]`로 얼마인지 출력합니다.", inline=False)
+    .add_field(
+        name="/환율 `[원화]` `[종류]`", value="`[원화]`원을 `[종류]`로 얼마인지 출력합니다.", inline=False
+    )
 )
 
 playing_commands = (
@@ -121,7 +123,9 @@ class Help(commands.Cog):
     async def help(
         self,
         ctx: ApplicationContext,
-        sorts: Option(str, "도움말의 유형을 선택하세요", choices=["기본", "유틸리티", "놀이", "관리"]),
+        sorts: Option(
+            str, "도움말의 유형을 선택하세요", choices=["유틸리티", "놀이", "관리"], required=False
+        ),
     ):
         if sorts == "유틸리티":
             await ctx.respond(embed=utility_commands)
