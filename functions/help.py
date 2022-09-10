@@ -144,10 +144,7 @@ class Help(commands.Cog):
     @slash_command(name="도움말", description="봇의 도움말을 전송합니다.")
     async def help(
         self,
-        ctx: ApplicationContext,
-        sorts: Option(
-            str, "도움말의 유형을 선택하세요", choices=["유틸리티", "놀이", "관리"], required=False
-        ),
+        ctx: ApplicationContext
     ):
         help_embeds = [basic_commands, utility_commands_1, utility_commands_2, utility_commands_3, playing_commands, manage_commands]
         help_index = 0
