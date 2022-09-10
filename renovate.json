@@ -4,5 +4,8 @@
       "matchDepTypes": ["devDependencies"],
       "automerge": true
     }
+  ],
+  "baseBranches": [
+    "release"
   ]
 }

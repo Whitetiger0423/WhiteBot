@@ -18,12 +18,13 @@ from discord.ext import commands
 from utils.commands import slash_command
 from discord.commands import ApplicationContext, Option
 import asyncio
+from constants import Constants
 
 basic_commands = (
     discord.Embed(
-        title="<a:check:824251178493411368> WhiteBot 명령어 도움말",
+        title=f"{Constants.EMOJI['check']} WhiteBot 명령어 도움말",
         description="화살표 반응을 눌러 이동해보세요!",
-        color=0xFFFFFF,
+        color=Constants.EMBED_COLOR["default"],
     )
     .add_field(
         name="공식 홈페이지",
@@ -50,9 +51,9 @@ basic_commands = (
 
 utility_commands_1 = (
     discord.Embed(
-        title="<a:check:824251178493411368> 유틸리티 명령어 (1)",
+        title=f"{Constants.EMOJI['check']} 유틸리티 명령어 (1)",
         description="WhiteBot의 명령어에 대해서 소개합니다.",
-        color=0xFFFFFF,
+        color=Constants.EMBED_COLOR["default"],
     )
     .add_field(name="/검색 `[항목]`", value="여러 사이트에서 `[항목]`을 검색합니다.", inline=False)
     .add_field(name="/전송 `[항목]`", value="`[항목]`을 전송해요!", inline=False)
@@ -99,9 +100,9 @@ utility_commands_3 = (
 
 playing_commands = (
     discord.Embed(
-        title="<a:check:824251178493411368> 놀이 명령어",
+        title=f"{Constants.EMOJI['check']} 놀이 명령어",
         description="WhiteBot의 명령어에 대해서 소개합니다.",
-        color=0xFFFFFF,
+        color=Constants.EMBED_COLOR["default"],
     )
     .add_field(
         name="/가위바위보 `[가위, 바위, 보]`",
@@ -124,9 +125,9 @@ playing_commands = (
 
 manage_commands = (
     discord.Embed(
-        title="<a:check:824251178493411368> 관리 명령어",
+        title=f"{Constants.EMOJI['check']} 관리 명령어",
         description="WhiteBot의 명령어에 대해서 소개합니다.",
-        color=0xFFFFFF,
+        color=Constants.EMBED_COLOR["default"],
     )
     .add_field(name="/도움말", value="봇의 도움말을 전송합니다.", inline=False)
     .add_field(name="/봇", value="봇의 정보를 전송합니다. 봇의 버전, 업타임 등이 같이 표시됩니다.", inline=False)
