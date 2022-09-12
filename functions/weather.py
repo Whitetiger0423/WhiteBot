@@ -97,14 +97,16 @@ class Weather(commands.Cog):
 
             if weather_state is None:
                 weather_state = apply_if_not_none(data.get("SKY"), self.process_sky)
+            
+            weather_emoji = apply_if_not_none(weather_state, self.process_emoji)
 
             embed = (
                 discord.Embed(
                     title="현재 날씨 정보", description="현재 날씨 정보를 조회했습니다.", color=Constants.EMBED_COLOR["default"]
                 )
-                .add_field(name="기온", value=temperature or "데이터가 없습니다", inline=True)
-                .add_field(name="풍속", value=wind_speed or "데이터가 없습니다", inline=True)
-                .add_field(name="날씨", value=weather_state or "데이터가 없습니다", inline=False)
+                .add_field(name=":thermometer: 기온", value=temperature or "데이터가 없습니다", inline=True)
+                .add_field(name=":dash: 풍속", value=wind_speed or "데이터가 없습니다", inline=True)
+                .add_field(name=f"{weather_emoji} 날씨", value=weather_state or "데이터가 없습니다", inline=False)
             )
 
             await ctx.followup.send(embed=embed)
@@ -116,7 +118,7 @@ class Weather(commands.Cog):
             )
 
             await ctx.followup.send(embed=embed)
-
+    
     def process_pty(self, value) -> str:
         if value == "1":
             return "비 내림"
@@ -137,6 +139,20 @@ class Weather(commands.Cog):
             return "구름 많음"
         else:
             return "흐림"
+    
+    def process_emoji(self, value) -> str:
+        if value == "비 내림" or value == "진눈깨비 내림" or value == "소나기 내림":
+            return ":cloud_rain:"
+        elif value == "눈 내림":
+            return ":cloud_snow:"
+        elif value == "맑음":
+            return ":sunny:"
+        elif value == "구름 많음":
+            return ":white_sun_cloud:"
+        elif value == "흐림":
+            return ":cloud:"
+        else:
+            return None
 
 
 def setup(bot):
