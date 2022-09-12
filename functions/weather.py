@@ -91,7 +91,7 @@ class Weather(commands.Cog):
 
             data = to_dict(data, lambda k: k["category"], lambda v: v["fcstValue"])
 
-            temperature = apply_if_not_none(data.get("TMP"), lambda x: f"{x}℃")
+            temperature = apply_if_not_none(data.get("TMP"), lambda x: f"{x}")
             wind_speed = apply_if_not_none(data.get("WSD"), lambda x: f"{x}m/s")
             weather_state = apply_if_not_none(data.get("PTY"), self.process_pty)
 
@@ -99,12 +99,13 @@ class Weather(commands.Cog):
                 weather_state = apply_if_not_none(data.get("SKY"), self.process_sky)
             
             weather_emoji = apply_if_not_none(weather_state, self.process_emoji)
+            temp_emoji = apply_if_not_none(temperature, self.temp_emoji)
 
             embed = (
                 discord.Embed(
                     title="현재 날씨 정보", description="현재 날씨 정보를 조회했습니다.", color=Constants.EMBED_COLOR["default"]
                 )
-                .add_field(name=":thermometer: 기온", value=temperature or "데이터가 없습니다", inline=True)
+                .add_field(name=f"{temp_emoji} 기온", value=f"{temperature}℃" or "데이터가 없습니다", inline=True)
                 .add_field(name=":dash: 풍속", value=wind_speed or "데이터가 없습니다", inline=True)
                 .add_field(name=f"{weather_emoji} 날씨", value=weather_state or "데이터가 없습니다", inline=False)
             )
@@ -153,6 +154,14 @@ class Weather(commands.Cog):
             return ":cloud:"
         else:
             return None
+
+    def temp_emoji(self, value) -> str:
+        if int(value) >= 33:
+            return ":hot_face:"
+        elif int(value) > 5:
+            return ":grinning:"
+        else:
+            return ":cold_face:"
 
 
 def setup(bot):
