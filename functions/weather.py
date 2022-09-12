@@ -141,8 +141,12 @@ class Weather(commands.Cog):
             return "흐림"
     
     def process_emoji(self, value) -> str:
-        if value == "비 내림" or value == "진눈깨비 내림" or value == "소나기 내림":
+        if value == "비 내림":
             return ":cloud_rain:"
+        elif value == "진눈깨비 내림":
+            return "<:sleet:1018802491665678346>"
+        elif value == "소나기 내림":
+            return ":white_sun_rain_cloud:"
         elif value == "눈 내림":
             return ":cloud_snow:"
         elif value == "맑음":
