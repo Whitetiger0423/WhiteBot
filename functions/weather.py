@@ -9,6 +9,7 @@ import discord
 
 weather_selectors = Constants.WEATHER_SELECTORS
 
+
 class Weather(commands.Cog):
     @slash_command(name="날씨", description="특정 지역의 날씨를 출력합니다.")
     async def weather(self, ctx, place: Option(str, "검색할 지역을 입력하세요.")):
@@ -26,18 +27,18 @@ class Weather(commands.Cog):
             ultramicro_dust = self.select(soup, "ultramicro_dust")
             uv = self.select(soup, "uv")
             embed = (
-                    discord.Embed(
-                        title=f"{place} 날씨 정보", description="현재 날씨 정보를 조회했습니다.", color=Constants.EMBED_COLOR["default"]
-                    )
-                    .add_field(name=f"{self.temp_emoji(temp)} 기온", value=f"{temp}℃", inline=True)
-                    .add_field(name=f"{self.temp_emoji(sens_temp)} 체감온도", value=f"{sens_temp}℃", inline=True)
-                    .add_field(name=f"{self.weather_emoji(weather)} 날씨", value=weather, inline=True)
-                    .add_field(name="습도", value=humidity, inline=True)
-                    .add_field(name=wind_type, value=wind_speed, inline=True)
-                    .add_field(name="미세먼지", value=micro_dust, inline=True)
-                    .add_field(name="초미세먼지", value=ultramicro_dust, inline=True)
-                    .add_field(name="자외선", value=uv, inline=True)
+                discord.Embed(
+                    title=f"{place} 날씨 정보", description="현재 날씨 정보를 조회했습니다.", color=Constants.EMBED_COLOR["default"]
                 )
+                .add_field(name=f"{self.temp_emoji(temp)} 기온", value=f"{temp}℃", inline=True)
+                .add_field(name=f"{self.temp_emoji(sens_temp)} 체감온도", value=f"{sens_temp}℃", inline=True)
+                .add_field(name=f"{self.weather_emoji(weather)} 날씨", value=weather, inline=True)
+                .add_field(name="습도", value=humidity, inline=True)
+                .add_field(name=wind_type, value=wind_speed, inline=True)
+                .add_field(name="미세먼지", value=micro_dust, inline=True)
+                .add_field(name="초미세먼지", value=ultramicro_dust, inline=True)
+                .add_field(name="자외선", value=uv, inline=True)
+            )
             await ctx.respond(embed=embed)
         except AttributeError:
             embed = discord.Embed(
@@ -49,7 +50,7 @@ class Weather(commands.Cog):
 
     def select(self, soup, value: str) -> str:
         return soup.select_one(weather_selectors[value]).get_text()
-    
+
     def weather_emoji(self, value) -> str:
         if value == "비":
             return ":cloud_rain:"
@@ -75,6 +76,7 @@ class Weather(commands.Cog):
             return ":grinning:"
         else:
             return ":cold_face:"
-        
+
+
 def setup(bot):
     bot.add_cog(Weather())

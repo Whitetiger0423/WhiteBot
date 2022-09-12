@@ -24,6 +24,7 @@ from constants import Constants
 
 covid_selectors = Constants.COVID_SELECTORS
 
+
 class Covid(commands.Cog):
     @slash_command(name="코로나", description="코로나 관련 정보를 출력합니다.")
     async def get_covid(self, ctx: ApplicationContext):
