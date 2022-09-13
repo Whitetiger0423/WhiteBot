@@ -126,6 +126,7 @@ class Currency(commands.Cog):
                     color=Constants.EMBED_COLOR["default"],
                 )
                 .add_field(name="입력한 값", value=f"`{start:,}`원", inline=False)
+                .add_field(name=f"1 `{unit}` 당 원 ", value=f"`{end:.2f}` 원", inline=True)
                 .add_field(name="변환된 값", value=f"`{result:.2f}` `{unit}`", inline=False)
             )
             return await ctx.followup.send(embed=embed)
