@@ -19,7 +19,6 @@ from discord.commands import ApplicationContext, Option
 import requests
 from utils.commands import slash_command
 import os
-from utils.database import CurrencyDatabase
 import utils.logging
 import logging
 from utils.utils import to_querystring
@@ -89,7 +88,7 @@ class Currency(commands.Cog):
             logger.warning("API Key가 없습니다")
 
     @slash_command(
-        name="환율",
+        name="테스트_환율",
         description="현재 시간 기준 환율로 환전합니다.",
     )
     async def currency(
@@ -106,32 +105,11 @@ class Currency(commands.Cog):
                 color=Constants.EMBED_COLOR["default"],
             )
             return await ctx.respond(embed=err)
-
+        
         await ctx.defer()
         unit = units[to[4:]]
-        db_unit = units.get(to[4:])
-        await self.db_update(unit)
-
-        if await CurrencyDatabase.currency_find(db_unit):
-            found = await CurrencyDatabase.currency_find(db_unit)
-
-            end = int(found[f"country_{db_unit}"])
-            result = start / end
-            if unit == "IDR(100)" or unit == "JPY(100)":
-                unit = unit[:3]
-            embed = (
-                discord.Embed(
-                    title=f"{Constants.EMOJI['check']} 변환된 값 정보",
-                    description="변환된 값의 정보를 반환했어요",
-                    color=Constants.EMBED_COLOR["default"],
-                )
-                .add_field(name="입력한 값", value=f"`{start:,}`원", inline=False)
-                .add_field(name=f"1 `{unit}` 당 원 ", value=f"`{end:.2f}` 원", inline=True)
-                .add_field(name="변환된 값", value=f"`{result:.2f}` `{unit}`", inline=False)
-            )
-            return await ctx.followup.send(embed=embed)
-
-        else:
+        found = await self.find(unit)
+        if found == False:
             err = discord.Embed(
                 title="주말/ 공휴일, 또는 밤 11시 이후에는 환율 조회가 불가능해요",
                 description="나중에 다시 시도해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
@@ -139,21 +117,40 @@ class Currency(commands.Cog):
             )
 
             return await ctx.followup.send(embed=err)
+            
+        found = int(found) # 환율 불러오는 함수 리턴값
+        result = start / found # 환율로 입력한값 나눠서 환전
 
-    async def db_update(self, unit):
+
+        embed = (
+                discord.Embed(
+                title=f"{Constants.EMOJI['check']} 변환된 값 정보",
+                description="변환된 값의 정보를 반환했어요",
+                color=Constants.EMBED_COLOR["default"],
+            )
+            .add_field(name=f"1 `{unit}` 당 원 ", value=f"`{found:.2f}` 원", inline=False)
+            .add_field(name="입력한 값", value=f"`{start:,}`원", inline=False)
+            .add_field(name="변환된 값", value=f"`{result:.2f}` `{unit}`", inline=False)
+        )
+
+        await ctx.followup.send(embed=embed)
+
+    async def find(self, unit):
         base_url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
 
         headers = {"authkey": os.getenv("CURRENCY"), "data": "AP01", "cur_unit": unit}
 
         req = requests.get(base_url + to_querystring(headers))
-        data = req.json()
+        res = req.json()
 
-        await CurrencyDatabase.currency_reset()
-        for i in data:
-            dol = i["bkpr"]
-            re = dol.replace(",", "")
-            name = i["cur_unit"]
-            await CurrencyDatabase.currency_add(name, re)
+        status = res[0]["result"]
+
+        if status != "1":
+            return False
+
+        value = res[0]["bkpr"].replace(",", "") # json에서 환율 값 추출
+
+        return value
 
 
 def setup(bot):
