@@ -105,11 +105,11 @@ class Currency(commands.Cog):
                 color=Constants.EMBED_COLOR["default"],
             )
             return await ctx.respond(embed=err)
-        
+
         await ctx.defer()
         unit = units[to[4:]]
         found = await self.find(unit)
-        if found == False:
+        if found is False:
             err = discord.Embed(
                 title="주말/ 공휴일, 또는 밤 11시 이후에는 환율 조회가 불가능해요",
                 description="나중에 다시 시도해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
@@ -117,13 +117,12 @@ class Currency(commands.Cog):
             )
 
             return await ctx.followup.send(embed=err)
-            
-        found = int(found) # 환율 불러오는 함수 리턴값
-        result = start / found # 환율로 입력한값 나눠서 환전
 
+        found = int(found)  # 환율 불러오는 함수 리턴값
+        result = start / found  # 환율로 입력한값 나눠서 환전
 
         embed = (
-                discord.Embed(
+            discord.Embed(
                 title=f"{Constants.EMOJI['check']} 변환된 값 정보",
                 description="변환된 값의 정보를 반환했어요",
                 color=Constants.EMBED_COLOR["default"],
@@ -148,7 +147,7 @@ class Currency(commands.Cog):
         if status != "1":
             return False
 
-        value = res[0]["bkpr"].replace(",", "") # json에서 환율 값 추출
+        value = res[0]["bkpr"].replace(",", "")  # json에서 환율 값 추출
 
         return value
 
