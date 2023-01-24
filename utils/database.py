@@ -39,6 +39,7 @@ async def currency_add(country_name: str, currency: int):
         currency (str): 환율 값 ex) 1,390
 
     새로운 환율 값을 DB에 저장합니다.
+    :param currency:
     :param country_name:
     """
     return await client.currency.insert_one({f"country_{country_name}": currency})
