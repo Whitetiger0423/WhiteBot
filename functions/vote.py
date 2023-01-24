@@ -88,8 +88,8 @@ class Vote(commands.Cog):
 
             bot.add_view(view)
 
-    @slash_command(description="투표를 시작합니다.")
-    async def 투표(
+    @slash_command(name="투표", description="투표를 시작합니다.")
+    async def vote(
             self,
             ctx: ApplicationContext,
             name: Option(str, description="새로 만들 투표의 이름입니다."),
@@ -268,8 +268,8 @@ class Vote(commands.Cog):
 
         return result
 
-    @slash_command(description="투표를 종료하고, 결과를 확인합니다.")
-    async def 개표(
+    @slash_command(name="개표", description="투표를 종료하고, 결과를 확인합니다.")
+    async def result(
             self,
             ctx: ApplicationContext,
             vote: Option(
