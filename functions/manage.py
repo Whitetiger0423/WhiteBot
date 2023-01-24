@@ -99,7 +99,7 @@ class Manage(commands.Cog):
         )
         embed.add_field(
             name="서포팅 서버: ",
-            value="[초대 링크](<http://server.whitebot.kro.kr/>)",
+            value="[초대 링크](<https://server.whitebot.kro.kr/>)",
             inline=True,
         )
         await ctx.respond(embed=embed)

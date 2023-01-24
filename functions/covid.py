@@ -28,7 +28,7 @@ covid_selectors = Constants.COVID_SELECTORS
 class Covid(commands.Cog):
     @slash_command(name="코로나", description="코로나 관련 정보를 출력합니다.")
     async def get_covid(self, ctx: ApplicationContext):
-        response = requests.get("http://ncov.mohw.go.kr/")
+        response = requests.get("https://ncov.mohw.go.kr/")
         html = response.text
         soup = BeautifulSoup(html, 'html.parser')
         death = soup.select_one(covid_selectors["death"]).get_text()
