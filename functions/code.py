@@ -43,7 +43,7 @@ class Code(commands.Cog):
             data = base64_encrypt(text)
         elif type == "base85":
             data = base85_encrypt(text)
-        elif type == "아스키 코드":
+        else:  # type == "아스키 코드":
             data = ascii_encrypt(text)
 
         embed = discord.Embed(
@@ -74,7 +74,7 @@ class Code(commands.Cog):
                 data = base64_decrypt(text)
             elif type == "base85":
                 data = base85_decrypt(text)
-            elif type == "아스키 코드":
+            else:  # type == "아스키 코드":
                 data = ascii_decrypt(text)
 
             embed = discord.Embed(
