@@ -36,7 +36,7 @@ class HighlightingFormatter(logging.Formatter):
         record.levelname = levelname_color
 
         space = 15 - len(record.name)
-        if (space < 0):
+        if space < 0:
             space = 0
         record.name = CYAN + record.name + RESET + " " * space
 
