@@ -97,7 +97,6 @@ class Currency(commands.Cog):
             start: Option(int, "변환할 값(KRW)를 입력하세요. ex) 100000"),
             to: Option(str, "변환할 통화를 선택해주세요. ex)USD", choices=choice),
     ):
-
         if self.api_key is None:
             err = discord.Embed(
                 title="환율 조회 기능이 비활성화 되어있어요",

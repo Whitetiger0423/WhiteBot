@@ -113,7 +113,6 @@ class Playing(commands.Cog):
         await msg.add_reaction("🔴")
         await msg.add_reaction("🔵")
         try:
-
             def check(reaction, user):
                 return (
                         str(reaction) in ["🔴", "🔵"]

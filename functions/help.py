@@ -163,6 +163,7 @@ class Help(commands.Cog):
                     and user == ctx.author
                     and reaction.message.id == msg.id
             )
+
         while True:
             try:
                 reaction, user = await ctx.bot.wait_for("reaction_add", timeout=60, check=check)
