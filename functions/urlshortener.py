@@ -14,8 +14,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import discord
-import requests
-from bs4 import BeautifulSoup
 from discord import ApplicationContext, Option
 from discord.ext import commands
 
@@ -28,6 +26,7 @@ class UrlShorten(commands.Cog):
     def __init__(self, bot: WhiteBot):
         self.bot = bot
         self.session = self.bot.aiohttp_session
+
     @slash_command(name="주소단축", description="URL을 단축합니다.")
     async def url_shorten(
             self,
@@ -58,7 +57,8 @@ class UrlShorten(commands.Cog):
                     title="단축 실패",
                     description="서버 측 오류로 URL 단축에 실패하였습니다.",
                     color=Constants.EMBED_COLOR["error"],
-                ).add_field(name="아래 정보를 포함하여 개발자에게 문의하십시오:", value=f"```Status: {response.status_code}```", inline=False)
+                ).add_field(name="아래 정보를 포함하여 개발자에게 문의하십시오:", value=f"```Status: {response.status_code}```",
+                            inline=False)
                 embed.set_footer(text="Provided by is.gd")
         await message.edit_original_message(embed=embed)
 
