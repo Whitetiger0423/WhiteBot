@@ -23,7 +23,7 @@ client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI).WhiteBot
 
 
 class CurrencyDatabase:
-    async def currency_find(country_name: str):
+    async def currency_find(self, country_name: str):
         """
 
         Args:
@@ -33,7 +33,7 @@ class CurrencyDatabase:
         """
         return await client.currency.find_one()
 
-    async def currency_add(country_name: str, currency: int):
+    async def currency_add(self, country_name: str, currency: int):
         """
 
         Args:
@@ -41,10 +41,11 @@ class CurrencyDatabase:
             currency (str): 환율 값 ex) 1,390
 
         새로운 환율 값을 DB에 저장합니다.
+        :param country_name:
         """
         return await client.currency.insert_one({f"country_{country_name}": currency})
 
-    async def currency_reset():
+    async def currency_reset(self):
         """
 
         새로운 환율 값 저장을 위해 DB 안의 값을 모두 삭제합니다.
