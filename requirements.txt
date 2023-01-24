@@ -1,5 +1,5 @@
 py-cord==2.2.2
-flake8~=5.0
+flake8~=6.0
 python-dotenv~=0.19
 requests~=2.27
 motor~=3.1.1
