@@ -13,16 +13,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-from discord.ext import commands, tasks
-import discord
-from utils.logger import setup_logging
+import os
+import sys
 from logging import getLogger
 from time import time
-import os
-from utils.koreanbots import update_guild_count
 from traceback import format_exception
-import sys
+
+import discord
+from discord.ext import commands, tasks
+
 from constants import Constants
+from utils.koreanbots import update_guild_count
+from utils.logger import setup_logging
 
 
 class WhiteBot(commands.Bot):

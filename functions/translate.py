@@ -14,17 +14,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import asyncio
-import discord
 import logging
-import requests
 import os
 import re
-from urllib.parse import quote
 from datetime import datetime, timedelta
-from discord.ext import commands
-from utils.commands import slash_command
+from urllib.parse import quote
+
+import discord
+import requests
 from discord.commands import ApplicationContext, Option, OptionChoice
+from discord.ext import commands
+
 from constants import Constants
+from utils.commands import slash_command
 
 PAPAGO_URL = "https://openapi.naver.com/v1/papago/n2mt"
 PAPAGO_DETECT_LANG_URL = "https://openapi.naver.com/v1/papago/detectLangs"

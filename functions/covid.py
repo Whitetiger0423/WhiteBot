@@ -13,14 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-from discord.ext import commands
-from discord import ApplicationContext
-from utils.commands import slash_command
+import discord
 import requests
 from bs4 import BeautifulSoup
-import discord
-from constants import Constants
+from discord import ApplicationContext
+from discord.ext import commands
 
+from constants import Constants
+from utils.commands import slash_command
 
 covid_selectors = Constants.COVID_SELECTORS
 

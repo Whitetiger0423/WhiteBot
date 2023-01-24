@@ -13,17 +13,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-import discord
-from discord.ext import commands
-from discord.commands import ApplicationContext, Option
-import requests
-from utils.commands import slash_command
-import os
-from utils.database import CurrencyDatabase
 import logging
-from utils.utils import to_querystring
-from constants import Constants
+import os
 
+import discord
+import requests
+from discord.commands import ApplicationContext, Option
+from discord.ext import commands
+
+from constants import Constants
+from utils.commands import slash_command
+from utils.database import CurrencyDatabase
+from utils.utils import to_querystring
 
 logger = logging.getLogger(__name__)
 

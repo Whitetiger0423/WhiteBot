@@ -13,15 +13,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-from discord.ext import commands
-from utils.commands import slash_command
-from discord.commands import ApplicationContext
+from datetime import datetime, timedelta
+from json import loads
+
+import discord
 import requests
 from bs4 import BeautifulSoup
-from json import loads
-import discord
-from datetime import datetime, timedelta
+from discord.commands import ApplicationContext
+from discord.ext import commands
+
 from constants import Constants
+from utils.commands import slash_command
 
 
 class Contests(commands.Cog):

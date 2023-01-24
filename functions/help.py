@@ -13,12 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-import discord
-from discord.ext import commands
-from utils.commands import slash_command
-from discord.commands import ApplicationContext
 import asyncio
+
+import discord
+from discord.commands import ApplicationContext
+from discord.ext import commands
+
 from constants import Constants
+from utils.commands import slash_command
 
 basic_commands = (
     discord.Embed(

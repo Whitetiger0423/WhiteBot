@@ -15,12 +15,14 @@
 
 from json import loads
 from os import getenv
-from discord import Embed
+
 import requests
+from discord import Embed
 from discord.commands import Option
 from discord.ext import commands
-from utils.commands import slash_command
+
 from constants import Constants
+from utils.commands import slash_command
 
 
 class Weather(commands.Cog):

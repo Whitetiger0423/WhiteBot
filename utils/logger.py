@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-import logger
+import logging
 
 RESET = "\033[0m"
 CYAN = "\033[1;36m"

@@ -14,20 +14,21 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import discord
-from discord import ApplicationContext, Option
-from discord.ext import commands
-from utils.commands import slash_command
 import requests
 from bs4 import BeautifulSoup
+from discord import ApplicationContext, Option
+from discord.ext import commands
+
 from constants import Constants
+from utils.commands import slash_command
 
 
 class UrlShorten(commands.Cog):
     @slash_command(name="주소단축", description="URL을 단축합니다.")
     async def url_shorten(
-        self,
-        ctx: ApplicationContext,
-        url: Option(str, "단축할 URL을 입력하세요.")
+            self,
+            ctx: ApplicationContext,
+            url: Option(str, "단축할 URL을 입력하세요.")
     ):
         request_url = f"https://is.gd/create.php?format=simple&url={url}"
         # Url shorting service is provided by is.gd - not responsible for the use of the service

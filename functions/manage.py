@@ -14,12 +14,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import asyncio
-import discord
-from discord.ext import commands
-from utils.commands import slash_command
-from discord.commands import ApplicationContext, Option
 import time
+
+import discord
+from discord.commands import ApplicationContext, Option
+from discord.ext import commands
+
 from constants import Constants
+from utils.commands import slash_command
 
 
 class Manage(commands.Cog):

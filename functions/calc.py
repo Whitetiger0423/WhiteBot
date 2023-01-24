@@ -16,6 +16,8 @@
 import discord
 from discord import ApplicationContext, Option, ApplicationCommandInvokeError
 from discord.ext import commands
+
+from constants import Constants
 from utils.commands import slash_command
 from constants import Constants
 
