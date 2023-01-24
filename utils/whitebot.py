@@ -41,7 +41,6 @@ class WhiteBot(commands.Bot):
         guild_count = len(self.guilds)
         self.logger.info(f"Logged in as {self.user.name}")
         self.logger.info(f"Be used in {guild_count} guilds.")
-
         dbkr_token = os.getenv("DBKR_TOKEN")
         await update_guild_count(dbkr_token, self.user.id, guild_count)
 
