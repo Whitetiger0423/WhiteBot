@@ -60,7 +60,7 @@ class Etc(commands.Cog):
         )
         embed.add_field(
             name="위키 사이트 검색 결과",
-            value=(f"[**위키백과**]({wikipedia})\n[**나무위키**]({namu})"),
+            value=f"[**위키백과**]({wikipedia})\n[**나무위키**]({namu})",
             inline=False,
         )
         await ctx.respond(embed=embed)
