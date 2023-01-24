@@ -146,10 +146,11 @@ manage_commands = (
 class Help(commands.Cog):
     @slash_command(name="도움말", description="봇의 도움말을 전송합니다.")
     async def help(
-        self,
-        ctx: ApplicationContext
+            self,
+            ctx: ApplicationContext
     ):
-        help_embeds = [basic_commands, utility_commands_1, utility_commands_2, utility_commands_3, playing_commands, manage_commands]
+        help_embeds = [basic_commands, utility_commands_1, utility_commands_2, utility_commands_3, playing_commands,
+                       manage_commands]
         help_index = 0
         interaction = await ctx.interaction.response.send_message(embed=basic_commands)
         msg = await interaction.original_message()
@@ -158,9 +159,9 @@ class Help(commands.Cog):
 
         def check(reaction, user):
             return (
-                str(reaction) in ["◀️", "▶️"]
-                and user == ctx.author
-                and reaction.message.id == msg.id
+                    str(reaction) in ["◀️", "▶️"]
+                    and user == ctx.author
+                    and reaction.message.id == msg.id
             )
         while True:
             try:

@@ -39,10 +39,13 @@ class Contests(commands.Cog):
         active_contests = list(reversed(contests[:i]))
         embed = discord.Embed(title="Codeforces 콘테스트", color=Constants.EMBED_COLOR["default"])
         for contest in active_contests:
-            startTime = (datetime.fromtimestamp(contest["startTimeSeconds"])).strftime('%Y/%m/%d %H:%M')
-            td = str(timedelta(seconds=int(contest["relativeTimeSeconds"] * -1))).replace(" days", "일").replace(" day", "일").split(":")
-            beforeStart = f"{td[0]}시간 {td[1]}분 {td[2]}초"
-            embed.add_field(name=contest["name"], value=f"[**{beforeStart} 후**](https://codeforces.com/contests/{contest['id']}) ({startTime})", inline=False)
+            start_time = (datetime.fromtimestamp(contest["startTimeSeconds"])).strftime('%Y/%m/%d %H:%M')
+            td = str(timedelta(seconds=int(contest["relativeTimeSeconds"] * -1))
+                     ).replace(" days", "일").replace(" day", "일").split(":")
+            before_start = f"{td[0]}시간 {td[1]}분 {td[2]}초"
+            embed.add_field(name=contest["name"],
+                            value=f"[**{before_start} 후**](https://codeforces.com/contests/{contest['id']}) ({start_time})",
+                            inline=False)
         await ctx.respond(embed=embed)
 
 

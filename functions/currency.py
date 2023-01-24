@@ -92,10 +92,10 @@ class Currency(commands.Cog):
         description="현재 시간 기준 환율로 환전합니다.",
     )
     async def currency(
-        self,
-        ctx: ApplicationContext,
-        start: Option(int, "변환할 값(KRW)를 입력하세요. ex) 100000"),
-        to: Option(str, "변환할 통화를 선택해주세요. ex)USD", choices=choice),
+            self,
+            ctx: ApplicationContext,
+            start: Option(int, "변환할 값(KRW)를 입력하세요. ex) 100000"),
+            to: Option(str, "변환할 통화를 선택해주세요. ex)USD", choices=choice),
     ):
 
         if self.api_key is None:

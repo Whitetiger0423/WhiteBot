@@ -26,14 +26,14 @@ from utils.commands import slash_command
 class Code(commands.Cog):
     @slash_command(name="암호", description="수신문을 암호화합니다.")
     async def encrypt(
-        self,
-        ctx: ApplicationContext,
-        type: Option(
-            str,
-            "암호화 시킬 방식을 선택하세요",
-            choices=["base16", "base32", "base64", "base85", "아스키 코드"],
-        ),
-        text: Option(str, "암호화 시킬 문장을 입력하세요."),
+            self,
+            ctx: ApplicationContext,
+            type: Option(
+                str,
+                "암호화 시킬 방식을 선택하세요",
+                choices=["base16", "base32", "base64", "base85", "아스키 코드"],
+            ),
+            text: Option(str, "암호화 시킬 문장을 입력하세요."),
     ):
         if type == "base16":
             data = base16_encrypt(text)
@@ -56,14 +56,14 @@ class Code(commands.Cog):
 
     @slash_command(name="해독", description="수신문을 해독합니다.")
     async def decrypt(
-        self,
-        ctx: ApplicationContext,
-        type: Option(
-            str,
-            "해독할 암호문의 암호화 방식을 선택하세요",
-            choices=["base16", "base32", "base64", "base85", "아스키 코드"],
-        ),
-        text: Option(str, "해독할 암호문을 입력하세요."),
+            self,
+            ctx: ApplicationContext,
+            type: Option(
+                str,
+                "해독할 암호문의 암호화 방식을 선택하세요",
+                choices=["base16", "base32", "base64", "base85", "아스키 코드"],
+            ),
+            text: Option(str, "해독할 암호문을 입력하세요."),
     ):
         try:
             if type == "base16":
@@ -80,8 +80,8 @@ class Code(commands.Cog):
             embed = discord.Embed(
                 title="<a:check:824251178493411368> 해독 완료!",
                 description=(
-                    f"**{type}**를 기반으로 한 암호문을 해독하였습니다.\n"
-                    + "해독이 잘못되었다면 [서포팅 서버](<https://discord.gg/aebSVBgzuG>)에서 제보해주세요!"
+                        f"**{type}**를 기반으로 한 암호문을 해독하였습니다.\n"
+                        + "해독이 잘못되었다면 [서포팅 서버](<https://discord.gg/aebSVBgzuG>)에서 제보해주세요!"
                 ),
                 color=Constants.EMBED_COLOR["default"]
             ).add_field(name="**해독 결과:**", value=f"```{data}```", inline=False)

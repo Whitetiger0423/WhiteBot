@@ -64,24 +64,24 @@ class Translate(commands.Cog):
 
     @slash_command(name="번역", description="입력한 내용을 번역합니다.")
     async def translate(
-        self,
-        ctx: ApplicationContext,
-        lang: Option(
-            str,
-            "어느 언어로 변역할지 결정합니다",
-            choices=[
-                OptionChoice("영어", "en"),
-                OptionChoice("일본어", "ja"),
-                OptionChoice("중국어", "zh-CN"),
-                OptionChoice("프랑스어", "fr"),
-                OptionChoice("독일어", "de"),
-                OptionChoice("이탈리아어", "it"),
-                OptionChoice("러시아어", "ru"),
-                OptionChoice("스페인어", "es"),
-                OptionChoice("한국어", "ko")
-            ],
-        ),
-        text: str,
+            self,
+            ctx: ApplicationContext,
+            lang: Option(
+                str,
+                "어느 언어로 변역할지 결정합니다",
+                choices=[
+                    OptionChoice("영어", "en"),
+                    OptionChoice("일본어", "ja"),
+                    OptionChoice("중국어", "zh-CN"),
+                    OptionChoice("프랑스어", "fr"),
+                    OptionChoice("독일어", "de"),
+                    OptionChoice("이탈리아어", "it"),
+                    OptionChoice("러시아어", "ru"),
+                    OptionChoice("스페인어", "es"),
+                    OptionChoice("한국어", "ko")
+                ],
+            ),
+            text: str,
     ):
         if not self.enabled:
             embed = discord.Embed(
@@ -113,7 +113,7 @@ class Translate(commands.Cog):
         await ctx.respond(embed=embed)
 
     def papago_translate(
-        self, src_lang: str, tar_lang: str, text: str
+            self, src_lang: str, tar_lang: str, text: str
     ) -> discord.Embed:
         data = f"source={src_lang}&target={tar_lang}&text={quote(text)}"
         header = {
@@ -127,7 +127,8 @@ class Translate(commands.Cog):
         if res.status_code == 200:
             result = body["message"]["result"]
             return discord.Embed(
-                title=f"{Constants.EMOJI['check']} 번역 완료", description=result["translatedText"], color=Constants.EMBED_COLOR["success"]
+                title=f"{Constants.EMOJI['check']} 번역 완료", description=result["translatedText"],
+                color=Constants.EMBED_COLOR["success"]
             ).set_footer(
                 text=f"Papago API: {result['srcLangType']} -> {result['tarLangType']}"
             )

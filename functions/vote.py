@@ -90,11 +90,11 @@ class Vote(commands.Cog):
 
     @slash_command(description="투표를 시작합니다.")
     async def 투표(
-        self,
-        ctx: ApplicationContext,
-        name: Option(str, description="새로 만들 투표의 이름입니다."),
-        choices: Option(str, description="투표의 선택지입니다(쉼표로 구분, 최대 20개)."),
-        mv: Option(str, description="중복 투표 가능 여부입니다.", choices=["허용"], required=False),
+            self,
+            ctx: ApplicationContext,
+            name: Option(str, description="새로 만들 투표의 이름입니다."),
+            choices: Option(str, description="투표의 선택지입니다(쉼표로 구분, 최대 20개)."),
+            mv: Option(str, description="중복 투표 가능 여부입니다.", choices=["허용"], required=False),
     ):
         await ctx.defer()
 
@@ -270,11 +270,11 @@ class Vote(commands.Cog):
 
     @slash_command(description="투표를 종료하고, 결과를 확인합니다.")
     async def 개표(
-        self,
-        ctx: ApplicationContext,
-        vote: Option(
-            int, description="종료할 투표를 선택해주세요.", autocomplete=vote_autocomplete
-        ),
+            self,
+            ctx: ApplicationContext,
+            vote: Option(
+                int, description="종료할 투표를 선택해주세요.", autocomplete=vote_autocomplete
+            ),
     ):
         cursor = self.conn.cursor()
 

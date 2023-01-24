@@ -24,15 +24,15 @@ from utils.commands import slash_command
 class Calc(commands.Cog):
     @slash_command(name="연산", description="간단한 연산을 수행합니다.")
     async def calc(
-        self,
-        ctx: ApplicationContext,
-        type: Option(
-            str,
-            "수행할 연산을 선택하세요.",
-            choices=["더하기", "빼기", "곱하기", "나누기"],
-        ),
-        first: Option(float, "연산할 첫 번째 수를 입력하세요"),
-        second: Option(float, "연산할 두 번째 수를 입력하세요"),
+            self,
+            ctx: ApplicationContext,
+            type: Option(
+                str,
+                "수행할 연산을 선택하세요.",
+                choices=["더하기", "빼기", "곱하기", "나누기"],
+            ),
+            first: Option(float, "연산할 첫 번째 수를 입력하세요"),
+            second: Option(float, "연산할 두 번째 수를 입력하세요"),
     ):
         if type == "더하기":
             equal = first + second
@@ -56,7 +56,7 @@ class Calc(commands.Cog):
 
     @calc.error
     async def calc_error(
-        self, ctx: ApplicationContext, error: ApplicationCommandInvokeError
+            self, ctx: ApplicationContext, error: ApplicationCommandInvokeError
     ):
         if isinstance(error.original, ZeroDivisionError):
             embed = discord.Embed(

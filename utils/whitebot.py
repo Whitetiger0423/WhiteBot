@@ -58,7 +58,7 @@ class WhiteBot(commands.Bot):
         super().run(os.getenv("BOT_TOKEN"))
 
     async def on_command_error(
-        self, ctx: commands.Context, error: commands.CommandError
+            self, ctx: commands.Context, error: commands.CommandError
     ):
         text = "".join(format_exception(type(error), error, error.__traceback__))
         self.logger.error(text)

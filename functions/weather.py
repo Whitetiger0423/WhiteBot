@@ -38,7 +38,8 @@ class Weather(commands.Cog):
             response = requests.get(url)
             json = loads(response.text)
             weather = json["weather"][0]
-            embed = Embed(title=f"{name} 날씨 ({json['coord']['lon']}° {json['coord']['lat']}°)", color=Constants.EMBED_COLOR["default"], description="일출/일몰은 사용자의 타임존으로 출력됩니다.")
+            embed = Embed(title=f"{name} 날씨 ({json['coord']['lon']}° {json['coord']['lat']}°)",
+                          color=Constants.EMBED_COLOR["default"], description="일출/일몰은 사용자의 타임존으로 출력됩니다.")
             embed.set_thumbnail(url=f"https://openweathermap.org/img/wn/{weather['icon']}@2x.png")
             embed.add_field(name="날씨", value=weather["description"])
             embed.add_field(name="온도 실제/체감", value=f"{json['main']['temp']}°C / {json['main']['feels_like']}°C")
