@@ -16,15 +16,16 @@
 import discord
 from discord.ext import commands
 from utils.commands import slash_command
-from discord.commands import ApplicationContext, Option
+from discord.commands import ApplicationContext
+import asyncio
+from constants import Constants
 
 basic_commands = (
     discord.Embed(
-        title="<a:check:824251178493411368> WhiteBot 명령어 도움말",
-        description="WhiteBot의 명령어에 대해서 소개합니다.",
-        color=0xFFFFFF,
+        title=f"{Constants.EMOJI['check']} WhiteBot 명령어 도움말",
+        description="화살표 반응을 눌러 이동해보세요!",
+        color=Constants.EMBED_COLOR["default"],
     )
-    .add_field(name="도움말 명령어 사용법", value="sorts 변수를 선택하세요.", inline=False)
     .add_field(
         name="공식 홈페이지",
         value=":link: [공식 홈페이지](<https://team-white.kro.kr/>)",
@@ -45,19 +46,29 @@ basic_commands = (
         value=":link: [봇 초대하기](<https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot>)",
         inline=False,
     )
+    .set_footer(text="1/6")
 )
 
-utility_commands = (
+utility_commands_1 = (
     discord.Embed(
-        title="<a:check:824251178493411368> WhiteBot 유틸리티 명령어 도움말",
+        title=f"{Constants.EMOJI['check']} 유틸리티 명령어 (1)",
         description="WhiteBot의 명령어에 대해서 소개합니다.",
-        color=0xFFFFFF,
+        color=Constants.EMBED_COLOR["default"],
     )
     .add_field(name="/검색 `[항목]`", value="여러 사이트에서 `[항목]`을 검색합니다.", inline=False)
     .add_field(name="/전송 `[항목]`", value="`[항목]`을 전송해요!", inline=False)
     .add_field(name="/암호 `[수신문]`", value="`[수신문]`을 암호화합니다.", inline=False)
     .add_field(name="/해독 `[암호문]`", value="`[암호문]`을 해독합니다.", inline=False)
-    .add_field(name="/날씨 `[지역]`", value="`[지역]`의 현재 날씨를 조회합니다.")
+    .add_field(name="/날씨 `[장소]`", value="`[장소]`의 현재 날씨를 조회합니다.")
+    .set_footer(text="2/6")
+)
+
+utility_commands_2 = (
+    discord.Embed(
+        title="<a:check:824251178493411368> 유틸리티 명령어 (2)",
+        description="WhiteBot의 명령어에 대해서 소개합니다.",
+        color=0xFFFFFF,
+    )
     .add_field(name="/번역 `[언어]` `[텍스트]`", value="`[텍스트]`를 번역합니다.", inline=False)
     .add_field(
         name="/투표 `[제목]` `[선택지]`", value="`[선택지]`를 대상으로 한 투표를 진행합니다.", inline=False
@@ -69,17 +80,29 @@ utility_commands = (
         inline=False,
     )
     .add_field(name="/공학계산 `[종류]` `[값]`", value="`[값]`을 `[종류]`로 계산합니다.", inline=False)
+    .set_footer(text="3/6")
+)
+
+utility_commands_3 = (
+    discord.Embed(
+        title="<a:check:824251178493411368> 유틸리티 명령어 (3)",
+        description="WhiteBot의 명령어에 대해서 소개합니다.",
+        color=0xFFFFFF,
+    )
     .add_field(name="/맞춤법 `[내용]`", value="`[내용]`의 맞춤법을 검사합니다.", inline=False)
     .add_field(name="/주소단축 `[URL]`", value="`[URL]`을 짧은 주소로 단축해줍니다.", inline=False)
     .add_field(name="/코로나", value="코로나 관련 정보를 출력합니다.", inline=False)
-    .add_field(name="/환율 `[원화]` `[종류]`", value="`[원화]`원을 `[종류]`로 얼마인지 출력합니다.", inline=False)
+    .add_field(
+        name="/환율 `[원화]` `[종류]`", value="`[원화]`원을 `[종류]`로 얼마인지 출력합니다.", inline=False
+    )
+    .set_footer(text="4/6")
 )
 
 playing_commands = (
     discord.Embed(
-        title="<a:check:824251178493411368> WhiteBot 놀이 명령어 도움말",
+        title=f"{Constants.EMOJI['check']} 놀이 명령어",
         description="WhiteBot의 명령어에 대해서 소개합니다.",
-        color=0xFFFFFF,
+        color=Constants.EMBED_COLOR["default"],
     )
     .add_field(
         name="/가위바위보 `[가위, 바위, 보]`",
@@ -97,13 +120,14 @@ playing_commands = (
         inline=False,
     )
     .add_field(name="/홀짝", value="홀짝 게임을 시작합니다. 직접 반응을 눌러서 홀짝을 맞춰보세요.", inline=False)
+    .set_footer(text="5/6")
 )
 
 manage_commands = (
     discord.Embed(
-        title="<a:check:824251178493411368> WhiteBot 관리 명령어 도움말",
+        title=f"{Constants.EMOJI['check']} 관리 명령어",
         description="WhiteBot의 명령어에 대해서 소개합니다.",
-        color=0xFFFFFF,
+        color=Constants.EMBED_COLOR["default"],
     )
     .add_field(name="/도움말", value="봇의 도움말을 전송합니다.", inline=False)
     .add_field(name="/봇", value="봇의 정보를 전송합니다. 봇의 버전, 업타임 등이 같이 표시됩니다.", inline=False)
@@ -113,6 +137,7 @@ manage_commands = (
         value="메시지를 `[n]`의 값 만큼 삭제합니다. 메시지 관리 권한이 필요합니다.",
         inline=False,
     )
+    .set_footer(text="6/6")
 )
 
 
@@ -120,17 +145,38 @@ class Help(commands.Cog):
     @slash_command(name="도움말", description="봇의 도움말을 전송합니다.")
     async def help(
         self,
-        ctx: ApplicationContext,
-        sorts: Option(str, "도움말의 유형을 선택하세요", choices=["기본", "유틸리티", "놀이", "관리"]),
+        ctx: ApplicationContext
     ):
-        if sorts == "유틸리티":
-            await ctx.respond(embed=utility_commands)
-        elif sorts == "놀이":
-            await ctx.respond(embed=playing_commands)
-        elif sorts == "관리":
-            await ctx.respond(embed=manage_commands)
-        else:  # sorts == "기본":
-            await ctx.respond(embed=basic_commands)
+        help_embeds = [basic_commands, utility_commands_1, utility_commands_2, utility_commands_3, playing_commands, manage_commands]
+        help_index = 0
+        interaction = await ctx.interaction.response.send_message(embed=basic_commands)
+        msg = await interaction.original_message()
+        await msg.add_reaction("◀️")
+        await msg.add_reaction("▶️")
+
+        def check(reaction, user):
+            return (
+                str(reaction) in ["◀️", "▶️"]
+                and user == ctx.author
+                and reaction.message.id == msg.id
+            )
+        while True:
+            try:
+                reaction, user = await ctx.bot.wait_for("reaction_add", timeout=60, check=check)
+                if str(reaction.emoji) == "▶️" and help_index + 1 != len(help_embeds):
+                    help_index += 1
+                    await msg.edit(embed=help_embeds[help_index])
+                    await msg.remove_reaction(reaction, user)
+
+                elif str(reaction.emoji) == "◀️" and help_index > 0:
+                    help_index -= 1
+                    await msg.edit(embed=help_embeds[help_index])
+                    await msg.remove_reaction(reaction, user)
+
+                else:
+                    await msg.remove_reaction(reaction, user)
+            except asyncio.TimeoutError:
+                break
 
 
 def setup(bot):

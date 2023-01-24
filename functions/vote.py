@@ -26,6 +26,7 @@ from discord.ui import View, Button
 import sqlite3
 import os
 import logging
+from constants import Constants
 
 logger = logging.getLogger(__name__)
 
@@ -153,7 +154,7 @@ class Vote(commands.Cog):
             embed=discord.Embed(
                 title=f"#{vote_id} {name}",
                 description="아래 버튼을 눌러 투표에 참여해주세요.",
-                color=0xFFFFFF,
+                color=Constants.EMBED_COLOR["default"],
             ).set_footer(
                 text=f"Started by {ctx.author.display_name}",
                 icon_url=ctx.author.display_avatar,
@@ -304,7 +305,7 @@ class Vote(commands.Cog):
                 break
 
         embed = discord.Embed(
-            title=f"#{vote} {vote_name}", description="투표가 종료되었습니다.", color=0xFFFFFF
+            title=f"#{vote} {vote_name}", description="투표가 종료되었습니다.", color=Constants.EMBED_COLOR["default"]
         )
 
         await ctx.channel.get_partial_message(message_id).edit(

@@ -18,6 +18,8 @@ from urllib import parse
 from discord.ext import commands
 from discord.commands import ApplicationContext, Option
 from utils.commands import slash_command
+from constants import Constants
+
 
 GOOGLE_URL = "https://www.google.com/search?q="
 NAVER_URL = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query="
@@ -46,7 +48,7 @@ class Etc(commands.Cog):
         embed = discord.Embed(
             title="<a:check:824251178493411368> 검색결과",
             description=f"`{searching}`의 검색 결과입니다.",
-            color=0xFFFFFF,
+            color=Constants.EMBED_COLOR["default"],
         )
         embed.add_field(
             name="포털 사이트 검색 결과",
@@ -72,7 +74,7 @@ class Etc(commands.Cog):
         embed = discord.Embed(
             title=f"Sent by {ctx.author.display_name}",
             description=f"{text}",
-            color=0xFFFFFF,
+            color=Constants.EMBED_COLOR["default"],
         )
         await ctx.respond(embed=embed)
 

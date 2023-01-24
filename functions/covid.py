@@ -19,13 +19,10 @@ from utils.commands import slash_command
 import requests
 from bs4 import BeautifulSoup
 import discord
+from constants import Constants
 
-covid_selectors = {
-    "death": "#content > div > div > div > div.liveToggleOuter > div > div.live_left > div.occurrenceStatus > div.occur_graph > table > tbody > tr:nth-child(1) > td:nth-child(2) > span",
-    "confirmed": "#content > div > div > div > div.liveToggleOuter > div > div.live_left > div.occurrenceStatus > div.occur_graph > table > tbody > tr:nth-child(1) > td:nth-child(5) > span",
-    "total_death": "#content > div > div > div > div.liveToggleOuter > div > div.live_left > div.occurrenceStatus > div.occur_num > div:nth-child(1)",
-    "total_confirmed": "#content > div > div > div > div.liveToggleOuter > div > div.live_left > div.occurrenceStatus > div.occur_num > div:nth-child(2)"
-}
+
+covid_selectors = Constants.COVID_SELECTORS
 
 
 class Covid(commands.Cog):
@@ -38,7 +35,7 @@ class Covid(commands.Cog):
         confirmed = soup.select_one(covid_selectors["confirmed"]).get_text()
         total_death = soup.select_one(covid_selectors["total_death"]).get_text()[6:]
         total_confirmed = soup.select_one(covid_selectors["total_confirmed"]).get_text()[6:-4]
-        embed = discord.Embed(title="코로나 현황", color=0xFFFFFF)
+        embed = discord.Embed(title="코로나 현황", color=Constants.EMBED_COLOR["default"])
         embed.add_field(name="오늘 사망자", value=f"{death}명")
         embed.add_field(name="오늘 확진자", value=f"{confirmed}명")
         embed.add_field(name="누적 사망자", value=f"{total_death}명")

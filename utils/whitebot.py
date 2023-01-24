@@ -22,6 +22,7 @@ import os
 from utils.koreanbots import update_guild_count
 from traceback import format_exception
 import sys
+from constants import Constants
 
 
 class WhiteBot(commands.Bot):
@@ -48,7 +49,7 @@ class WhiteBot(commands.Bot):
     async def change_status(self):
         await self.change_presence(
             status=discord.Status.online,
-            activity=discord.Game(f"버전 1.11.0 - {len(self.guilds)}개의 서버에서 작동 중"),
+            activity=discord.Game(f"버전 {Constants.VERSION} - {len(self.guilds)}개의 서버에서 작동 중"),
         )
 
     def run(self):
@@ -63,7 +64,7 @@ class WhiteBot(commands.Bot):
             embed=discord.Embed(
                 title=f"오류 발생: {error.__class__.__name__}",
                 description=f"```{text}```",
-                color=0xFF0000,
+                color=Constants.EMBED_COLOR["error"],
             )
         )
 
@@ -72,7 +73,7 @@ class WhiteBot(commands.Bot):
         text = f"{error[0].__name__}: {error[1]}"
         embed = discord.Embed(
             title=f"오류 발생: {error[0].__name__}",
-            color=0xFF0000,
+            color=Constants.EMBED_COLOR["error"],
             description=f"```{text}```",
         )
         await args[0].channel.send(embed=embed)
