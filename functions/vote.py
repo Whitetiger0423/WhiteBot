@@ -320,7 +320,7 @@ class Vote(commands.Cog):
             param = {"choice": choice_id}
             cursor.execute("SELECT * FROM voters WHERE choice=:choice", param)
             voter_count = len(cursor.fetchall())
-            embed.add_field(name=choice_name, value=voter_count)
+            embed.add_field(name=choice_name, value=str(voter_count))
 
         await ctx.respond(embed=embed)
         cursor.close()
