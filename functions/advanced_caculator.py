@@ -46,28 +46,28 @@ class AdvancedCalc(commands.Cog):
             first: Option(int, "값을 입력해주세요"),
     ):
         if calc_type == "사인":
-            equal = str(math.sin(math.pi * (first / 180)))
+            result = str(math.sin(math.pi * (first / 180)))
         elif calc_type == "코사인":
-            equal = str(math.cos(math.pi * (first / 180)))
+            result = str(math.cos(math.pi * (first / 180)))
         elif calc_type == "탄젠트":
-            equal = str(math.tan(math.pi * (first / 180)))
+            result = str(math.tan(math.pi * (first / 180)))
         elif calc_type == "시컨트":
-            equal = str(1.0 / math.sin(first))
+            result = str(1.0 / math.sin(first))
         elif calc_type == "코시컨트":
-            equal = str(1.0 / math.cos(first))
+            result = str(1.0 / math.cos(first))
         elif calc_type == "코탄젠트":
-            equal = str(1.0 / math.tan(first))
+            result = str(1.0 / math.tan(first))
         elif calc_type == "팩토리얼":
-            equal = str(math.factorial(first))
+            result = str(math.factorial(first))
         elif calc_type == "루트":
-            equal = str(math.sqrt(first))
+            result = str(math.sqrt(first))
         else:  # calc_type == "로그"
-            equal = str(math.log(first))
+            result = str(math.log(first))
         embed = discord.Embed(
             title=f"{Constants.EMOJI['check']} 계산 완료!",
             description=f"{calc_type} {first}의 계산 결과입니다.",
             color=Constants.EMBED_COLOR["default"],
-        ).add_field(name="**계산 결과:**", value=f"```{equal}```", inline=False)
+        ).add_field(name="**계산 결과:**", value=f"```{result}```", inline=False)
 
         await ctx.respond(embed=embed)
 
