@@ -20,13 +20,11 @@ import requests
 from utils.commands import slash_command
 import os
 from utils.database import CurrencyDatabase
-import utils.logging
 import logging
 from utils.utils import to_querystring
 from constants import Constants
 
 
-utils.logging.setup_logging()
 logger = logging.getLogger(__name__)
 
 units = {

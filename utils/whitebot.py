@@ -15,8 +15,8 @@
 
 from discord.ext import commands, tasks
 import discord
-from utils.logging import setup_logging
-import logging
+from utils.logger import setup_logging
+from logging import getLogger
 from time import time
 import os
 from utils.koreanbots import update_guild_count
@@ -29,7 +29,7 @@ class WhiteBot(commands.Bot):
     def __init__(self):
         super().__init__(help_command=None)
         setup_logging()
-        self.logger = logging.getLogger(__name__)
+        self.logger = getLogger(__name__)
         self.start_time = time()
         for filename in os.listdir("functions"):
             if filename.endswith(".py"):
