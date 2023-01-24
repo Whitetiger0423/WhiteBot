@@ -26,24 +26,24 @@ from utils.commands import slash_command
 class AdvancedCalc(commands.Cog):
     @slash_command(name="공학계산", description="공학용 계산기 수준의 연산을 제공합니다.")
     async def calc_eng(
-        self,
-        ctx: ApplicationContext,
-        calc_type: Option(
-            str,
-            "수행할 연산을 선택하세요.",
-            choices=[
-                "사인",
-                "코사인",
-                "탄젠트",
-                "시컨트",
-                "코시컨트",
-                "코탄젠트",
-                "팩토리얼",
-                "루트",
-                "로그",
-            ],
-        ),
-        first: Option(int, "값을 입력해주세요"),
+            self,
+            ctx: ApplicationContext,
+            calc_type: Option(
+                str,
+                "수행할 연산을 선택하세요.",
+                choices=[
+                    "사인",
+                    "코사인",
+                    "탄젠트",
+                    "시컨트",
+                    "코시컨트",
+                    "코탄젠트",
+                    "팩토리얼",
+                    "루트",
+                    "로그",
+                ],
+            ),
+            first: Option(int, "값을 입력해주세요"),
     ):
         if calc_type == "사인":
             equal = str(math.sin(math.pi * (first / 180)))
