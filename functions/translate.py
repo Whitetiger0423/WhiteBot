@@ -21,12 +21,12 @@ from datetime import datetime, timedelta
 from urllib.parse import quote
 
 import discord
-import requests
 from discord.commands import ApplicationContext, Option, OptionChoice
 from discord.ext import commands
 
 from constants import Constants
 from utils.commands import slash_command
+from utils.whitebot import WhiteBot
 
 PAPAGO_URL = "https://openapi.naver.com/v1/papago/n2mt"
 PAPAGO_DETECT_LANG_URL = "https://openapi.naver.com/v1/papago/detectLangs"
@@ -36,7 +36,9 @@ logger = logging.getLogger("translate")
 
 
 class Translate(commands.Cog):
-    def __init__(self):
+    def __init__(self, bot: WhiteBot):
+        self.bot = bot
+        self.session = self.bot.aiohttp_session
         self.enabled = True
         _papago_id = os.getenv("PAPAGO_APPID")
 
@@ -105,12 +107,12 @@ class Translate(commands.Cog):
             "X-Naver-Client-Secret": self.papago_secret,
         }
         data = "query=" + text
-        res = requests.post(PAPAGO_DETECT_LANG_URL, data=data.encode("utf-8"), headers=header)
-        detected_lang = res.json()["langCode"]
-        src_lang = detected_lang
-        tar_lang = lang
-        embed = self.papago_translate(src_lang, tar_lang, text)
-        await ctx.respond(embed=embed)
+        async with self.session.post(PAPAGO_DETECT_LANG_URL, data=data.encode("utf-8"), headers=header) as res:
+            detected_lang = res.json()["langCode"]
+            src_lang = detected_lang
+            tar_lang = lang
+            embed = self.papago_translate(src_lang, tar_lang, text)
+            await ctx.respond(embed=embed)
 
     def papago_translate(
             self, src_lang: str, tar_lang: str, text: str
@@ -121,50 +123,50 @@ class Translate(commands.Cog):
             "X-Naver-Client-Id": self.papago_id,
             "X-Naver-Client-Secret": self.papago_secret,
         }
-        res = requests.post(PAPAGO_URL, data=data, headers=header)
-        body = res.json()
+        async with self.session.post(PAPAGO_URL, data=data.encode("utf-8"), headers=header) as res:
+            body = res.json()
 
-        if res.status_code == 200:
-            result = body["message"]["result"]
-            return discord.Embed(
-                title=f"{Constants.EMOJI['check']} 번역 완료", description=result["translatedText"],
-                color=Constants.EMBED_COLOR["success"]
-            ).set_footer(
-                text=f"Papago API: {result['srcLangType']} -> {result['tarLangType']}"
-            )
-        elif res.status_code == 500:
-            logger.error(
-                "Papago API has returned 500\n=> %s -> %s [%s]\n=> Response: %s",
-                src_lang,
-                tar_lang,
-                text,
-                res.text,
-            )
-            return discord.Embed(
-                description="파파고 서버에 오류가 발생했어요. 잠시 후에 다시 시도해주세요", color=Constants.EMBED_COLOR["error"]
-            )
-        else:
-            if body["errorCode"] == "010":
-                logger.info("Papago API daily limit exceeded")
-                self.is_papago_limited = True
+            if res.status == 200:
+                result = body["message"]["result"]
                 return discord.Embed(
-                    title="지금은 번역이 불가해요",
-                    description="오늘치 번역 기능을 벌써 다 써버렸네요. 내일까지 잠시만 기다려주세요",
-                    color=Constants.EMBED_COLOR["default"],
+                    title=f"{Constants.EMOJI['check']} 번역 완료", description=result["translatedText"],
+                    color=Constants.EMBED_COLOR["success"]
+                ).set_footer(
+                    text=f"Papago API: {result['srcLangType']} -> {result['tarLangType']}"
                 )
-            else:
-                logger.info(
-                    "Papago API has returned %d\n=> %s -> %s [%s]\n=> Response: %s",
-                    res.status_code,
+            elif res.status == 500:
+                logger.error(
+                    "Papago API has returned 500\n=> %s -> %s [%s]\n=> Response: %s",
                     src_lang,
                     tar_lang,
                     text,
                     res.text,
                 )
-                err_msg = PAPAGO_API_ERROR_MSG_REGEX.match(body["errorMessage"]).group(
-                    1
+                return discord.Embed(
+                    description="파파고 서버에 오류가 발생했어요. 잠시 후에 다시 시도해주세요", color=Constants.EMBED_COLOR["error"]
                 )
-                return discord.Embed(description=err_msg, color=Constants.EMBED_COLOR["error"])
+            else:
+                if body["errorCode"] == "010":
+                    logger.info("Papago API daily limit exceeded")
+                    self.is_papago_limited = True
+                    return discord.Embed(
+                        title="지금은 번역이 불가해요",
+                        description="오늘치 번역 기능을 벌써 다 써버렸네요. 내일까지 잠시만 기다려주세요",
+                        color=Constants.EMBED_COLOR["default"],
+                    )
+                else:
+                    logger.info(
+                        "Papago API has returned %d\n=> %s -> %s [%s]\n=> Response: %s",
+                        res.status_code,
+                        src_lang,
+                        tar_lang,
+                        text,
+                        res.text,
+                    )
+                    err_msg = PAPAGO_API_ERROR_MSG_REGEX.match(body["errorMessage"]).group(
+                        1
+                    )
+                    return discord.Embed(description=err_msg, color=Constants.EMBED_COLOR["error"])
 
     def day_change(self):
         self.loop.call_later(60 * 60 * 24, self.day_change)
@@ -172,5 +174,5 @@ class Translate(commands.Cog):
         self.is_papago_limited = False
 
 
-def setup(bot: discord.Bot):
-    bot.add_cog(Translate())
+def setup(bot):
+    bot.add_cog(Translate(bot))

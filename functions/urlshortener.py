@@ -21,9 +21,13 @@ from discord.ext import commands
 
 from constants import Constants
 from utils.commands import slash_command
+from utils.whitebot import WhiteBot
 
 
 class UrlShorten(commands.Cog):
+    def __init__(self, bot: WhiteBot):
+        self.bot = bot
+        self.session = self.bot.aiohttp_session
     @slash_command(name="주소단축", description="URL을 단축합니다.")
     async def url_shorten(
             self,
@@ -39,25 +43,23 @@ class UrlShorten(commands.Cog):
         ).add_field(name="**단축된 URL:**", value="요청 중...", inline=False)
         embed.set_footer(text="Provided by is.gd")
         message = await ctx.respond(embed=embed)
-        response = requests.get(request_url)
-        html = response.text
-        shorten_url = BeautifulSoup(html, 'html.parser')
-        if response.status_code == 200:  # Succeeded
+        async with self.session.get(request_url) as response:
+            shorten_url = await response.text()
+            if response.status == 200:  # Succeeded
+                embed = discord.Embed(
+                    title=f"{Constants.EMOJI['check']} 단축 완료!",
+                    description=f"`{url}` 에 대해 단축된 URL입니다.",
+                    color=Constants.EMBED_COLOR["default"],
+                ).add_field(name="**단축된 URL:**", value=f"```{shorten_url}```", inline=False)
+                embed.set_footer(text="Provided by is.gd")
 
-            embed = discord.Embed(
-                title=f"{Constants.EMOJI['check']} 단축 완료!",
-                description=f"`{url}` 에 대해 단축된 URL입니다.",
-                color=Constants.EMBED_COLOR["default"],
-            ).add_field(name="**단축된 URL:**", value=f"```{shorten_url}```", inline=False)
-            embed.set_footer(text="Provided by is.gd")
-
-        else:  # Failed
-            embed = discord.Embed(
-                title="단축 실패",
-                description="서버 측 오류로 URL 단축에 실패하였습니다.",
-                color=Constants.EMBED_COLOR["error"],
-            ).add_field(name="아래 정보를 포함하여 개발자에게 문의하십시오:", value=f"```Status: {response.status_code}```", inline=False)
-            embed.set_footer(text="Provided by is.gd")
+            else:  # Failed
+                embed = discord.Embed(
+                    title="단축 실패",
+                    description="서버 측 오류로 URL 단축에 실패하였습니다.",
+                    color=Constants.EMBED_COLOR["error"],
+                ).add_field(name="아래 정보를 포함하여 개발자에게 문의하십시오:", value=f"```Status: {response.status_code}```", inline=False)
+                embed.set_footer(text="Provided by is.gd")
         await message.edit_original_message(embed=embed)
 
 

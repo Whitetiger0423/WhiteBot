@@ -14,34 +14,38 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import discord
-import requests
 from bs4 import BeautifulSoup
 from discord import ApplicationContext
 from discord.ext import commands
 
 from constants import Constants
 from utils.commands import slash_command
+from utils.whitebot import WhiteBot
 
 covid_selectors = Constants.COVID_SELECTORS
 
 
 class Covid(commands.Cog):
+    def __init__(self, bot: WhiteBot):
+        self.bot = bot
+        self.session = self.bot.aiohttp_session
+
     @slash_command(name="코로나", description="코로나 관련 정보를 출력합니다.")
     async def get_covid(self, ctx: ApplicationContext):
-        response = requests.get("https://ncov.mohw.go.kr/")
-        html = response.text
-        soup = BeautifulSoup(html, 'html.parser')
-        death = soup.select_one(covid_selectors["death"]).get_text()
-        confirmed = soup.select_one(covid_selectors["confirmed"]).get_text()
-        total_death = soup.select_one(covid_selectors["total_death"]).get_text()[6:]
-        total_confirmed = soup.select_one(covid_selectors["total_confirmed"]).get_text()[6:-4]
-        embed = discord.Embed(title="코로나 현황", color=Constants.EMBED_COLOR["default"])
-        embed.add_field(name="오늘 사망자", value=f"{death}명")
-        embed.add_field(name="오늘 확진자", value=f"{confirmed}명")
-        embed.add_field(name="누적 사망자", value=f"{total_death}명")
-        embed.add_field(name="누적 확진자", value=f"{total_confirmed}명")
-        await ctx.respond(embed=embed)
+        async with self.session.get("http://ncov.mohw.go.kr/") as response:
+            html = await response.text()
+            soup = BeautifulSoup(html, 'html.parser')
+            death = soup.select_one(covid_selectors["death"]).get_text()
+            confirmed = soup.select_one(covid_selectors["confirmed"]).get_text()
+            total_death = soup.select_one(covid_selectors["total_death"]).get_text()[6:]
+            total_confirmed = soup.select_one(covid_selectors["total_confirmed"]).get_text()[6:-4]
+            embed = discord.Embed(title="코로나 현황", color=Constants.EMBED_COLOR["default"])
+            embed.add_field(name="오늘 사망자", value=f"{death}명")
+            embed.add_field(name="오늘 확진자", value=f"{confirmed}명")
+            embed.add_field(name="누적 사망자", value=f"{total_death}명")
+            embed.add_field(name="누적 확진자", value=f"{total_confirmed}명")
+            await ctx.respond(embed=embed)
 
 
 def setup(bot):
-    bot.add_cog(Covid())
+    bot.add_cog(Covid(bot))

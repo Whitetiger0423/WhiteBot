@@ -20,6 +20,7 @@ from time import time
 from traceback import format_exception
 
 import discord
+from aiohttp import ClientSession
 from discord.ext import commands, tasks
 
 from constants import Constants
@@ -33,6 +34,7 @@ class WhiteBot(commands.Bot):
         setup_logging()
         self.logger = getLogger(__name__)
         self.start_time = time()
+        self.aiohttp_session = ClientSession()
         for filename in os.listdir("functions"):
             if filename.endswith(".py"):
                 self.load_extension(f"functions.{filename[:-3]}")
