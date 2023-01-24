@@ -59,7 +59,7 @@ utility_commands_1 = (
     .add_field(name="/전송 `[항목]`", value="`[항목]`을 전송해요!", inline=False)
     .add_field(name="/암호 `[수신문]`", value="`[수신문]`을 암호화합니다.", inline=False)
     .add_field(name="/해독 `[암호문]`", value="`[암호문]`을 해독합니다.", inline=False)
-    .add_field(name="/날씨 `[지역]`", value="`[지역]`의 현재 날씨를 조회합니다.")
+    .add_field(name="/날씨 `[장소]`", value="`[장소]`의 현재 날씨를 조회합니다.")
     .set_footer(text="2/6")
 )
 
