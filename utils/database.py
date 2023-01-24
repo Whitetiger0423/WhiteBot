@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import os
+
 import motor.motor_asyncio
 
 MONGO_URI = os.getenv("MONGO_URI")
