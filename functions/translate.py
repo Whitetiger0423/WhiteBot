@@ -19,7 +19,7 @@ import logging
 import requests
 import os
 import re
-from requests.utils import quote
+from urllib.parse import quote
 from datetime import datetime, timedelta
 from discord.ext import commands
 from utils.commands import slash_command
