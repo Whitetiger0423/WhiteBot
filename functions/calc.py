@@ -26,7 +26,7 @@ class Calc(commands.Cog):
     async def calc(
             self,
             ctx: ApplicationContext,
-            type: Option(
+            calc_type: Option(
                 str,
                 "수행할 연산을 선택하세요.",
                 choices=["더하기", "빼기", "곱하기", "나누기"],
@@ -34,11 +34,11 @@ class Calc(commands.Cog):
             first: Option(float, "연산할 첫 번째 수를 입력하세요"),
             second: Option(float, "연산할 두 번째 수를 입력하세요"),
     ):
-        if type == "더하기":
+        if calc_type == "더하기":
             equal = first + second
-        elif type == "빼기":
+        elif calc_type == "빼기":
             equal = first - second
-        elif type == "곱하기":
+        elif calc_type == "곱하기":
             equal = first * second
         else:  # type == "나누기":
             equal = first / second
@@ -48,7 +48,7 @@ class Calc(commands.Cog):
 
         embed = discord.Embed(
             title=f"{Constants.EMOJI['check']} 계산 완료!",
-            description=f"**{type}** 연산의 결과입니다.",
+            description=f"**{calc_type}** 연산의 결과입니다.",
             color=Constants.EMBED_COLOR["default"],
         )
         embed.add_field(name="**결과:**", value=f"```{equal}```", inline=False)

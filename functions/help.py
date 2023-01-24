@@ -157,11 +157,11 @@ class Help(commands.Cog):
         await msg.add_reaction("◀️")
         await msg.add_reaction("▶️")
 
-        def check(reaction, user):
+        def check(check_reaction, check_user):
             return (
-                    str(reaction) in ["◀️", "▶️"]
-                    and user == ctx.author
-                    and reaction.message.id == msg.id
+                    str(check_reaction) in ["◀️", "▶️"]
+                    and check_user == ctx.author
+                    and check_reaction.message.id == msg.id
             )
 
         while True:

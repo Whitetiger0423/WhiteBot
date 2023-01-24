@@ -27,8 +27,8 @@ COLORS = {
 
 
 class HighlightingFormatter(logging.Formatter):
-    def __init__(self, format, datefmt, style):
-        super().__init__(format, datefmt, style)
+    def __init__(self, format_str, datefmt, style):
+        super().__init__(format_str, datefmt, style)
 
     def format(self, record: logging.LogRecord):
         space = 8 - len(record.levelname)

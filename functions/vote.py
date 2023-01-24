@@ -261,10 +261,10 @@ class Vote(commands.Cog):
         cursor.execute(
             "SELECT id, name FROM votes WHERE user_id=:user_id AND state=:state", param
         )
-        for (id, name) in cursor:
-            format = f"#{id} {name}"
-            if value in format:
-                result.append(OptionChoice(format, id))
+        for (user_id, name) in cursor:
+            str_format = f"#{user_id} {name}"
+            if value in str_format:
+                result.append(OptionChoice(str_format, user_id))
 
         return result
 
