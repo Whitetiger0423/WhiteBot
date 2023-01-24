@@ -1,81 +1,40 @@
-from utils.commands import slash_command
-from discord.ext import commands
-from discord.commands import Option
+from json import loads
+from os import getenv
+from discord import Embed
 import requests
-from bs4 import BeautifulSoup
+from discord.commands import Option
+from discord.ext import commands
+from utils.commands import slash_command
 from constants import Constants
-import discord
-
-
-weather_selectors = Constants.WEATHER_SELECTORS
 
 
 class Weather(commands.Cog):
     @slash_command(name="날씨", description="특정 지역의 날씨를 출력합니다.")
-    async def weather(self, ctx, place: Option(str, "검색할 지역을 입력하세요.")):
-        response = requests.get(f"https://search.naver.com/search.naver?where=nexearch&ie=utf8&query={place}+날씨")
-        html = response.text
-        soup = BeautifulSoup(html, 'html.parser')
-        try:
-            temp = self.select(soup, "temp")[5:-1]
-            sens_temp = self.select(soup, "sens_temp")[:-1]
-            weather = self.select(soup, "weather")
-            humidity = self.select(soup, "humidity")
-            wind_type = self.select(soup, "wind_type")
-            wind_speed = self.select(soup, "wind_speed")
-            micro_dust = self.select(soup, "micro_dust")
-            ultramicro_dust = self.select(soup, "ultramicro_dust")
-            uv = self.select(soup, "uv")
-            embed = (
-                discord.Embed(
-                    title=f"{place} 날씨 정보", description="현재 날씨 정보를 조회했습니다.", color=Constants.EMBED_COLOR["default"]
-                )
-                .add_field(name=f"{self.temp_emoji(temp)} 기온", value=f"{temp}℃", inline=True)
-                .add_field(name=f"{self.temp_emoji(sens_temp)} 체감온도", value=f"{sens_temp}℃", inline=True)
-                .add_field(name=f"{self.weather_emoji(weather)} 날씨", value=weather, inline=True)
-                .add_field(name="습도", value=humidity, inline=True)
-                .add_field(name=wind_type, value=wind_speed, inline=True)
-                .add_field(name="미세먼지", value=micro_dust, inline=True)
-                .add_field(name="초미세먼지", value=ultramicro_dust, inline=True)
-                .add_field(name="자외선", value=uv, inline=True)
-            )
+    async def weather(self, ctx, place: Option(str, "검색할 지역을 입력하세요.", name="장소")):
+        url = f"https://api.openweathermap.org/geo/1.0/direct?q={place}&limit=5&appid={getenv('WEATHER_KEY')}"
+        response = requests.get(url)
+        json = loads(response.text)
+        if len(json):
+            location = json[0]
+            name = location["local_names"]["ko"] if "ko" in location["local_names"].keys() else location["name"]
+            url = f"https://api.openweathermap.org/data/2.5/weather?lat={location['lat']}&lon={location['lon']}&appid={getenv('WEATHER_KEY')}&lang=kr&units=metric"
+            response = requests.get(url)
+            json = loads(response.text)
+            weather = json["weather"][0]
+            embed = Embed(title=f"{name} 날씨 ({json['coord']['lon']}° {json['coord']['lat']}°)", color=Constants.EMBED_COLOR["default"], description="일몰/일출은 장소와 타임존이 일치하지 않는 경우 오차가 발생합니다.")
+            embed.set_thumbnail(url=f"https://openweathermap.org/img/wn/{weather['icon']}@2x.png")
+            embed.add_field(name="날씨", value=weather["description"])
+            embed.add_field(name="온도 실제/체감", value=f"{json['main']['temp']}°C / {json['main']['feels_like']}°C")
+            embed.add_field(name="온도 최대/최저", value=f"{json['main']['temp_max']}°C / {json['main']['temp_min']}°C")
+            embed.add_field(name="습도", value=f"{json['main']['humidity']}%")
+            embed.add_field(name="기압", value=f"{json['main']['pressure']} hPa")
+            embed.add_field(name="풍속", value=f"{json['wind']['speed']}m/s")
+            embed.add_field(name="일출", value=f"<t:{json['sys']['sunrise']}>")
+            embed.add_field(name="일몰", value=f"<t:{json['sys']['sunset']}>")
             await ctx.respond(embed=embed)
-        except AttributeError:
-            embed = discord.Embed(
-                title="WhiteBot 오류",
-                description=f"`{place}`는 올바른 지역명이 아닙니다.",
-                color=Constants.EMBED_COLOR["error"],
-            )
+        else:
+            embed = Embed(title="오류", description="검색 결과가 없습니다.", color=Constants.EMBED_COLOR["error"])
             await ctx.respond(embed=embed)
-
-    def select(self, soup, value: str) -> str:
-        return soup.select_one(weather_selectors[value]).get_text()
-
-    def weather_emoji(self, value) -> str:
-        if value == "비":
-            return ":cloud_rain:"
-        # elif value == "진눈깨비 내림":
-            # return Constants.EMOJI["sleet"]
-        # elif value == "소나기 내림":
-            # return ":white_sun_rain_cloud:"
-        elif value == "눈":
-            return ":cloud_snow:"
-        elif value == "맑음":
-            return ":sunny:"
-        elif value == "구름많음":
-            return ":white_sun_cloud:"
-        elif value == "흐림":
-            return ":cloud:"
-        else:
-            return None
-
-    def temp_emoji(self, value) -> str:
-        if float(value) >= 33:
-            return ":hot_face:"
-        elif float(value) > 5:
-            return ":grinning:"
-        else:
-            return ":cold_face:"
 
 
 def setup(bot):
