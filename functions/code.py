@@ -93,8 +93,7 @@ class Code(commands.Cog):
                 value="올바르지 않은 암호문입니다. 암호의 종류가 맞는지 확인해주시고, 올바른 암호문을 입력해주세요.",
                 inline=False,
             )
-        finally:
-            await ctx.respond(embed=embed)
+        await ctx.respond(embed=embed)
 
 
 def setup(bot):
