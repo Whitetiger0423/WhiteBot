@@ -23,7 +23,7 @@ from discord.ext import commands
 
 from constants import Constants
 from utils.commands import slash_command
-from utils.database import CurrencyDatabase
+from utils.database import currency_add, currency_find, currency_reset
 from utils.utils import to_querystring
 
 logger = logging.getLogger(__name__)
@@ -79,6 +79,22 @@ choice = [
 ]
 
 
+async def db_update(unit):
+    base_url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
+
+    headers = {"authkey": os.getenv("CURRENCY"), "data": "AP01", "cur_unit": unit}
+
+    req = requests.get(base_url + to_querystring(headers))
+    data = req.json()
+
+    await currency_reset()
+    for i in data:
+        dol = i["bkpr"]
+        re = dol.replace(",", "")
+        name = i["cur_unit"]
+        await currency_add(name, re)
+
+
 class Currency(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -108,10 +124,10 @@ class Currency(commands.Cog):
         await ctx.defer()
         unit = units[to[4:]]
         db_unit = units.get(to[4:])
-        await self.db_update(unit)
+        await db_update(unit)
 
-        if await CurrencyDatabase.currency_find(db_unit):
-            found = await CurrencyDatabase.currency_find(db_unit)
+        if await currency_find():
+            found = await currency_find()
 
             end = int(found[f"country_{db_unit}"])
             result = start / end
@@ -136,21 +152,6 @@ class Currency(commands.Cog):
             )
 
             return await ctx.followup.send(embed=err)
-
-    async def db_update(self, unit):
-        base_url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
-
-        headers = {"authkey": os.getenv("CURRENCY"), "data": "AP01", "cur_unit": unit}
-
-        req = requests.get(base_url + to_querystring(headers))
-        data = req.json()
-
-        await CurrencyDatabase.currency_reset()
-        for i in data:
-            dol = i["bkpr"]
-            re = dol.replace(",", "")
-            name = i["cur_unit"]
-            await CurrencyDatabase.currency_add(name, re)
 
 
 def setup(bot):
