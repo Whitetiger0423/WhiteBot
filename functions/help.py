@@ -97,6 +97,9 @@ utility_commands_3 = (
     .add_field(
         name="/환율 `[원화]` `[종류]`", value="`[원화]`원을 `[종류]`로 얼마인지 출력합니다.", inline=False
     )
+    .add_field(
+        name="/코드포스", value="현재 코드포스 콘테스트 상황을 출력합니다.", inline=False
+    )
     .set_footer(text="4/6")
 )
 
