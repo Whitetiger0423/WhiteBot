@@ -94,7 +94,7 @@ class Manage(commands.Cog):
         )
         embed.add_field(
             name="봇 개발진: ",
-            value="[Team White](<https://team-white.kro.kr/>)",
+            value="[Team White](<http://team-white.kro.kr/>)",
             inline=True,
         )
         embed.add_field(
