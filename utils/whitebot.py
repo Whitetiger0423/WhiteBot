@@ -13,24 +13,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-from discord.ext import commands, tasks
-import discord
-from utils.logging import setup_logging
-import logging
-from time import time
 import os
-from utils.koreanbots import update_guild_count
-from traceback import format_exception
 import sys
+from logging import getLogger
+from time import time
+from traceback import format_exception
+
+import discord
+from aiohttp import ClientSession
+from discord.ext import commands, tasks
+
 from constants import Constants
+from utils.koreanbots import update_guild_count
+from utils.logger import setup_logging
 
 
 class WhiteBot(commands.Bot):
     def __init__(self):
         super().__init__(help_command=None)
         setup_logging()
-        self.logger = logging.getLogger(__name__)
+        self.logger = getLogger(__name__)
         self.start_time = time()
+        self.aiohttp_session = ClientSession()
         for filename in os.listdir("functions"):
             if filename.endswith(".py"):
                 self.load_extension(f"functions.{filename[:-3]}")
@@ -39,7 +43,6 @@ class WhiteBot(commands.Bot):
         guild_count = len(self.guilds)
         self.logger.info(f"Logged in as {self.user.name}")
         self.logger.info(f"Be used in {guild_count} guilds.")
-
         dbkr_token = os.getenv("DBKR_TOKEN")
         await update_guild_count(dbkr_token, self.user.id, guild_count)
 
@@ -56,7 +59,7 @@ class WhiteBot(commands.Bot):
         super().run(os.getenv("BOT_TOKEN"))
 
     async def on_command_error(
-        self, ctx: commands.Context, error: commands.CommandError
+            self, ctx: commands.Context, error: commands.CommandError
     ):
         text = "".join(format_exception(type(error), error, error.__traceback__))
         self.logger.error(text)

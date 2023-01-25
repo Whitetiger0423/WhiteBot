@@ -13,20 +13,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-import discord
-from discord.ext import commands
-from discord.commands import ApplicationContext, Option
-import requests
-from utils.commands import slash_command
-import os
-from utils.database import CurrencyDatabase
-import utils.logging
 import logging
-from utils.utils import to_querystring
+import os
+
+import discord
+import requests
+from discord.commands import ApplicationContext, Option
+from discord.ext import commands
+
 from constants import Constants
+from utils.commands import slash_command
+from utils.database import currency_add, currency_find, currency_reset
+from utils.utils import to_querystring
 
-
-utils.logging.setup_logging()
 logger = logging.getLogger(__name__)
 
 units = {
@@ -80,6 +79,22 @@ choice = [
 ]
 
 
+async def db_update(unit):
+    base_url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
+
+    headers = {"authkey": os.getenv("CURRENCY"), "data": "AP01", "cur_unit": unit}
+
+    req = requests.get(base_url + to_querystring(headers))
+    data = req.json()
+
+    await currency_reset()
+    for i in data:
+        dol = i["bkpr"]
+        re = dol.replace(",", "")
+        name = i["cur_unit"]
+        await currency_add(name, re)
+
+
 class Currency(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -93,12 +108,11 @@ class Currency(commands.Cog):
         description="현재 시간 기준 환율로 환전합니다.",
     )
     async def currency(
-        self,
-        ctx: ApplicationContext,
-        start: Option(int, "변환할 값(KRW)를 입력하세요. ex) 100000"),
-        to: Option(str, "변환할 통화를 선택해주세요. ex)USD", choices=choice),
+            self,
+            ctx: ApplicationContext,
+            start: Option(int, "변환할 값(KRW)를 입력하세요. ex) 100000"),
+            to: Option(str, "변환할 통화를 선택해주세요. ex)USD", choices=choice),
     ):
-
         if self.api_key is None:
             err = discord.Embed(
                 title="환율 조회 기능이 비활성화 되어있어요",
@@ -110,10 +124,10 @@ class Currency(commands.Cog):
         await ctx.defer()
         unit = units[to[4:]]
         db_unit = units.get(to[4:])
-        await self.db_update(unit)
+        await db_update(unit)
 
-        if await CurrencyDatabase.currency_find(db_unit):
-            found = await CurrencyDatabase.currency_find(db_unit)
+        if await currency_find():
+            found = await currency_find()
 
             end = int(found[f"country_{db_unit}"])
             result = start / end
@@ -138,21 +152,6 @@ class Currency(commands.Cog):
             )
 
             return await ctx.followup.send(embed=err)
-
-    async def db_update(self, unit):
-        base_url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
-
-        headers = {"authkey": os.getenv("CURRENCY"), "data": "AP01", "cur_unit": unit}
-
-        req = requests.get(base_url + to_querystring(headers))
-        data = req.json()
-
-        await CurrencyDatabase.currency_reset()
-        for i in data:
-            dol = i["bkpr"]
-            re = dol.replace(",", "")
-            name = i["cur_unit"]
-            await CurrencyDatabase.currency_add(name, re)
 
 
 def setup(bot):

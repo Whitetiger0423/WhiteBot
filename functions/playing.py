@@ -13,14 +13,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-import discord
-import random
-from discord.ext import commands
-from utils.commands import slash_command
-from discord.commands import ApplicationContext, Option
 import logging
+import random
 from typing import List
+
+import discord
+from discord.commands import ApplicationContext, Option
+from discord.ext import commands
+
 from constants import Constants
+from utils.commands import slash_command
 
 logger = logging.getLogger(__name__)
 
@@ -28,9 +30,9 @@ logger = logging.getLogger(__name__)
 class Playing(commands.Cog):
     @slash_command(name="가위바위보", description="봇과 가위바위보 게임을 합니다.")
     async def rsp(
-        self,
-        ctx: ApplicationContext,
-        user: Option(str, "낼 것을 선택하세요", choices=["가위", "바위", "보"]),
+            self,
+            ctx: ApplicationContext,
+            user: Option(str, "낼 것을 선택하세요", choices=["가위", "바위", "보"]),
     ):
         rsp_table = ["가위", "바위", "보"]
         bot = random.choice(rsp_table)
@@ -51,12 +53,12 @@ class Playing(commands.Cog):
 
     @slash_command(name="주사위", description="주사위를 굴립니다.")
     async def dice(
-        self,
-        ctx: ApplicationContext,
-        firstn: Option(int, "첫번째 숫자를 정하세요. 두번째 숫자가 없을 경우 범위는 1 ~ firstn으로 결정됩니다."),
-        secondn: Option(
-            int, "두번째 숫자가 있을 경우 범위는 firstn ~ secondn으로 결정됩니다. ", required=False
-        ),
+            self,
+            ctx: ApplicationContext,
+            firstn: Option(int, "첫번째 숫자를 정하세요. 두번째 숫자가 없을 경우 범위는 1 ~ firstn으로 결정됩니다."),
+            secondn: Option(
+                int, "두번째 숫자가 있을 경우 범위는 firstn ~ secondn으로 결정됩니다. ", required=False
+            ),
     ):
         try:
             if firstn < 1:
@@ -111,17 +113,16 @@ class Playing(commands.Cog):
         await msg.add_reaction("🔴")
         await msg.add_reaction("🔵")
         try:
-
-            def check(reaction, user):
+            def check(check_reaction, check_user):
                 return (
-                    str(reaction) in ["🔴", "🔵"]
-                    and user == ctx.author
-                    and reaction.message.id == msg.id
+                    str(check_reaction) in ["🔴", "🔵"]
+                    and check_user == ctx.author
+                    and check_reaction.message.id == msg.id
                 )
 
             reaction, user = await ctx.bot.wait_for("reaction_add", check=check)
             if (str(reaction) == "🔴" and dice % 2 == 1) or (
-                str(reaction) == "🔵" and dice % 2 == 0
+                    str(reaction) == "🔵" and dice % 2 == 0
             ):
                 embed = discord.Embed(
                     title="홀짝 게임", description="정답입니다!", color=Constants.EMBED_COLOR["default"]
@@ -144,9 +145,9 @@ class Playing(commands.Cog):
 
     @slash_command(name="틱택토", description="틱택토(삼목) 게임을 진행합니다.")
     async def tictactoe(
-        self,
-        ctx: ApplicationContext,
-        rival: Option(discord.User, description="같이 게임을 할 유저를 선택하세요"),
+            self,
+            ctx: ApplicationContext,
+            rival: Option(discord.User, description="같이 게임을 할 유저를 선택하세요"),
     ):
         if rival.bot:
             embed = discord.Embed(
@@ -209,7 +210,7 @@ class TicTacToeButton(discord.ui.Button["TicTacToe"]):
 class TicTacToe(discord.ui.View):
     children: List[TicTacToeButton]
 
-    def __init__(self, player_id: discord.Member, rival_id: discord.Member):
+    def __init__(self, player_id: int, rival_id: discord.Member):
         super().__init__()
 
         self.player_ids = (player_id, rival_id)
