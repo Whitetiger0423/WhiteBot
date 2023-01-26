@@ -23,7 +23,7 @@ import utils.logging
 import logging
 from utils.utils import to_querystring
 from constants import Constants
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta
 from pytz import timezone
 
 utils.logging.setup_logging()
@@ -110,11 +110,11 @@ class Currency(commands.Cog):
         await ctx.defer()
         unit = units[to[4:]]
         found = await self.find(unit)
-        if found == False:  # 현재일자가 영업일이 아닐시 전일자 호출
+        if found is False:  # 현재일자가 영업일이 아닐시 전일자 호출
             i = 1
             while True:  # 조회 가능한 날짜가 나올때까지 계속 호출
                 search_again = await self.prev_find(unit, i)
-                if search_again != False:
+                if search_again is not False:
                     search_again = int(search_again)
                     found = search_again  # 재검색한값
                     break
