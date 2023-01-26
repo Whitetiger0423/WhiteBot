@@ -23,7 +23,8 @@ import utils.logging
 import logging
 from utils.utils import to_querystring
 from constants import Constants
-
+from datetime import datetime, date, timedelta
+from pytz import timezone
 
 utils.logging.setup_logging()
 logger = logging.getLogger(__name__)
@@ -95,7 +96,7 @@ class Currency(commands.Cog):
         self,
         ctx: ApplicationContext,
         start: Option(int, "변환할 값(KRW)를 입력하세요. ex) 100000"),
-        to: Option(str, "변환할 통화를 선택해주세요. ex)USD", choices=choice),
+        to: Option(str, "변환할 통화를 선택해주세요. ex) USD", choices=choice),
     ):
 
         if self.api_key is None:
@@ -109,22 +110,27 @@ class Currency(commands.Cog):
         await ctx.defer()
         unit = units[to[4:]]
         found = await self.find(unit)
-        if found is False:
-            err = discord.Embed(
-                title="주말/ 공휴일, 또는 밤 11시 이후에는 환율 조회가 불가능해요",
-                description="나중에 다시 시도해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
-                color=Constants.EMBED_COLOR["default"],
-            )
-
-            return await ctx.followup.send(embed=err)
+        if found == False:  # 현재일자가 영업일이 아닐시 전일자 호출
+            i = 1
+            while True:  # 조회 가능한 날짜가 나올때까지 계속 호출
+                search_again = await self.prev_find(unit, i)
+                if search_again != False:
+                    search_again = int(search_again)
+                    found = search_again  # 재검색한값
+                    break
+                i += 1
 
         found = int(found)  # 환율 불러오는 함수 리턴값
         result = start / found  # 환율로 입력한값 나눠서 환전
 
+        formatted_date = (
+            datetime.now().astimezone(timezone("Asia/Seoul")) - timedelta(days=i)
+        ).strftime("%Y년 %m월 %d일")
+
         embed = (
             discord.Embed(
-                title=f"{Constants.EMOJI['check']} 변환된 값 정보",
-                description="변환된 값의 정보를 반환했어요",
+                title=f"{Constants.EMOJI['check']} 변환된 값",
+                description=f"기준일: {formatted_date}",
                 color=Constants.EMBED_COLOR["default"],
             )
             .add_field(name=f"1 `{unit}` 당 원 ", value=f"`{found:.2f}` 원", inline=False)
@@ -142,9 +148,35 @@ class Currency(commands.Cog):
         req = requests.get(base_url + to_querystring(headers))
         res = req.json()
 
+        if str(res) == "[]":
+            return False
+
+        status = res[0]["result"]
+        if status != 1:
+            return False
+
+        value = res[0]["bkpr"].replace(",", "")  # json에서 환율 값 추출
+
+        return value
+
+    async def prev_find(self, unit, i):  # 호출날짜가 영업일이 아닐시 전일자 호출용으로 사용
+        base_url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
+        previous_day = (
+            datetime.now().astimezone(timezone("Asia/Seoul")) - timedelta(days=i)
+        ).strftime("%Y%m%d")
+        headers = {
+            "authkey": os.getenv("CURRENCY"),
+            "data": "AP01",
+            "cur_unit": unit,
+            "searchdate": previous_day,
+        }
+
+        req = requests.get(base_url + to_querystring(headers))
+        res = req.json()
+
         status = res[0]["result"]
 
-        if status != "1":
+        if status != 1:
             return False
 
         value = res[0]["bkpr"].replace(",", "")  # json에서 환율 값 추출
