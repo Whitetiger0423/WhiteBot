@@ -13,20 +13,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
+import logging
+import os
+import sqlite3
+
 import discord
-from discord.ext import commands
 from discord.commands import (
     ApplicationContext,
     Option,
     AutocompleteContext,
     OptionChoice,
 )
-from utils.commands import slash_command
+from discord.ext import commands
 from discord.ui import View, Button
-import sqlite3
-import os
-import logging
+
 from constants import Constants
+from utils.commands import slash_command
 
 logger = logging.getLogger(__name__)
 
@@ -86,13 +88,13 @@ class Vote(commands.Cog):
 
             bot.add_view(view)
 
-    @slash_command(description="투표를 시작합니다.")
-    async def 투표(
-        self,
-        ctx: ApplicationContext,
-        name: Option(str, description="새로 만들 투표의 이름입니다."),
-        choices: Option(str, description="투표의 선택지입니다(쉼표로 구분, 최대 20개)."),
-        mv: Option(str, description="중복 투표 가능 여부입니다.", choices=["허용"], required=False),
+    @slash_command(name="투표", description="투표를 시작합니다.")
+    async def vote(
+            self,
+            ctx: ApplicationContext,
+            name: Option(str, description="새로 만들 투표의 이름입니다."),
+            choices: Option(str, description="투표의 선택지입니다(쉼표로 구분, 최대 20개)."),
+            mv: Option(str, description="중복 투표 가능 여부입니다.", choices=["허용"], required=False),
     ):
         await ctx.defer()
 
@@ -259,20 +261,20 @@ class Vote(commands.Cog):
         cursor.execute(
             "SELECT id, name FROM votes WHERE user_id=:user_id AND state=:state", param
         )
-        for (id, name) in cursor:
-            format = f"#{id} {name}"
-            if value in format:
-                result.append(OptionChoice(format, id))
+        for (user_id, name) in cursor:
+            str_format = f"#{user_id} {name}"
+            if value in str_format:
+                result.append(OptionChoice(str_format, user_id))
 
         return result
 
-    @slash_command(description="투표를 종료하고, 결과를 확인합니다.")
-    async def 개표(
-        self,
-        ctx: ApplicationContext,
-        vote: Option(
-            int, description="종료할 투표를 선택해주세요.", autocomplete=vote_autocomplete
-        ),
+    @slash_command(name="개표", description="투표를 종료하고, 결과를 확인합니다.")
+    async def result(
+            self,
+            ctx: ApplicationContext,
+            vote: Option(
+                int, description="종료할 투표를 선택해주세요.", autocomplete=vote_autocomplete
+            ),
     ):
         cursor = self.conn.cursor()
 
@@ -318,7 +320,7 @@ class Vote(commands.Cog):
             param = {"choice": choice_id}
             cursor.execute("SELECT * FROM voters WHERE choice=:choice", param)
             voter_count = len(cursor.fetchall())
-            embed.add_field(name=choice_name, value=voter_count)
+            embed.add_field(name=choice_name, value=str(voter_count))
 
         await ctx.respond(embed=embed)
         cursor.close()

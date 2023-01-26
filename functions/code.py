@@ -13,40 +13,42 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-import discord
 import base64
-from discord.ext import commands
+
+import discord
 from discord.commands import ApplicationContext, Option
-from utils.commands import slash_command
+from discord.ext import commands
+
 from constants import Constants
+from utils.commands import slash_command
 
 
 class Code(commands.Cog):
     @slash_command(name="암호", description="수신문을 암호화합니다.")
     async def encrypt(
-        self,
-        ctx: ApplicationContext,
-        type: Option(
-            str,
-            "암호화 시킬 방식을 선택하세요",
-            choices=["base16", "base32", "base64", "base85", "아스키 코드"],
-        ),
-        text: Option(str, "암호화 시킬 문장을 입력하세요."),
+            self,
+            ctx: ApplicationContext,
+            code_type: Option(
+                str,
+                "암호화 시킬 방식을 선택하세요",
+                choices=["base16", "base32", "base64", "base85", "아스키 코드"],
+            ),
+            text: Option(str, "암호화 시킬 문장을 입력하세요."),
     ):
-        if type == "base16":
+        if code_type == "base16":
             data = base16_encrypt(text)
-        elif type == "base32":
+        elif code_type == "base32":
             data = base32_encrypt(text)
-        elif type == "base64":
+        elif code_type == "base64":
             data = base64_encrypt(text)
-        elif type == "base85":
+        elif code_type == "base85":
             data = base85_encrypt(text)
-        elif type == "아스키 코드":
+        else:  # type == "아스키 코드":
             data = ascii_encrypt(text)
 
         embed = discord.Embed(
             title=f"{Constants.EMOJI['check']} 암호화 완료!",
-            description=f"**{type}**를 기반으로 한 암호문입니다.",
+            description=f"**{code_type}**를 기반으로 한 암호문입니다.",
             color=Constants.EMBED_COLOR["default"],
         ).add_field(name="**암호문:**", value=f"```{data}```", inline=False)
 
@@ -54,31 +56,31 @@ class Code(commands.Cog):
 
     @slash_command(name="해독", description="수신문을 해독합니다.")
     async def decrypt(
-        self,
-        ctx: ApplicationContext,
-        type: Option(
-            str,
-            "해독할 암호문의 암호화 방식을 선택하세요",
-            choices=["base16", "base32", "base64", "base85", "아스키 코드"],
-        ),
-        text: Option(str, "해독할 암호문을 입력하세요."),
+            self,
+            ctx: ApplicationContext,
+            code_type: Option(
+                str,
+                "해독할 암호문의 암호화 방식을 선택하세요",
+                choices=["base16", "base32", "base64", "base85", "아스키 코드"],
+            ),
+            text: Option(str, "해독할 암호문을 입력하세요."),
     ):
         try:
-            if type == "base16":
+            if code_type == "base16":
                 data = base16_decrypt(text)
-            elif type == "base32":
+            elif code_type == "base32":
                 data = base32_decrypt(text)
-            elif type == "base64":
+            elif code_type == "base64":
                 data = base64_decrypt(text)
-            elif type == "base85":
+            elif code_type == "base85":
                 data = base85_decrypt(text)
-            elif type == "아스키 코드":
+            else:  # type == "아스키 코드":
                 data = ascii_decrypt(text)
 
             embed = discord.Embed(
                 title="<a:check:824251178493411368> 해독 완료!",
                 description=(
-                    f"**{type}**를 기반으로 한 암호문을 해독하였습니다.\n"
+                    f"**{code_type}**를 기반으로 한 암호문을 해독하였습니다.\n"
                     + "해독이 잘못되었다면 [서포팅 서버](<https://discord.gg/aebSVBgzuG>)에서 제보해주세요!"
                 ),
                 color=Constants.EMBED_COLOR["default"]
@@ -91,8 +93,7 @@ class Code(commands.Cog):
                 value="올바르지 않은 암호문입니다. 암호의 종류가 맞는지 확인해주시고, 올바른 암호문을 입력해주세요.",
                 inline=False,
             )
-        finally:
-            await ctx.respond(embed=embed)
+        await ctx.respond(embed=embed)
 
 
 def setup(bot):

@@ -1,3 +1,18 @@
+# Copyright (C) 2022 Team White
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>
+
 import logging
 
 RESET = "\033[0m"
@@ -12,8 +27,8 @@ COLORS = {
 
 
 class HighlightingFormatter(logging.Formatter):
-    def __init__(self, format, datefmt, style):
-        super().__init__(format, datefmt, style)
+    def __init__(self, format_str, datefmt, style):
+        super().__init__(format_str, datefmt, style)
 
     def format(self, record: logging.LogRecord):
         space = 8 - len(record.levelname)
@@ -21,7 +36,7 @@ class HighlightingFormatter(logging.Formatter):
         record.levelname = levelname_color
 
         space = 15 - len(record.name)
-        if (space < 0):
+        if space < 0:
             space = 0
         record.name = CYAN + record.name + RESET + " " * space
 

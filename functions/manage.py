@@ -14,12 +14,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import asyncio
-import discord
-from discord.ext import commands
-from utils.commands import slash_command
-from discord.commands import ApplicationContext, Option
 import time
+
+import discord
+from discord.commands import ApplicationContext, Option
+from discord.ext import commands
+
 from constants import Constants
+from utils.commands import slash_command
 
 
 class Manage(commands.Cog):
@@ -36,7 +38,7 @@ class Manage(commands.Cog):
 
     @slash_command(name="청소", description="메시지를 일정 개수만큼 지웁니다.")
     async def clean(
-        self, ctx: ApplicationContext, count: Option(int, "삭제할 메시지의 개수를 입력하세요.")
+            self, ctx: ApplicationContext, count: Option(int, "삭제할 메시지의 개수를 입력하세요.")
     ):
         try:
             if ctx.author.guild_permissions.administrator:
@@ -92,12 +94,12 @@ class Manage(commands.Cog):
         )
         embed.add_field(
             name="봇 개발진: ",
-            value="[Team White](<https://team-white.kro.kr/>)",
+            value="[Team White](<http://team-white.kro.kr/>)",
             inline=True,
         )
         embed.add_field(
             name="서포팅 서버: ",
-            value="[초대 링크](<http://server.whitebot.kro.kr/>)",
+            value="[초대 링크](<https://server.whitebot.kro.kr/>)",
             inline=True,
         )
         await ctx.respond(embed=embed)

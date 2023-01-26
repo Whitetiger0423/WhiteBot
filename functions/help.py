@@ -13,12 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-import discord
-from discord.ext import commands
-from utils.commands import slash_command
-from discord.commands import ApplicationContext, Option
 import asyncio
+
+import discord
+from discord.commands import ApplicationContext
+from discord.ext import commands
+
 from constants import Constants
+from utils.commands import slash_command
 
 basic_commands = (
     discord.Embed(
@@ -59,7 +61,7 @@ utility_commands_1 = (
     .add_field(name="/전송 `[항목]`", value="`[항목]`을 전송해요!", inline=False)
     .add_field(name="/암호 `[수신문]`", value="`[수신문]`을 암호화합니다.", inline=False)
     .add_field(name="/해독 `[암호문]`", value="`[암호문]`을 해독합니다.", inline=False)
-    .add_field(name="/날씨 `[지역]`", value="`[지역]`의 현재 날씨를 조회합니다.")
+    .add_field(name="/날씨 `[장소]`", value="`[장소]`의 현재 날씨를 조회합니다.")
     .set_footer(text="2/6")
 )
 
@@ -144,22 +146,24 @@ manage_commands = (
 class Help(commands.Cog):
     @slash_command(name="도움말", description="봇의 도움말을 전송합니다.")
     async def help(
-        self,
-        ctx: ApplicationContext
+            self,
+            ctx: ApplicationContext
     ):
-        help_embeds = [basic_commands, utility_commands_1, utility_commands_2, utility_commands_3, playing_commands, manage_commands]
+        help_embeds = [basic_commands, utility_commands_1, utility_commands_2, utility_commands_3, playing_commands,
+                       manage_commands]
         help_index = 0
         interaction = await ctx.interaction.response.send_message(embed=basic_commands)
         msg = await interaction.original_message()
         await msg.add_reaction("◀️")
         await msg.add_reaction("▶️")
 
-        def check(reaction, user):
+        def check(check_reaction, check_user):
             return (
-                str(reaction) in ["◀️", "▶️"]
-                and user == ctx.author
-                and reaction.message.id == msg.id
+                str(check_reaction) in ["◀️", "▶️"]
+                and check_user == ctx.author
+                and check_reaction.message.id == msg.id
             )
+
         while True:
             try:
                 reaction, user = await ctx.bot.wait_for("reaction_add", timeout=60, check=check)
