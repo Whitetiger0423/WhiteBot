@@ -112,8 +112,8 @@ class Currency(commands.Cog):
         await ctx.defer()
         unit = units[to[4:]]
         found = await self.find(unit)
+        i = 1
         if found is False:  # 현재일자가 영업일이 아닐시 전일자 호출
-            i = 1
             while True:  # 조회 가능한 날짜가 나올때까지 계속 호출
                 search_again = await self.prev_find(unit, i)
                 if search_again is not False:
