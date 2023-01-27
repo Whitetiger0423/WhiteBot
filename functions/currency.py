@@ -83,22 +83,6 @@ choice = [
 ]
 
 
-async def db_update(unit):
-    base_url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
-
-    headers = {"authkey": os.getenv("CURRENCY"), "data": "AP01", "cur_unit": unit}
-
-    req = requests.get(base_url + to_querystring(headers))
-    data = req.json()
-
-    await currency_reset()
-    for i in data:
-        dol = i["bkpr"]
-        re = dol.replace(",", "")
-        name = i["cur_unit"]
-        await currency_add(name, re)
-
-
 class Currency(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
