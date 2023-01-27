@@ -22,7 +22,7 @@ from discord.ext import commands
 from constants import Constants
 from utils.commands import slash_command
 import os
-import utils.logging
+import utils.logger
 import logging
 from utils.utils import to_querystring
 from constants import Constants
