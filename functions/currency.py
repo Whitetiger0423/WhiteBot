@@ -29,7 +29,7 @@ from constants import Constants
 from datetime import datetime, timedelta
 from pytz import timezone
 
-utils.logging.setup_logging()
+utils.logger.setup_logging()
 logger = logging.getLogger(__name__)
 
 units = {
