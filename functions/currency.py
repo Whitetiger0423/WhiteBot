@@ -92,7 +92,7 @@ class Currency(commands.Cog):
             logger.warning("API Key가 없습니다")
 
     @slash_command(
-        name="테스트_환율",
+        name="환율",
         description="현재 시간 기준 환율로 환전합니다.",
     )
     async def currency(
