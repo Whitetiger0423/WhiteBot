@@ -15,17 +15,21 @@
 
 import logging
 import os
-
 import discord
 import requests
 from discord.commands import ApplicationContext, Option
 from discord.ext import commands
-
 from constants import Constants
 from utils.commands import slash_command
-from utils.database import currency_add, currency_find, currency_reset
+import os
+import utils.logger
+import logging
 from utils.utils import to_querystring
+from constants import Constants
+from datetime import datetime, timedelta
+from pytz import timezone
 
+utils.logger.setup_logging()
 logger = logging.getLogger(__name__)
 
 units = {
@@ -79,22 +83,6 @@ choice = [
 ]
 
 
-async def db_update(unit):
-    base_url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
-
-    headers = {"authkey": os.getenv("CURRENCY"), "data": "AP01", "cur_unit": unit}
-
-    req = requests.get(base_url + to_querystring(headers))
-    data = req.json()
-
-    await currency_reset()
-    for i in data:
-        dol = i["bkpr"]
-        re = dol.replace(",", "")
-        name = i["cur_unit"]
-        await currency_add(name, re)
-
-
 class Currency(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -108,10 +96,10 @@ class Currency(commands.Cog):
         description="현재 시간 기준 환율로 환전합니다.",
     )
     async def currency(
-            self,
-            ctx: ApplicationContext,
-            start: Option(int, "변환할 값(KRW)를 입력하세요. ex) 100000"),
-            to: Option(str, "변환할 통화를 선택해주세요. ex)USD", choices=choice),
+        self,
+        ctx: ApplicationContext,
+        start: Option(int, "변환할 값(KRW)를 입력하세요. ex) 100000"),
+        to: Option(str, "변환할 통화를 선택해주세요. ex) USD", choices=choice),
     ):
         if self.api_key is None:
             err = discord.Embed(
@@ -123,36 +111,79 @@ class Currency(commands.Cog):
 
         await ctx.defer()
         unit = units[to[4:]]
-        db_unit = units.get(to[4:])
-        await db_update(unit)
+        found = await self.find(unit)
+        i = 1
+        if found is False:  # 현재일자가 영업일이 아닐시 전일자 호출
+            while True:  # 조회 가능한 날짜가 나올때까지 계속 호출
+                search_again = await self.prev_find(unit, i)
+                if search_again is not False:
+                    search_again = int(search_again)
+                    found = search_again  # 재검색한값
+                    break
+                i += 1
 
-        if await currency_find():
-            found = await currency_find()
+        found = int(found)  # 환율 불러오는 함수 리턴값
+        result = start / found  # 환율로 입력한값 나눠서 환전
 
-            end = int(found[f"country_{db_unit}"])
-            result = start / end
-            if unit == "IDR(100)" or unit == "JPY(100)":
-                unit = unit[:3]
-            embed = (
-                discord.Embed(
-                    title=f"{Constants.EMOJI['check']} 변환된 값 정보",
-                    description="변환된 값의 정보를 반환했어요",
-                    color=Constants.EMBED_COLOR["default"],
-                )
-                .add_field(name="입력한 값", value=f"`{start:,}`원", inline=False)
-                .add_field(name="변환된 값", value=f"`{result:.2f}` `{unit}`", inline=False)
-            )
-            return await ctx.followup.send(embed=embed)
+        formatted_date = (
+            datetime.now().astimezone(timezone("Asia/Seoul")) - timedelta(days=i)
+        ).strftime("%Y년 %m월 %d일")
 
-        else:
-            err = discord.Embed(
-                title="주말/ 공휴일, 또는 밤 11시 이후에는 환율 조회가 불가능해요",
-                description="나중에 다시 시도해주세요\n[Team White 디스코드 서버](https://discord.gg/aebSVBgzuG)",
+        embed = (
+            discord.Embed(
+                title=f"{Constants.EMOJI['check']} 변환된 값",
+                description=f"기준일: {formatted_date}",
                 color=Constants.EMBED_COLOR["default"],
             )
+            .add_field(name=f"1 `{unit}` 당 원 ", value=f"`{found:.2f}` 원", inline=False)
+            .add_field(name="입력한 값", value=f"`{start:,}`원", inline=False)
+            .add_field(name="변환된 값", value=f"`{result:.2f}` `{unit}`", inline=False)
+        )
 
-            return await ctx.followup.send(embed=err)
+        await ctx.followup.send(embed=embed)
 
+    async def find(self, unit):
+        base_url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
+
+        headers = {"authkey": os.getenv("CURRENCY"), "data": "AP01", "cur_unit": unit}
+
+        req = requests.get(base_url + to_querystring(headers))
+        res = req.json()
+
+        if str(res) == "[]":
+            return False
+
+        status = res[0]["result"]
+        if status != 1:
+            return False
+
+        value = res[0]["bkpr"].replace(",", "")  # json에서 환율 값 추출
+
+        return value
+
+    async def prev_find(self, unit, i):  # 호출날짜가 영업일이 아닐시 전일자 호출용으로 사용
+        base_url = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?"
+        previous_day = (
+            datetime.now().astimezone(timezone("Asia/Seoul")) - timedelta(days=i)
+        ).strftime("%Y%m%d")
+        headers = {
+            "authkey": os.getenv("CURRENCY"),
+            "data": "AP01",
+            "cur_unit": unit,
+            "searchdate": previous_day,
+        }
+
+        req = requests.get(base_url + to_querystring(headers))
+        res = req.json()
+
+        status = res[0]["result"]
+
+        if status != 1:
+            return False
+
+        value = res[0]["bkpr"].replace(",", "")  # json에서 환율 값 추출
+
+        return value
 
 def setup(bot):
     bot.add_cog(Currency(bot))
