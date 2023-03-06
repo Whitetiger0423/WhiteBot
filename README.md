@@ -1,16 +1,16 @@
 [invite]: https://discord.com/oauth2/authorize?client_id=782777035898617886&permissions=8&scope=bot%20applications.commands
 [invite-shield]: https://img.shields.io/badge/초대-하기-blue?style=flat-square
-[discord-server]: https://discord.gg/aebSVBgzuG
+[discord-server]: https://discord.gg/EEbNMAd9vv
 [discord-shield]: https://img.shields.io/discord/795837553684774933?style=flat-square&label=디스코드&logo=discord&logoColor=white
 [koreanbots]: https://koreanbots.dev/bots/782777035898617886
 [koreanbots-shield]: https://koreanbots.dev/api/widget/bots/servers/782777035898617886.svg
-[license]: https://github.com/dev-White-team/WhiteBot/blob/main/LICENSE
-[license-shield]: https://img.shields.io/github/license/dev-White-team/WhiteBot?style=flat-square&label=라이선스
-[stars-shield]: https://img.shields.io/github/stars/dev-White-team/WhiteBot?style=flat-square&label=스타&color=yellow
+[license]: https://github.com/Whitetiger0423/WhiteBot/blob/main/LICENSE
+[license-shield]: https://img.shields.io/github/license/Whitetiger0423/WhiteBot?style=flat-square&label=라이선스
+[stars-shield]: https://img.shields.io/github/stars/Whitetiger0423/WhiteBot?style=flat-square&label=스타&color=yellow
 [python-shield]: https://img.shields.io/badge/파이썬-3.8_|_3.9_|_3.10-blue?style=flat-square&logo=python&logoColor=white
-[issues]: https://github.com/dev-White-team/WhiteBot/issues
-[pulls]: https://github.com/dev-white-team/WhiteBot/pulls
-[contributing]: https://github.com/dev-White-team/WhiteBot/blob/main/CONTRIBUTING.md
+[issues]: https://github.com/Whitetiger0423/WhiteBot/issues
+[pulls]: https://github.com/Whitetiger0423/WhiteBot/pulls
+[contributing]: https://github.com/Whitetiger0423/WhiteBot/blob/main/CONTRIBUTING.md
 
 # WhiteBot
 
