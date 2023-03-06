@@ -2,13 +2,13 @@
 
 WhiteBot에 기여해주셔서 감사합니다.  
 이 가이드는 여러분들에게 이슈, PR 등과 같이 기여에 필요한 내용들을 알려드리기 위해 제작되었습니다.  
-도움이 필요하시다면 [Team White 디스코드](https://discord.gg/aebSVBgzuG)에서 도와드리겠습니다.
+도움이 필요하시다면 [디스코드 지원 서버](https://discord.gg/EEbNMAd9vv)에서 도와드리겠습니다.
 
 ## 작업 환경 구성
 
 1. 저장소를 포크합니다
 
-[저장소](https://github.com/dev-White-team/WhiteBot) 우측 상단에 있는 `Fork` 버튼을 클릭합니다.  
+[저장소](https://github.com/Whitetiger0423/WhiteBot) 우측 상단에 있는 `Fork` 버튼을 클릭합니다.  
 여러분이 자유롭게 코드를 수정할 수 있도록 여러분 닉네임으로 복제된 저장소가 생성됩니다.
 
 2. 포크한 저장소를 클론합니다
