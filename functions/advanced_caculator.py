@@ -43,29 +43,37 @@ class AdvancedCalc(commands.Cog):
         ),
         first: Option(int, "값을 입력해주세요"),
     ):
-        if calc_type == "사인":
-            equal = str(math.sin(math.pi * (first / 180)))
-        elif calc_type == "코사인":
-            equal = str(math.cos(math.pi * (first / 180)))
-        elif calc_type == "탄젠트":
-            equal = str(math.tan(math.pi * (first / 180)))
-        elif calc_type == "시컨트":
-            equal = str(1.0 / math.sin(first))
-        elif calc_type == "코시컨트":
-            equal = str(1.0 / math.cos(first))
-        elif calc_type == "코탄젠트":
-            equal = str(1.0 / math.tan(first))
-        elif calc_type == "팩토리얼":
-            equal = str(math.factorial(first))
-        elif calc_type == "루트":
-            equal = str(math.sqrt(first))
-        else:  # calc_type == "로그"
-            equal = str(math.log(first))
-        embed = discord.Embed(
-            title=f"{Constants.EMOJI['check']} 계산 완료!",
-            description=f"{calc_type} {first}의 계산 결과입니다.",
-            color=Constants.EMBED_COLOR["default"],
-        ).add_field(name="**계산 결과:**", value=f"```{equal}```", inline=False)
+        try:
+            if calc_type == "사인":
+                equal = str(math.sin(math.pi * (first / 180)))
+            elif calc_type == "코사인":
+                equal = str(math.cos(math.pi * (first / 180)))
+            elif calc_type == "탄젠트":
+                equal = str(math.tan(math.pi * (first / 180)))
+            elif calc_type == "시컨트":
+                equal = str(1.0 / math.sin(first))
+            elif calc_type == "코시컨트":
+                equal = str(1.0 / math.cos(first))
+            elif calc_type == "코탄젠트":
+                equal = str(1.0 / math.tan(first))
+            elif calc_type == "팩토리얼":
+                equal = str(math.factorial(first))
+            elif calc_type == "루트":
+                equal = str(math.sqrt(first))
+            else:  # calc_type == "로그"
+                equal = str(math.log(first))
+            embed = discord.Embed(
+                title=f"{Constants.EMOJI['check']} 계산 완료!",
+                description=f"{calc_type} {first}의 계산 결과입니다.",
+                color=Constants.EMBED_COLOR["default"],
+            ).add_field(name="**계산 결과:**", value=f"```{equal}```", inline=False)
+        
+        except:
+            embed = discord.Embed(
+                title=f"{Constants.EMOJI['error']} 계산 실패",
+                description=f"제대로 된 값을 입력해주시기 바랍니다.",
+                color=Constants.EMBED_COLOR["default"],
+            )
 
         await ctx.respond(embed=embed)
 
