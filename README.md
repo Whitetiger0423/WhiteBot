@@ -12,6 +12,11 @@
 [pulls]: https://github.com/Whitetiger0423/WhiteBot/pulls
 [contributing]: https://github.com/Whitetiger0423/WhiteBot/blob/main/CONTRIBUTING.md
 
+# ARCHIVED
+이 프로젝트는 보존 상태입니다. 추가적인 기능 추가 또는 유지보수는 더 이상 이뤄지지 않으며, 원래 사용되던 봇 계정은 다른 프로젝트를 위해 사용될 예정입니다.
+
+----
+
 # WhiteBot
 
 [![Server Count][koreanbots-shield]][koreanbots]
